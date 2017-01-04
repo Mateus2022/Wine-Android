@@ -6,10 +6,10 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 
 import com.ndboo.base.BaseActivity;
+import com.ndboo.ui.fragment.BusinessFragment;
 import com.ndboo.ui.fragment.IndexFragment;
+import com.ndboo.ui.fragment.MallFragment;
 import com.ndboo.ui.fragment.MineFragment;
-import com.ndboo.ui.fragment.ShoppingCarFragment;
-import com.ndboo.ui.fragment.TypeFragment;
 import com.ndboo.widget.FixedViewPager;
 
 import java.util.ArrayList;
@@ -31,9 +31,12 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
     @BindView(R.id.rb_mine)
     RadioButton mRbMine;
 
-
+    /**
+     * fragment集合
+     * 包含首页、商城、商家、我的四个界面
+     */
     private List<Fragment> mFragments;
-    private TypeFragment mTypeFragment;
+    private MallFragment mMallFragment;
 
     public IndexFragment getIndexFragment() {
         return mIndexFragment;
@@ -52,13 +55,11 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         mFragments = new ArrayList<>();
 
         mIndexFragment = new IndexFragment();
-        mTypeFragment = new TypeFragment();
-
-        ShoppingCarFragment carFragment=new ShoppingCarFragment();
+        mMallFragment = new MallFragment();
+        BusinessFragment carFragment=new BusinessFragment();
         MineFragment mineFragment=new MineFragment();
-
         mFragments.add(mIndexFragment);
-        mFragments.add(mTypeFragment);
+        mFragments.add(mMallFragment);
         mFragments.add(carFragment);
         mFragments.add(mineFragment);
 
@@ -78,14 +79,8 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         mRbType.setOnCheckedChangeListener(this);
         mRbShoppingCar.setOnCheckedChangeListener(this);
         mRbMine.setOnCheckedChangeListener(this);
-
-//        mIndexFragment.setGetWinTypeId(new IndexFragment.getWinTypeId() {
-//            @Override
-//            public void showById(int id) {
-//                mTypeFragment.setCurrentPosition(id);
-//            }
-//        });
     }
+
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -93,25 +88,24 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
             int tag = Integer.parseInt(buttonView.getTag().toString());
             mViewPagerMain.setCurrentItem(tag, false);
         }
-
-
     }
 
+    /**
+     * 返回键处理
+     */
     @Override
     public void onBackPressed() {
-        if (mTypeFragment.getDropLayout().isMenuOpen()) {
-            mTypeFragment.getDropLayout().closeMenu();
+        if (mMallFragment.getDropLayout().isMenuOpen()) {
+            mMallFragment.getDropLayout().closeMenu();
         }else {
             super.onBackPressed();
         }
-
     }
 
-
-    public void turnToType(){
+    /**
+     * 转到商城
+     */
+    public void turnToMall(){
         mRbType.setChecked(true);
-//        Bundle bundle=new Bundle();
-//        bundle.putBoolean("interrupt",true);
-//        mTypeFragment.setArguments(bundle);
     }
 }

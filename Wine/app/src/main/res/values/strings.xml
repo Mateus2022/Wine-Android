@@ -2,22 +2,17 @@
     <string name="app_name">好来酒</string>
 
     <string name="main_tab_index">首页</string>
-    <string name="main_tab_type">分类</string>
-    <string name="main_type_shopping_car">购物车</string>
+    <string name="main_tab_mall">商城</string>
+    <string name="main_type_business">商家</string>
     <string name="main_tab_mine">我的</string>
+
 
 
     <string-array name="wine_type">
         <item>红酒</item>
         <item>黄酒</item>
         <item>白酒</item>
-        <item>葡萄酒</item>
-        <item>香槟</item>
         <item>啤酒</item>
-        <item>养生酒</item>
-        <item>礼酒</item>
-        <item>老酒</item>
-        <item>婚宴酒</item>
     </string-array>
 
 
@@ -27,6 +22,13 @@
         <item>#0000ff</item>
     </string-array>
 
+
+    <string-array name="wine_filter_condition">
+        <item>香型</item>
+        <item>品牌</item>
+        <item>产地</item>
+        <item>价格</item>
+    </string-array>
 
     <string-array name="wine_brand">
         <item>全部</item>
