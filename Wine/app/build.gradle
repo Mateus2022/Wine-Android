@@ -41,5 +41,4 @@ dependencies {
     compile 'com.lcodecorex:tkrefreshlayout:1.0.5'
     compile 'com.github.dongjunkun:DropDownMenu:1.0.3'
     //上拉加载，下拉刷新
-    compile project(path: ':ptr-lib')
 }
