@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <declare-styleable name="ImgTextView">
+        <attr name="itv_left_image" format="reference"/>
+        <attr name="itv_text_content" format="string|reference"/>
+        <attr name="itv_right_image" format="reference"/>
+        <attr name="itv_text_size" format="dimension"/>
+        <attr name="itv_text_color" format="color"/>
+        <attr name="itv_left_padding" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="DropLayout">
+        <attr name="selectedTextColor" format="color"/>
+        <attr name="unSelectedTextColor" format="color"/>
+        <attr name="dividerColor" format="color"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="dividerMargin" format="dimension"/>
+        <attr name="selectedImg" format="reference"/>
+        <attr name="unSelectedImg" format="reference"/>
+    </declare-styleable>
+</resources>

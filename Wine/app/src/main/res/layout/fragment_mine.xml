@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <com.ndboo.widget.TopBar
+        android:id="@+id/mine_topbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:topbar_isShowBackImg="false"
+        app:topbar_title="我的"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@color/themeColor">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <com.ndboo.widget.CircleImageView
+                android:id="@+id/mine_portrait"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:layout_gravity="center_horizontal"
+                android:scaleType="centerCrop"
+                android:src="@drawable/wine_4_on"
+                app:border_color="@color/white"
+                app:border_width="2dp"/>
+
+            <TextView
+                android:id="@+id/mine_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="张行长"
+                android:textColor="@color/white"
+                android:textSize="14sp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#eae7e7">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:divider="@drawable/shape_divider_horizontal"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <com.ndboo.widget.ImgTextView
+                android:id="@+id/mine_order"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                app:itv_left_image="@drawable/wine_1_on"
+                app:itv_right_image="@mipmap/ic_arrow_right"
+                app:itv_text_color="@color/themeColor"
+                app:itv_text_content="我的订单"
+                app:itv_text_size="13sp"/>
+
+            <com.ndboo.widget.ImgTextView
+                android:id="@+id/mine_address"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                app:itv_left_image="@drawable/wine_1_on"
+                app:itv_right_image="@mipmap/ic_arrow_right"
+                app:itv_text_color="@color/themeColor"
+                app:itv_text_content="收获地址"
+                app:itv_text_size="13sp"/>
+
+            <com.ndboo.widget.ImgTextView
+                android:id="@+id/mine_collection"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                app:itv_left_image="@drawable/wine_1_on"
+                app:itv_right_image="@mipmap/ic_arrow_right"
+                app:itv_text_color="@color/themeColor"
+                app:itv_text_content="我的收藏"
+                app:itv_text_size="13sp"/>
+
+            <com.ndboo.widget.ImgTextView
+                android:id="@+id/mine_service"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                app:itv_left_image="@drawable/wine_1_on"
+                app:itv_right_image="@mipmap/ic_arrow_right"
+                app:itv_text_color="@color/themeColor"
+                app:itv_text_content="联系客服"
+                app:itv_text_size="13sp"/>
+
+            <com.ndboo.widget.ImgTextView
+                android:id="@+id/mine_aboutus"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                app:itv_left_image="@drawable/wine_1_on"
+                app:itv_right_image="@mipmap/ic_arrow_right"
+                app:itv_text_color="@color/themeColor"
+                app:itv_text_content="关于我们"
+                app:itv_text_size="13sp"/>
+
+            <com.ndboo.widget.ImgTextView
+                android:id="@+id/mine_suggestion"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                app:itv_left_image="@drawable/wine_1_on"
+                app:itv_right_image="@mipmap/ic_arrow_right"
+                app:itv_text_color="@color/themeColor"
+                app:itv_text_content="意见反馈"
+                app:itv_text_size="13sp"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

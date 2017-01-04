@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.ndboo.widget.FixedViewPager
+        android:id="@+id/view_pager_main"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorAccent"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp">
+
+        <RadioButton
+            android:id="@+id/rb_index"
+            style="@style/MainTabStyle"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:drawableTop="@drawable/selector_main_tab_index"
+            android:text="@string/main_tab_index"
+            android:tag="0"/>
+
+        <RadioButton
+            android:id="@+id/rb_type"
+            style="@style/MainTabStyle"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/selector_main_tab_type"
+            android:text="@string/main_tab_type"
+            android:tag="1"/>
+
+        <RadioButton
+            android:id="@+id/rb_shopping_car"
+            style="@style/MainTabStyle"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/selector_main_tab_shopping_car"
+            android:text="@string/main_type_shopping_car"
+            android:tag="2"/>
+
+        <RadioButton
+            android:id="@+id/rb_mine"
+            style="@style/MainTabStyle"
+            android:layout_height="wrap_content"
+            android:drawableTop="@drawable/selector_main_tab_mine"
+            android:text="@string/main_tab_mine"
+            android:tag="3"/>
+    </RadioGroup>
+
+</LinearLayout>

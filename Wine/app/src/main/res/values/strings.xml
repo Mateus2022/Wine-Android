@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">好来酒</string>
+
+    <string name="main_tab_index">首页</string>
+    <string name="main_tab_type">分类</string>
+    <string name="main_type_shopping_car">购物车</string>
+    <string name="main_tab_mine">我的</string>
+
+
+    <string-array name="wine_type">
+        <item>红酒</item>
+        <item>黄酒</item>
+        <item>白酒</item>
+        <item>葡萄酒</item>
+        <item>香槟</item>
+        <item>啤酒</item>
+        <item>养生酒</item>
+        <item>礼酒</item>
+        <item>老酒</item>
+        <item>婚宴酒</item>
+    </string-array>
+
+
+    <string-array name="roll_view_pager">
+        <item>#ff0000</item>
+        <item>#00ff00</item>
+        <item>#0000ff</item>
+    </string-array>
+
+
+    <string-array name="wine_brand">
+        <item>全部</item>
+        <item>茅台</item>
+        <item>五粮液</item>
+        <item>剑南春</item>
+        <item>泸州老窖</item>
+        <item>牛栏山</item>
+        <item>洋河</item>
+        <item>红星</item>
+    </string-array>
+
+    <string-array name="wine_origin">
+        <item>全部</item>
+        <item>贵州</item>
+        <item>四川</item>
+        <item>安徽</item>
+        <item>河南</item>
+        <item>湖北</item>
+        <item>江苏</item>
+
+    </string-array>
+
+    <string-array name="wine_price">
+        <item>全部</item>
+        <item>100元以下</item>
+        <item>100-199元</item>
+        <item>200-299元</item>
+        <item>300-499元</item>
+        <item>500-999元</item>
+        <item>1000元以上</item>
+
+    </string-array>
+
+    <string-array name="wine_flavor">
+        <item>全部</item>
+        <item>浓香型</item>
+        <item>酱香型</item>
+        <item>清香型</item>
+        <item>浓酱兼香型</item>
+        <item>凤香型</item>
+        <item>特香型</item>
+        <item>老白干型</item>
+        <item>其他</item>
+    </string-array>
+</resources>
