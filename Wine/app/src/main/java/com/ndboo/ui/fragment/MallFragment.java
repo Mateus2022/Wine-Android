@@ -1,7 +1,6 @@
 package com.ndboo.ui.fragment;
 
-import android.os.Handler;
-import android.os.Message;
+import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,15 +8,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.lcodecore.tkrefreshlayout.Footer.LoadingView;
-import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
-import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
-import com.lcodecore.tkrefreshlayout.header.SinaRefreshView;
 import com.ndboo.adapter.ProductAdapter;
-import com.ndboo.adapter.WineTypeAdapter;
 import com.ndboo.base.BaseFragment;
 import com.ndboo.bean.Type;
 import com.ndboo.interfaces.OnItemClickListener;
@@ -33,38 +26,26 @@ import butterknife.BindView;
 
 /**
  * Created by Li on 2016/12/26.
- * 分类界面
+ * “商城”界面
  */
 
-public class TypeFragment extends BaseFragment {
+public class MallFragment extends BaseFragment {
 
-    @BindView(R.id.lvWineType)
-    ListView mLvWineType;
+
     @BindView(R.id.recycler_stage_three)
     RecyclerView mRecyclerStageThree;
-    @BindView(R.id.refresh_layout)
-    TwinklingRefreshLayout mRefreshLayout;
-
+    @BindView(R.id.tab_layout_type)
+    TabLayout mTabLayoutType;
     @BindView(R.id.drop_filter)
     DropLayout mDropLayout;
     @BindView(R.id.grid_view_filter)
     GridView mGridViewFilter;
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case 0:
-                    mRefreshLayout.finishRefreshing();
-                    break;
-                case 1:
-                    mRefreshLayout.finishLoadmore();
-                    break;
-            }
-        }
-    };
 
-    private List<String> mTitles;
+
+    /**
+     * 商品筛选条目
+     */
+    private List<String> mFilters;
     private List<String> wineFlavor;
     private List<String> wineBrand;
     private List<String> wineOrigin;
@@ -74,14 +55,12 @@ public class TypeFragment extends BaseFragment {
     private List<Type> mTypes;
 
     private List<String> mWineTypes;
-    private int mCurrentPosition = 0;
-    private WineTypeAdapter mWineTypeAdapter;
     private ProductAdapter mProductAdapter;
 
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_type;
+        return R.layout.fragment_mall;
     }
 
 
@@ -89,24 +68,20 @@ public class TypeFragment extends BaseFragment {
     public void firstVisibleDeal() {
 
         initData();
-        showWineType();
         showProducts();
         showDrop();
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.getIndexFragment().setGetWinTypeId(new IndexFragment.getWinTypeId() {
             @Override
             public void showById(int id) {
-//                showWineType();
                 setCurrentPosition(id);
             }
         });
-        Log.e("tag", mCurrentPosition + "");
-
     }
 
     private void initData() {
         mRecyclerStageThree.setLayoutManager(new LinearLayoutManager(getContext()));
-        mTitles = Arrays.asList("香型", "品牌", "产地", "价格");
+        mFilters = Arrays.asList(getResources().getStringArray(R.array.wine_filter_condition));
         wineFlavor = Arrays.asList(getResources().getStringArray(R.array.wine_flavor));
         wineBrand = Arrays.asList(getResources().getStringArray(R.array.wine_brand));
         wineOrigin = Arrays.asList(getResources().getStringArray(R.array.wine_origin));
@@ -121,48 +96,36 @@ public class TypeFragment extends BaseFragment {
         for (String wineType : mWineTypes) {
             Type type = new Type(wineType, R.mipmap.ic_wine);
             mTypes.add(type);
+            mTabLayoutType.addTab(mTabLayoutType.newTab().setText(wineType));
         }
-        SinaRefreshView sinaRefreshView = new SinaRefreshView(getContext());
-        sinaRefreshView.setArrowResource(R.mipmap.ic_arrow_refresh);
-        mRefreshLayout.setHeaderView(sinaRefreshView);
-        mRefreshLayout.setBottomView(new LoadingView(getContext()));
-        mRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+        mTabLayoutType.setSelectedTabIndicatorHeight(0);
+        mTabLayoutType.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                super.onRefresh(refreshLayout);
-                mHandler.sendEmptyMessageDelayed(0, 3000);
+            public void onTabSelected(TabLayout.Tab tab) {
+                resetAllTab();
+                tab.setIcon(R.drawable.wine_1_nm);
+                tab.setText("");
+                Log.e("tag", "selected" + tab.getPosition());
             }
 
             @Override
-            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
-                super.onLoadMore(refreshLayout);
-                mHandler.sendEmptyMessageDelayed(1, 3000);
+            public void onTabUnselected(TabLayout.Tab tab) {
+//                Log.e("tag", "unselected" + tab.getPosition());
             }
 
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+//                Log.e("tag", "reselected" + tab.getPosition());
+            }
         });
     }
 
-    /**
-     * 显示商品类别
-     */
-    private void showWineType() {
-        if (mWineTypeAdapter == null) {
-            mWineTypeAdapter = new WineTypeAdapter(mWineTypes, mCurrentPosition, getContext());
-            mLvWineType.setAdapter(mWineTypeAdapter);
+    void resetAllTab() {
+        for (int i = 0; i < mTabLayoutType.getTabCount(); i++) {
+            TabLayout.Tab tab = mTabLayoutType.getTabAt(i);
+            tab.setText(mWineTypes.get(i));
+            tab.setIcon(null);
         }
-        mLvWineType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mDropLayout.isMenuOpen()) {
-                    mDropLayout.closeMenu();
-                    return;
-                }
-                if (mWineTypeAdapter.getCurrentPosition() != position) {
-                    mWineTypeAdapter.setCurrentPosition(position);
-                    mLvWineType.setSelection(position);
-                }
-            }
-        });
     }
 
     /**
@@ -181,11 +144,12 @@ public class TypeFragment extends BaseFragment {
             }
         });
     }
+
     /**
      * 显示下拉筛选
      */
     private void showDrop() {
-        mDropLayout.loadMenu(mTitles);
+        mDropLayout.loadMenu(mFilters);
         mDropLayout.setOnFilterChangeListener(new DropLayout.OnFilterChangeListener() {
             @Override
             public void filterChange(int position) {
@@ -206,21 +170,22 @@ public class TypeFragment extends BaseFragment {
     /**
      * 当从首页跳转至分类页时，可以动态刷新所选类别数量
      * RxJava+Retrofit为防止数据出现显示混乱，在每选择时就要取消上一次的订阅
+     *
      * @param currentPosition 当前类别编号
      */
     public void setCurrentPosition(int currentPosition) {
         unSubscribe();
-        mCurrentPosition = currentPosition;
-        mWineTypeAdapter.setCurrentPosition(currentPosition);
-        mLvWineType.setSelection(mCurrentPosition);
+        mTabLayoutType.getTabAt(currentPosition).select();
     }
+
     @Override
     protected void inVisibleDeal() {
-        if (mDropLayout != null&&mDropLayout.isMenuOpen()) {
+        if (mDropLayout != null && mDropLayout.isMenuOpen()) {
             mDropLayout.closeMenu();
 
         }
     }
+
     /**
      * 返回筛选布局用来判断退出时，筛选框状态
      *

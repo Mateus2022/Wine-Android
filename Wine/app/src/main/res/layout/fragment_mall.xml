@@ -7,15 +7,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <TextView
+
+    <com.ndboo.widget.TopBar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/themeColor"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/main_tab_type"
-        android:textColor="@color/white"
-        android:textSize="20sp"/>
+        app:topbar_isShowBackImg="false"
+        app:topbar_title="@string/main_tab_mall"/>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <com.ndboo.widget.DropLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/drop_filter"
@@ -48,31 +52,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_stage_three"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
-                    <ListView
-                        android:id="@+id/lvWineType"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent"
-                        android:dividerHeight="1px"
-                        android:scrollbars="none"/>
-                    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
-                        android:id="@+id/refresh_layout"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3">
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recycler_stage_three"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="10dp"/>
-                    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
-
-                </LinearLayout>
+                    android:layout_marginLeft="10dp"/>
 
             </FrameLayout>
             <!--筛选条件详细内容-->

@@ -39,7 +39,7 @@
             style="@style/MainTabStyle"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/selector_main_tab_type"
-            android:text="@string/main_tab_type"
+            android:text="@string/main_tab_mall"
             android:tag="1"/>
 
         <RadioButton
@@ -47,7 +47,7 @@
             style="@style/MainTabStyle"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/selector_main_tab_shopping_car"
-            android:text="@string/main_type_shopping_car"
+            android:text="@string/main_type_business"
             android:tag="2"/>
 
         <RadioButton

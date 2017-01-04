@@ -145,7 +145,7 @@ public class IndexFragment extends BaseFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.turnToType();
+                mainActivity.turnToMall();
 
                 if (mGetWinTypeId != null) {
                     mGetWinTypeId.showById(position);

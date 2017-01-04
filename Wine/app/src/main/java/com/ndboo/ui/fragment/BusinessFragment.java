@@ -5,16 +5,16 @@ import com.ndboo.wine.R;
 
 /**
  * Created by Li on 2016/12/26.
- * 购物车界面
+ * “商家”界面
  */
 
-public class ShoppingCarFragment extends BaseFragment {
+public class BusinessFragment extends BaseFragment {
 
 
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_shopping_car;
+        return R.layout.fragment_business;
     }
 
 }
