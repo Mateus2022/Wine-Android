@@ -87,7 +87,8 @@ public class OrderFragment extends Fragment {
         mListView = (ListView) mView.findViewById(R.id.order_listview);
 
         //设置刷新圆圈的颜色
-        mRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_light,
+        mRefreshLayout.setColorSchemeResources(
+                android.R.color.holo_blue_light,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
@@ -107,10 +108,12 @@ public class OrderFragment extends Fragment {
 
             @Override
             public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-                //当ListView不在滚动，并且最后一项的索引等于项数减一时，表示已经加载到最后一个
-                if (scrollState == SCROLL_STATE_IDLE && lastVisibleItemIndex == mAdapter.getCount() - 1) {
+                //当ListView不再滚动，并且最后一项的索引等于项数减一时，表示已经加载到最后一个
+                if (scrollState == SCROLL_STATE_IDLE &&
+                        lastVisibleItemIndex == mAdapter.getCount() - 1) {
                     //判断最后一个是否完全显示(参数是可见的Item中的index)
-                    View lastVisibleItem = mListView.getChildAt(lastVisibleItemIndex - mListView.getFirstVisiblePosition());
+                    View lastVisibleItem = mListView.getChildAt(
+                            lastVisibleItemIndex - mListView.getFirstVisiblePosition());
                     if (lastVisibleItem.getBottom() <= mListView.getBottom()) {
                         if (!mIsLoading) {
                             //加载
@@ -136,7 +139,7 @@ public class OrderFragment extends Fragment {
             public void onRefresh() {
                 //刷新
                 mCurrentType = TYPE_REFRESH;
-                //页数增加
+                //页数重置为1
                 mCurrentPage = 1;
                 //获取数据
                 requestData();
