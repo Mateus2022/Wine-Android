@@ -1,5 +1,7 @@
 package com.ndboo.wine;
 
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.widget.CompoundButton;
@@ -79,6 +81,18 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         mRbType.setOnCheckedChangeListener(this);
         mRbShoppingCar.setOnCheckedChangeListener(this);
         mRbMine.setOnCheckedChangeListener(this);
+        Handler handler=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+            }
+        };
+        Handler handler1=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+            }
+        };
     }
 
 
