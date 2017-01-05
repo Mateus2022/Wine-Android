@@ -35,14 +35,14 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         @Override
         public void onLocationChanged(AMapLocation aMapLocation) {
             if (aMapLocation != null) {
-                if (aMapLocation.getErrorCode()==0) {
-                    String location=
-                            aMapLocation.getCountry()+aMapLocation.getProvince()+
-                                    aMapLocation.getCity()+aMapLocation.getDistrict()+
-                                    aMapLocation.getStreet()+aMapLocation.getStreetNum();
+                if (aMapLocation.getErrorCode() == 0) {
+                    String location =
+                            aMapLocation.getCountry() + aMapLocation.getProvince() +
+                                    aMapLocation.getCity() + aMapLocation.getDistrict() +
+                                    aMapLocation.getStreet() + aMapLocation.getStreetNum();
                     mTvLocation.setText(location);
-                }else {
-                    Toast.makeText(MainActivity.this, "定位失败"+aMapLocation.getErrorCode(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "定位失败" + aMapLocation.getErrorCode(), Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -67,6 +67,7 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
     private List<Fragment> mFragments;
     private MallFragment mMallFragment;
     private IndexFragment mIndexFragment;
+    private MineFragment mMineFragment;
 
     public IndexFragment getIndexFragment() {
         return mIndexFragment;
@@ -85,11 +86,11 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         mIndexFragment = new IndexFragment();
         mMallFragment = new MallFragment();
         BusinessFragment carFragment = new BusinessFragment();
-        MineFragment mineFragment = new MineFragment();
+        mMineFragment = new MineFragment();
         mFragments.add(mIndexFragment);
         mFragments.add(mMallFragment);
         mFragments.add(carFragment);
-        mFragments.add(mineFragment);
+        mFragments.add(mMineFragment);
 
         mViewPagerMain.setOffscreenPageLimit(mFragments.size());
         mViewPagerMain.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -123,8 +124,19 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
      */
     @Override
     public void onBackPressed() {
-        if (mMallFragment.getDropLayout().isMenuOpen()) {
-            mMallFragment.getDropLayout().closeMenu();
+        int currentPage = mViewPagerMain.getCurrentItem();
+        if (currentPage == 3) {
+            if (mMineFragment.isShow()) {
+                mMineFragment.closePop();
+            } else {
+                super.onBackPressed();
+            }
+        } else if (currentPage == 1) {
+            if (mMallFragment.getDropLayout().isMenuOpen()) {
+                mMallFragment.getDropLayout().closeMenu();
+            } else {
+                super.onBackPressed();
+            }
         } else {
             super.onBackPressed();
         }
@@ -159,12 +171,13 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
     }
 
     private static final int REQUEST_LOCATION_CODE = 253;
-    private void checkLocationPermission(){
+
+    private void checkLocationPermission() {
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             getLocation();
-        }else {
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_LOCATION_CODE);
         }
     }
@@ -174,9 +187,9 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case REQUEST_LOCATION_CODE:
-                if (grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getLocation();
-                }else {
+                } else {
                     Toast.makeText(this, "定位失败", Toast.LENGTH_SHORT).show();
                 }
                 break;
