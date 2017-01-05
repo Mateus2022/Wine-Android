@@ -25,4 +25,11 @@
         <attr name="topbar_title" format="string|reference"/>
         <attr name="topbar_isShowBackImg" format="boolean"/>
     </declare-styleable>
+
+    <style name="AnimationFade" parent="android:Animation">
+        <!--进入时的动画-->
+        <item name="@android:windowEnterAnimation">@anim/fade_in</item>
+        <!--退出时的动画-->
+        <item name="@android:windowExitAnimation">@anim/fade_out</item>
+    </style>
 </resources>

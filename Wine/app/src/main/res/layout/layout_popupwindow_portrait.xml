@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:padding="30dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_bg_white_corner"
+            android:divider="@drawable/shape_divider_horizontal"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <TextView
+                android:id="@+id/portrait_take"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="拍照"
+                android:textColor="@color/blue"
+                android:textSize="17sp"/>
+
+            <TextView
+                android:id="@+id/portrait_choose"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="从相册中选取"
+                android:textColor="@color/blue"
+                android:textSize="17sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/portrait_cancle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_bg_white_corner"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="取消"
+            android:textColor="@color/blue"
+            android:textSize="17sp"/>
+
+    </LinearLayout>
+</RelativeLayout>
