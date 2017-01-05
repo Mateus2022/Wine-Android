@@ -1,5 +1,9 @@
 package com.ndboo.wine;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.widget.CompoundButton;
@@ -75,7 +79,7 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
 
     @Override
     public void init() {
-        getLocation();
+        checkLocationPermission();
         mFragments = new ArrayList<>();
 
         mIndexFragment = new IndexFragment();
@@ -147,7 +151,35 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mAMapLocationClient.stopLocation();
-        mAMapLocationClient.onDestroy();
+        if (mAMapLocationClient != null) {
+            mAMapLocationClient.stopLocation();
+            mAMapLocationClient.onDestroy();
+        }
+
+    }
+
+    private static final int REQUEST_LOCATION_CODE = 253;
+    private void checkLocationPermission(){
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            getLocation();
+        }else {
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_LOCATION_CODE:
+                if (grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+                    getLocation();
+                }else {
+                    Toast.makeText(this, "定位失败", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 }

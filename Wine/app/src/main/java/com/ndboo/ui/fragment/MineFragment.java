@@ -237,4 +237,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         context.getWindow().setAttributes(lp);
     }
+
+
 }

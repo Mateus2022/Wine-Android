@@ -11,8 +11,28 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
+    signingConfigs {
         release {
+            keyAlias 'Ndb'
+            keyPassword 'ndb66155111'
+            storeFile file('wine.jks')
+            storePassword 'ndb66155111'
+        }
+        debug {
+            keyAlias 'Ndb'
+            keyPassword 'ndb66155111'
+            storeFile file('wine.jks')
+            storePassword 'ndb66155111'
+        }
+    }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
