@@ -1,23 +1,23 @@
 package com.ndboo.ui.fragment;
 
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.ndboo.base.BaseFragment;
 import com.ndboo.widget.CircleImageView;
 import com.ndboo.widget.ImgTextView;
+import com.ndboo.widget.PortraitPopupWindow;
 import com.ndboo.widget.TopBar;
 import com.ndboo.wine.AboutUsActivity;
 import com.ndboo.wine.CollectionActivity;
@@ -67,6 +67,11 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.mine_setting)
     ImgTextView mSettingImgTextView;//设置
 
+    //修改头像
+    private PortraitPopupWindow mPortraitPopupWindow;
+    @BindView(R.id.mine_main)
+    View mMineView;
+
 
     @Override
     protected int getLayoutId() {
@@ -94,7 +99,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.mine_portrait:
-                showChoosePicDialog();
+                //修改头像
+                showChangePicDialog();
                 break;
             case R.id.mine_nickname:
                 startActivity(new Intent(getActivity(), UserInfoActivity.class));
@@ -123,39 +129,40 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    /**
-     * 显示修改头像的对话框
-     */
-    protected void showChoosePicDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("修改头像");
-        String[] items = {"从相册中选取", "拍照"};
-        builder.setNegativeButton("取消", null);
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case CHOOSE_PICTURE:
-                        // 选择本地照片
-                        Intent openAlbumIntent = new Intent(Intent.ACTION_PICK,
-                                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        openAlbumIntent.setType("image/*");
-                        startActivityForResult(openAlbumIntent, CHOOSE_PICTURE);
-                        break;
-                    case TAKE_PICTURE:
-                        // 拍照
-                        Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        tempUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
-                                "image.jpg"));
-                        // 指定照片保存路径（SD卡），image.jpg为一个临时文件，
-                        // 每次拍照后这个图片都会被替换
-                        openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
-                        startActivityForResult(openCameraIntent, TAKE_PICTURE);
-                        break;
+    private void showChangePicDialog() {
+        if (mPortraitPopupWindow == null) {
+            mPortraitPopupWindow = new PortraitPopupWindow(getActivity());
+            mPortraitPopupWindow.setOnPopClickListener(new PortraitPopupWindow.OnPopClickListener() {
+                @Override
+                public void onTakePicClicked() {
+                    // 拍照
+                    Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    tempUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
+                            "image.jpg"));
+                    // 指定照片保存路径（SD卡），image.jpg为一个临时文件，
+                    // 每次拍照后这个图片都会被替换
+                    openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
+                    startActivityForResult(openCameraIntent, TAKE_PICTURE);
                 }
-            }
-        });
-        builder.create().show();
+
+                @Override
+                public void onChoosePicClicked() {
+                    // 选择本地照片
+                    Intent openAlbumIntent = new Intent(Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    openAlbumIntent.setType("image/*");
+                    startActivityForResult(openAlbumIntent, CHOOSE_PICTURE);
+                }
+            });
+            mPortraitPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    setBackgroundAlpha(1f);
+                }
+            });
+        }
+        setBackgroundAlpha(0.4f);
+        mPortraitPopupWindow.showAtLocation(mMineView, Gravity.BOTTOM, 0, 0);
     }
 
     @Override
@@ -231,10 +238,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     /**
      * 设置屏幕的背景透明度
      */
-    public void setBackgroundAlpha(Activity context, float bgAlpha) {
-        WindowManager.LayoutParams lp = context.getWindow().getAttributes();
+    public void setBackgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
         lp.alpha = bgAlpha;
-        context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        context.getWindow().setAttributes(lp);
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        getActivity().getWindow().setAttributes(lp);
     }
 }

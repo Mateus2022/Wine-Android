@@ -1,16 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     android:id="@+id/activity_suggestion"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ndboo.wine.SuggestionActivity">
+    android:background="#dcd7d7"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    tools:mC="com.ndboo.wine.SuggestionActivity">
 
     <com.ndboo.widget.TopBar
         android:id="@+id/suggestion_topbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:topbar_title="意见反馈"/>
-</RelativeLayout>
+
+    <EditText
+        android:id="@+id/suggestion_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_bg_white_corner"
+        android:gravity="start"
+        android:hint="请输入您对软件和好来酒的建议"
+        android:minLines="7"
+        android:padding="5dp"
+        android:textSize="15sp"/>
+
+    <Button
+        android:id="@+id/suggestion_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_bg_orange_corner"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:textColor="@color/white"
+        android:text="发送建议"/>
+</LinearLayout>
