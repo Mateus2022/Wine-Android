@@ -11,21 +11,21 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ndboo.base.BaseFragment;
 import com.ndboo.widget.CircleImageView;
 import com.ndboo.widget.ImgTextView;
-import com.ndboo.widget.PhonePopupWindow;
 import com.ndboo.widget.TopBar;
+import com.ndboo.wine.AboutUsActivity;
+import com.ndboo.wine.CollectionActivity;
 import com.ndboo.wine.OrderListActivity;
 import com.ndboo.wine.R;
+import com.ndboo.wine.SettingActivity;
+import com.ndboo.wine.SuggestionActivity;
+import com.ndboo.wine.UserInfoActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -56,8 +56,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     @BindView(R.id.mine_order)
     ImgTextView mOrderImgTextView;//我的订单
-    @BindView(R.id.mine_address)
-    ImgTextView mAddressImgTextView;//收货地址
     @BindView(R.id.mine_collection)
     ImgTextView mCollectionImgTextView;//我的收藏
     @BindView(R.id.mine_service)
@@ -66,9 +64,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     ImgTextView mAboutUsImgTextView;//关于我们
     @BindView(R.id.mine_suggestion)
     ImgTextView mSuggestionImgTextView;//意见反馈
-
-    //客服电话弹框
-    private PhonePopupWindow mPopupWindow;
+    @BindView(R.id.mine_setting)
+    ImgTextView mSettingImgTextView;//设置
 
 
     @Override
@@ -86,11 +83,11 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         mPortraitImageView.setOnClickListener(this);
         mNickNameTextView.setOnClickListener(this);
         mOrderImgTextView.setOnClickListener(this);
-        mAddressImgTextView.setOnClickListener(this);
         mCollectionImgTextView.setOnClickListener(this);
         mServiceImgTextView.setOnClickListener(this);
         mAboutUsImgTextView.setOnClickListener(this);
         mSuggestionImgTextView.setOnClickListener(this);
+        mSettingImgTextView.setOnClickListener(this);
     }
 
     @Override
@@ -100,52 +97,28 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 showChoosePicDialog();
                 break;
             case R.id.mine_nickname:
-                Toast.makeText(getActivity(), "昵称", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), UserInfoActivity.class));
                 break;
             case R.id.mine_order:
-                Intent orderIntent = new Intent(getActivity(), OrderListActivity.class);
-                startActivity(orderIntent);
-                break;
-            case R.id.mine_address:
-                Toast.makeText(getActivity(), "收货地址", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), OrderListActivity.class));
                 break;
             case R.id.mine_collection:
-                Toast.makeText(getActivity(), "我的收藏", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), CollectionActivity.class));
                 break;
             case R.id.mine_service:
-                if (mPopupWindow == null) {
-                    mPopupWindow = new PhonePopupWindow(getActivity());
-                    mPopupWindow.setMessageText("是否拨打客服电话?");
-                    mPopupWindow.setOnPopupWindowClickListener(new PhonePopupWindow.OnPopupWindowClickListener() {
-                        @Override
-                        public void cancleClicked(View view) {
-                        }
-
-                        @Override
-                        public void ensureClicked(View view) {
-                            Intent intent = new Intent(Intent.ACTION_DIAL);
-                            Uri data = Uri.parse("tel:" + "051266155111");
-                            intent.setData(data);
-                            startActivity(intent);
-                        }
-                    });
-                    mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                        @Override
-                        public void onDismiss() {
-                            setBackgroundAlpha(getActivity(), 1f);
-                        }
-                    });
-                }
-                mPopupWindow.showAtLocation(view, Gravity.CENTER,
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT);
-                setBackgroundAlpha(getActivity(), 0.5f);
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                Uri data = Uri.parse("tel:" + "051266155111");
+                intent.setData(data);
+                startActivity(intent);
                 break;
             case R.id.mine_aboutus:
-                Toast.makeText(getActivity(), "关于我们", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), AboutUsActivity.class));
                 break;
             case R.id.mine_suggestion:
-                Toast.makeText(getActivity(), "意见反馈", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), SuggestionActivity.class));
+                break;
+            case R.id.mine_setting:
+                startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
         }
     }
@@ -155,8 +128,8 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
      */
     protected void showChoosePicDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("设置店标");
-        String[] items = {"选择本地照片", "拍照"};
+        builder.setTitle("修改头像");
+        String[] items = {"从相册中选取", "拍照"};
         builder.setNegativeButton("取消", null);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override

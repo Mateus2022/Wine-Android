@@ -41,7 +41,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="10dp"
+                android:drawableRight="@drawable/ic_forward"
                 android:text="张行长"
+                android:drawablePadding="5dp"
                 android:textColor="@color/white"
                 android:textSize="14sp"/>
         </LinearLayout>
@@ -70,18 +72,6 @@
                 app:itv_right_image="@mipmap/ic_arrow_right"
                 app:itv_text_color="@color/themeColor"
                 app:itv_text_content="我的订单"
-                app:itv_text_size="13sp"/>
-
-            <com.ndboo.widget.ImgTextView
-                android:id="@+id/mine_address"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                app:itv_left_image="@drawable/wine_1_on"
-                app:itv_right_image="@mipmap/ic_arrow_right"
-                app:itv_text_color="@color/themeColor"
-                app:itv_text_content="收获地址"
                 app:itv_text_size="13sp"/>
 
             <com.ndboo.widget.ImgTextView
@@ -130,6 +120,18 @@
                 app:itv_right_image="@mipmap/ic_arrow_right"
                 app:itv_text_color="@color/themeColor"
                 app:itv_text_content="意见反馈"
+                app:itv_text_size="13sp"/>
+
+            <com.ndboo.widget.ImgTextView
+                android:id="@+id/mine_setting"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                app:itv_left_image="@drawable/wine_1_on"
+                app:itv_right_image="@mipmap/ic_arrow_right"
+                app:itv_text_color="@color/themeColor"
+                app:itv_text_content="设置"
                 app:itv_text_size="13sp"/>
         </LinearLayout>
     </ScrollView>
