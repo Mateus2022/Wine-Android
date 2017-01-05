@@ -5,18 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
     <com.ndboo.widget.TopBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:topbar_isShowBackImg="false"
         app:topbar_title="@string/main_tab_index"/>
-
     <com.jude.rollviewpager.RollPagerView
         android:id="@+id/roll_view_pager"
         android:layout_width="match_parent"
         android:layout_height="150dp"/>
-
     <GridView
         android:id="@+id/grid_view"
         android:layout_width="match_parent"
@@ -24,6 +21,5 @@
         android:layout_marginTop="10dp"
         android:numColumns="5"
         android:verticalSpacing="5dp">
-
     </GridView>
 </LinearLayout>

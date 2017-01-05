@@ -18,8 +18,8 @@
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout_type"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
+        android:layout_height="wrap_content"
+        android:background="@color/aidThemeColor"/>
     <com.ndboo.widget.DropLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/drop_filter"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:selectedImg="@mipmap/ic_filter_arrow_up"
-        app:textSize="14sp"
+        app:textSize="10sp"
         app:unSelectedImg="@mipmap/ic_filter_arrow_down">
         <!--筛选条件-->
         <LinearLayout

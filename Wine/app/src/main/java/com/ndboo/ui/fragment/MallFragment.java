@@ -3,7 +3,6 @@ package com.ndboo.ui.fragment;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -63,7 +62,6 @@ public class MallFragment extends BaseFragment {
         return R.layout.fragment_mall;
     }
 
-
     @Override
     public void firstVisibleDeal() {
 
@@ -93,41 +91,48 @@ public class MallFragment extends BaseFragment {
         mLists.add(winePrice);
         mWineTypes = Arrays.asList(getResources().getStringArray(R.array.wine_type));
         mTypes = new ArrayList<>();
+
+        mTabLayoutType.setSelectedTabIndicatorHeight(0);
+        addOnTabSelectedListener();
+        /**
+         * 为mTabLayoutType添加addTabSelectedListener监听事件，
+         * 要放在为mTabLayoutType添加TabItem之前
+         * 这样的话mTabLayoutType可以监听所有发生的变化
+         * 不会漏掉添加TabItem时默认位置为0的事件
+         */
         for (String wineType : mWineTypes) {
             Type type = new Type(wineType, R.mipmap.ic_wine);
             mTypes.add(type);
             mTabLayoutType.addTab(mTabLayoutType.newTab().setText(wineType));
         }
-        mTabLayoutType.setSelectedTabIndicatorHeight(0);
+    }
+
+    /**
+     * 监听Tab状态变化
+     */
+    private void addOnTabSelectedListener(){
         mTabLayoutType.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            /**
+             * 使用RxJava+Retrofit为防止数据出现显示混乱，在Tab状态发生变化时
+             * 必须要取消上一次的订阅；
+             * 只需调用父类中的方法unSubscribe即可
+             * @param tab   选中的类目
+             */
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                resetAllTab();
-                tab.setIcon(R.drawable.wine_1_nm);
-                tab.setText("");
-                Log.e("tag", "selected" + tab.getPosition());
+                unSubscribe();
+                requestContent();
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-//                Log.e("tag", "unselected" + tab.getPosition());
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-//                Log.e("tag", "reselected" + tab.getPosition());
             }
         });
     }
-
-    void resetAllTab() {
-        for (int i = 0; i < mTabLayoutType.getTabCount(); i++) {
-            TabLayout.Tab tab = mTabLayoutType.getTabAt(i);
-            tab.setText(mWineTypes.get(i));
-            tab.setIcon(null);
-        }
-    }
-
     /**
      * 显示商品
      */
@@ -167,14 +172,14 @@ public class MallFragment extends BaseFragment {
         });
     }
 
+
+
     /**
-     * 当从首页跳转至分类页时，可以动态刷新所选类别数量
-     * RxJava+Retrofit为防止数据出现显示混乱，在每选择时就要取消上一次的订阅
-     *
+     * 代码控制Tab选择，触发Tab变化事件
+     * @see #addOnTabSelectedListener()
      * @param currentPosition 当前类别编号
      */
     public void setCurrentPosition(int currentPosition) {
-        unSubscribe();
         mTabLayoutType.getTabAt(currentPosition).select();
     }
 
@@ -182,7 +187,6 @@ public class MallFragment extends BaseFragment {
     protected void inVisibleDeal() {
         if (mDropLayout != null && mDropLayout.isMenuOpen()) {
             mDropLayout.closeMenu();
-
         }
     }
 
@@ -193,5 +197,13 @@ public class MallFragment extends BaseFragment {
      */
     public DropLayout getDropLayout() {
         return mDropLayout;
+    }
+
+
+    /**
+     * 请求数据
+     */
+    private void requestContent(){
+
     }
 }
