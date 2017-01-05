@@ -35,7 +35,6 @@
             android:name="com.amap.api.v2.apikey"
             android:value="f65f55cc61ac999dd64a5ec74a52f044"/>
 
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

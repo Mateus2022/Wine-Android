@@ -26,8 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
+                android:paddingBottom="11dp"
+                android:paddingTop="11dp"
                 android:text="拍照"
                 android:textColor="@color/blue"
                 android:textSize="17sp"/>
@@ -37,8 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingBottom="10dp"
-                android:paddingTop="10dp"
+                android:paddingBottom="11dp"
+                android:paddingTop="11dp"
                 android:text="从相册中选取"
                 android:textColor="@color/blue"
                 android:textSize="17sp"/>
@@ -51,8 +51,8 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/shape_bg_white_corner"
             android:gravity="center"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
+            android:paddingBottom="11dp"
+            android:paddingTop="11dp"
             android:text="取消"
             android:textColor="@color/blue"
             android:textSize="17sp"/>

@@ -245,5 +245,21 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         getActivity().getWindow().setAttributes(lp);
     }
 
+    /**
+     * 弹框是否已经弹出
+     */
+    public boolean isShow() {
+        if (mPortraitPopupWindow == null) {
+            return false;
+        } else {
+            return mPortraitPopupWindow.isShowing();
+        }
+    }
 
+    /**
+     * 关闭PopupWindow
+     */
+    public void closePop() {
+        mPortraitPopupWindow.dismiss();
+    }
 }
