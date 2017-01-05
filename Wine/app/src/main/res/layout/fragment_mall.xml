@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:horizontalSpacing="20dp"
-                    android:numColumns="3"
+                    android:numColumns="4"
                     android:verticalSpacing="20dp">
 
                 </GridView>
