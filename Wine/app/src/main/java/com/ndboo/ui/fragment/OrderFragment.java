@@ -14,10 +14,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.ndboo.adapter.OrderAdapter;
+import com.ndboo.bean.MyOrderFirstBean;
+import com.ndboo.bean.MyOrderSecondBean;
 import com.ndboo.wine.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -32,59 +36,66 @@ public class OrderFragment extends Fragment {
 
     //刷新
     private SwipeRefreshLayout mRefreshLayout;
+
     //列表
     private ListView mListView;
-    private List<String> mStringList = new ArrayList<>();
     private OrderAdapter mAdapter;
+    //订单的集合
+    private List<MyOrderFirstBean> mFirstBeanList = new ArrayList<>();
+    //每个订单中商品的集合
+    private Map<Integer, List<MyOrderSecondBean>> mSecondBeanList = new HashMap<>();
+
     //加载类型
     private int mCurrentType = TYPE_REFRESH;
     //当前页数
     private int mCurrentPage = 1;
     //是否正在加载数据
-    private boolean mIsLoading = false;
+    private boolean mIsLoading = true;
+
+    //当前Fragment是哪个分类
+    private int mCurrentSort;
 
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1) {
                 if (mCurrentType == TYPE_REFRESH) {
-                    mStringList.clear();
-                    initData();
-                } else {
-                    mStringList.add("上拉加载" + mCurrentPage);
+                    mFirstBeanList.clear();
+                    mSecondBeanList.clear();
                 }
-                if (mRefreshLayout.isRefreshing()) {
-                    mRefreshLayout.setRefreshing(false);
-                }
-                mIsLoading = false;
+                MyOrderFirstBean firstBean = new MyOrderFirstBean("111", "2017-01-05", "10", "23.6", "1");
+                Map<Integer, List<MyOrderSecondBean>> secondList = new HashMap<>();
+                List<MyOrderSecondBean> secondBeanList = new ArrayList<>();
+                MyOrderSecondBean secondBean = new MyOrderSecondBean("", "aaaa", "10", "10.0", "袋", "2222");
+                secondBeanList.add(secondBean);
+                secondList.put(new Integer(mFirstBeanList.size()), secondBeanList);
+                mFirstBeanList.add(firstBean);
+                mSecondBeanList.putAll(secondList);
                 mAdapter.notifyDataSetChanged();
+                mIsLoading = false;
+                mRefreshLayout.setRefreshing(false);
             }
         }
     };
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        mCurrentSort = getArguments().getInt("type");
         mView = inflater.inflate(R.layout.fragment_order, null);
-        initData();
+
         initView();
         addListener();
-        mAdapter = new OrderAdapter(getActivity(), mStringList);
-        mListView.setAdapter(mAdapter);
+        requestData();
         return mView;
-    }
-
-    private void initData() {
-        mStringList.add("11111111111");
-        mStringList.add("2222222222222");
-        mStringList.add("333333333333333");
-        mStringList.add("444444444444444");
-        mStringList.add("55555555");
     }
 
     private void initView() {
         mRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.order_swipe);
         mListView = (ListView) mView.findViewById(R.id.order_listview);
+        mAdapter = new OrderAdapter(getActivity(), mSecondBeanList, mFirstBeanList);
+        mListView.setAdapter(mAdapter);
 
         //设置刷新圆圈的颜色
         mRefreshLayout.setColorSchemeResources(
@@ -98,7 +109,10 @@ public class OrderFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                //屏蔽ListView的Header和Footer
+//                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
+//                intent.putExtra("orderId", mFirstBeanList.get(i).getOrderId());
+//                startActivity(intent);
             }
         });
 
@@ -149,6 +163,6 @@ public class OrderFragment extends Fragment {
 
     private void requestData() {
         mIsLoading = true;
-        mHandler.sendEmptyMessageDelayed(1, 1500);
+        mHandler.sendEmptyMessageDelayed(1, 1000);
     }
 }

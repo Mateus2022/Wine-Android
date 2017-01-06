@@ -19,7 +19,7 @@
         android:id="@+id/orderlist_indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#504e4e"
+        android:background="#71c8e2"
         android:paddingBottom="12dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
