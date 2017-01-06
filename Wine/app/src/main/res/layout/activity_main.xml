@@ -6,12 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tv_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:textColor="@color/aidThemeColor"/>
+
     <com.ndboo.widget.FixedViewPager
         android:id="@+id/view_pager_main"
         android:layout_width="match_parent"
@@ -44,7 +39,7 @@
             android:id="@+id/rb_type"
             style="@style/MainTabStyle"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/selector_main_tab_type"
+            android:drawableTop="@drawable/selector_main_tab_mall"
             android:text="@string/main_tab_mall"
             android:tag="1"/>
 
@@ -53,7 +48,7 @@
             style="@style/MainTabStyle"
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/selector_main_tab_shopping_car"
-            android:text="@string/main_type_business"
+            android:text="@string/main_tab_shopping_car"
             android:tag="2"/>
 
         <RadioButton

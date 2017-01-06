@@ -1,21 +1,17 @@
 package com.ndboo.ui.fragment;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.Toast;
+import android.widget.ListView;
 
-import com.ndboo.adapter.ProductAdapter;
+import com.ndboo.adapter.WineAdapter;
 import com.ndboo.base.BaseFragment;
-import com.ndboo.bean.Type;
-import com.ndboo.interfaces.OnItemClickListener;
-import com.ndboo.widget.DropLayout;
+import com.ndboo.bean.Wine;
 import com.ndboo.wine.MainActivity;
 import com.ndboo.wine.R;
+import com.ndboo.wine.WineDetailActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,35 +24,16 @@ import butterknife.BindView;
  * “商城”界面
  */
 
-public class MallFragment extends BaseFragment {
+public class MallFragment extends BaseFragment implements AdapterView.OnItemClickListener {
 
 
-    @BindView(R.id.recycler_stage_three)
-    RecyclerView mRecyclerStageThree;
     @BindView(R.id.tab_layout_type)
     TabLayout mTabLayoutType;
-    @BindView(R.id.drop_filter)
-    DropLayout mDropLayout;
-    @BindView(R.id.grid_view_filter)
-    GridView mGridViewFilter;
+    @BindView(R.id.list_view_wine)
+    ListView mListViewWine;
 
 
-    /**
-     * 商品筛选条目
-     */
-    private List<String> mFilters;
-    private List<String> wineFlavor;
-    private List<String> wineBrand;
-    private List<String> wineOrigin;
-    private List<String> winePrice;
-    private List<List<String>> mLists;
-    private List<String> currentList;
-    private List<Type> mTypes;
-
-    private List<String> mWineTypes;
-    private ProductAdapter mProductAdapter;
-
-
+    private WineAdapter mWineAdapter;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_mall;
@@ -66,8 +43,6 @@ public class MallFragment extends BaseFragment {
     public void firstVisibleDeal() {
 
         initData();
-        showProducts();
-        showDrop();
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.getIndexFragment().setGetWinTypeId(new IndexFragment.getWinTypeId() {
             @Override
@@ -78,21 +53,7 @@ public class MallFragment extends BaseFragment {
     }
 
     private void initData() {
-        mRecyclerStageThree.setLayoutManager(new LinearLayoutManager(getContext()));
-        mFilters = Arrays.asList(getResources().getStringArray(R.array.wine_filter_condition));
-        wineFlavor = Arrays.asList(getResources().getStringArray(R.array.wine_flavor));
-        wineBrand = Arrays.asList(getResources().getStringArray(R.array.wine_brand));
-        wineOrigin = Arrays.asList(getResources().getStringArray(R.array.wine_origin));
-        winePrice = Arrays.asList(getResources().getStringArray(R.array.wine_price));
-        mLists = new ArrayList<>();
-        mLists.add(wineFlavor);
-        mLists.add(wineBrand);
-        mLists.add(wineOrigin);
-        mLists.add(winePrice);
-        mWineTypes = Arrays.asList(getResources().getStringArray(R.array.wine_type));
-        mTypes = new ArrayList<>();
-
-        mTabLayoutType.setSelectedTabIndicatorHeight(0);
+        List<String> mWineTypes = Arrays.asList(getResources().getStringArray(R.array.wine_type));
         addOnTabSelectedListener();
         /**
          * 为mTabLayoutType添加addTabSelectedListener监听事件，
@@ -101,16 +62,23 @@ public class MallFragment extends BaseFragment {
          * 不会漏掉添加TabItem时默认位置为0的事件
          */
         for (String wineType : mWineTypes) {
-            Type type = new Type(wineType, R.mipmap.ic_wine);
-            mTypes.add(type);
             mTabLayoutType.addTab(mTabLayoutType.newTab().setText(wineType));
         }
+
+        List<Wine> wines=new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Wine wine=new Wine(R.drawable.ic_type+"","20","30","52°尖庄曲酒450ml*2双瓶礼盒");
+            wines.add(wine);
+        }
+        mWineAdapter=new WineAdapter(getContext(),wines);
+        mListViewWine.setAdapter(mWineAdapter);
+        mListViewWine.setOnItemClickListener(this);
     }
 
     /**
      * 监听Tab状态变化
      */
-    private void addOnTabSelectedListener(){
+    private void addOnTabSelectedListener() {
         mTabLayoutType.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             /**
              * 使用RxJava+Retrofit为防止数据出现显示混乱，在Tab状态发生变化时
@@ -133,77 +101,27 @@ public class MallFragment extends BaseFragment {
             }
         });
     }
-    /**
-     * 显示商品
-     */
-    private void showProducts() {
-        if (mProductAdapter == null) {
-            mProductAdapter = new ProductAdapter(mTypes, getContext());
-        }
-        mRecyclerStageThree.setAdapter(mProductAdapter);
-        mProductAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void OnItemClick(View view, int position) {
-                Toast.makeText(getActivity(), mTypes.get(position).getDescription(),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    /**
-     * 显示下拉筛选
-     */
-    private void showDrop() {
-        mDropLayout.loadMenu(mFilters);
-        mDropLayout.setOnFilterChangeListener(new DropLayout.OnFilterChangeListener() {
-            @Override
-            public void filterChange(int position) {
-                currentList = mLists.get(position);
-                mGridViewFilter.setAdapter(new ArrayAdapter<>(getContext(), R.layout.item_filter,
-                        mLists.get(position)));
-            }
-        });
-        mGridViewFilter.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), currentList.get(position), Toast.LENGTH_SHORT).show();
-                mDropLayout.closeMenu();
-            }
-        });
-    }
-
-
 
     /**
      * 代码控制Tab选择，触发Tab变化事件
-     * @see #addOnTabSelectedListener()
+     *
      * @param currentPosition 当前类别编号
+     * @see #addOnTabSelectedListener()
      */
     public void setCurrentPosition(int currentPosition) {
         mTabLayoutType.getTabAt(currentPosition).select();
     }
 
-    @Override
-    protected void inVisibleDeal() {
-        if (mDropLayout != null && mDropLayout.isMenuOpen()) {
-            mDropLayout.closeMenu();
-        }
-    }
-
-    /**
-     * 返回筛选布局用来判断退出时，筛选框状态
-     *
-     * @return mDropLayout
-     */
-    public DropLayout getDropLayout() {
-        return mDropLayout;
-    }
-
-
     /**
      * 请求数据
      */
-    private void requestContent(){
+    private void requestContent() {
 
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        startActivity(new Intent(getActivity(), WineDetailActivity.class));
     }
 }

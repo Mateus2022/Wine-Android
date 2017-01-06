@@ -136,7 +136,10 @@ public class DropLayout extends LinearLayout implements View.OnClickListener {
     private void switchTab(int tag) {
         resetAllTab();
         showTab(tag * 2);
-        mOnFilterChangeListener.filterChange(tag);
+        if (mOnFilterChangeListener != null) {
+            mOnFilterChangeListener.filterChange(tag);
+
+        }
 
     }
 
@@ -169,14 +172,7 @@ public class DropLayout extends LinearLayout implements View.OnClickListener {
             mLayoutFilterContent.setVisibility(VISIBLE);
         }
         mLayoutFilterContent.setAnimation(AnimationUtils.loadAnimation(getContext(),R.anim.translate_filter_in));
-//        for (int i = 0; i < mLayoutFilterContent.getChildCount(); i++) {
-//            if (i==tag/2) {
-//                mLayoutFilterContent.getChildAt(i).setVisibility(VISIBLE);
-//            }else {
-//                mLayoutFilterContent.getChildAt(i).setVisibility(GONE);
-//            }
-//
-//        }
+
 
 
     }

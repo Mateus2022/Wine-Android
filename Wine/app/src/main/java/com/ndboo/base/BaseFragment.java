@@ -37,7 +37,12 @@ public abstract class BaseFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        if (isVisibleToUser && flag && mUnBinder != null) {
+
+        if (isVisibleToUser) {
+            visibleDeal();
+        }
+
+        if (isVisibleToUser &&flag&&mUnBinder!=null) {
             flag = false;
             firstVisibleDeal();
         }
@@ -45,6 +50,10 @@ public abstract class BaseFragment extends Fragment {
         if (!isVisibleToUser) {
             inVisibleDeal();
         }
+    }
+
+    protected void visibleDeal() {
+
     }
 
     /**
