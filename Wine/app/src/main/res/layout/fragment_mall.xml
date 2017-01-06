@@ -19,67 +19,13 @@
         android:id="@+id/tab_layout_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/aidThemeColor"/>
-    <com.ndboo.widget.DropLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/drop_filter"
+        app:tabSelectedTextColor="@color/mainTabTextColorOn"
+        app:tabTextColor="@color/mainTabTextColorNm"/>
+    <ListView
+        android:id="@+id/list_view_wine"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:selectedImg="@mipmap/ic_filter_arrow_up"
-        app:textSize="10sp"
-        app:unSelectedImg="@mipmap/ic_filter_arrow_down">
-        <!--筛选条件-->
-        <LinearLayout
-            android:id="@+id/layout_filter_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/themeColor"/>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <!--内容-->
-            <FrameLayout
-                android:id="@+id/layout_content"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_stage_three"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"/>
-
-            </FrameLayout>
-            <!--筛选条件详细内容-->
-            <FrameLayout
-                android:id="@+id/layout_filter_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white">
-
-                <GridView
-                    android:id="@+id/grid_view_filter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:horizontalSpacing="20dp"
-                    android:numColumns="4"
-                    android:verticalSpacing="20dp">
-
-                </GridView>
-            </FrameLayout>
-
-        </FrameLayout>
-
-    </com.ndboo.widget.DropLayout>
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
 
 </LinearLayout>

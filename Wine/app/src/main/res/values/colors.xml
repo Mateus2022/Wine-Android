@@ -9,8 +9,8 @@
     <color name="aidThemeColor">#300000ff</color>
 
 
-    <color name="mainTabTextColorOn">#303F9F</color>
-    <color name="mainTabTextColorNm">#3F51B5</color>
+    <color name="mainTabTextColorNm">#b8b8b8</color>
+    <color name="mainTabTextColorOn">#027ac7</color>
 
 
     <color name="stageTwoColor">#f0f0f0</color>

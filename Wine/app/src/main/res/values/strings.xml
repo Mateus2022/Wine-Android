@@ -3,7 +3,7 @@
 
     <string name="main_tab_index">首页</string>
     <string name="main_tab_mall">商城</string>
-    <string name="main_type_business">商家</string>
+    <string name="main_tab_shopping_car">购物车</string>
     <string name="main_tab_mine">我的</string>
 
 
@@ -13,7 +13,6 @@
         <item>白酒</item>
         <item>啤酒</item>
     </string-array>
-
 
     <string-array name="roll_view_pager">
         <item>#ff0000</item>

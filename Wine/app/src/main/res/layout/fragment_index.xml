@@ -1,25 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-    <com.ndboo.widget.TopBar
+    android:layout_height="match_parent">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:topbar_isShowBackImg="false"
-        app:topbar_title="@string/main_tab_index"/>
-    <com.jude.rollviewpager.RollPagerView
-        android:id="@+id/roll_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"/>
-    <GridView
-        android:id="@+id/grid_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:numColumns="5"
-        android:verticalSpacing="5dp">
-    </GridView>
-</LinearLayout>
+        android:orientation="vertical">
+
+        <com.ndboo.widget.TopBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:topbar_isShowBackImg="false"
+            app:topbar_title="@string/main_tab_index"/>
+
+        <com.jude.rollviewpager.RollPagerView
+            android:id="@+id/roll_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"/>
+
+        <ImageView
+            android:id="@+id/iv_red_wine"
+            style="@style/IndexBannerStyle"
+            android:src="@drawable/ic_banner_red_wine"
+            android:tag="0"/>
+
+        <ImageView
+            android:id="@+id/iv_rice_wine"
+            style="@style/IndexBannerStyle"
+            android:src="@drawable/ic_banner_rice_wine"
+            android:tag="1"/>
+
+        <ImageView
+            android:id="@+id/iv_liquor"
+            style="@style/IndexBannerStyle"
+            android:src="@drawable/ic_banner_liquor"
+            android:tag="2"/>
+
+        <ImageView
+            android:id="@+id/iv_beer"
+            style="@style/IndexBannerStyle"
+            android:src="@drawable/ic_banner_beer"
+            android:tag="3"/>
+    </LinearLayout>
+
+</ScrollView>
