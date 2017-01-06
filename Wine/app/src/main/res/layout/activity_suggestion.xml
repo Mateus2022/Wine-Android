@@ -10,7 +10,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    tools:mC="com.ndboo.wine.SuggestionActivity">
+    tools:context="com.ndboo.wine.SuggestionActivity">
 
     <com.ndboo.widget.TopBar
         android:id="@+id/suggestion_topbar"
