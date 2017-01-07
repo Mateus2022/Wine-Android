@@ -6,13 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f2f2f2"
-    android:paddingBottom="11dp"
     tools:context=".AboutUsActivity">
 
     <com.ndboo.widget.TopBar
         android:id="@+id/aboutus_topbar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:background="#fe5001"
         app:topbar_title="关于我们"/>
 

@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f5f5f5"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -21,8 +22,8 @@
 
             <com.ndboo.widget.CircleImageView
                 android:id="@+id/mine_portrait"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_gravity="center_horizontal"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_tab_mine_on"
@@ -39,14 +40,13 @@
                 android:drawableRight="@drawable/ic_forward"
                 android:text="张行长"
                 android:textColor="@color/white"
-                android:textSize="14sp"/>
+                android:textSize="15sp"/>
         </LinearLayout>
     </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#f5f5f5">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -55,11 +55,10 @@
 
             <com.ndboo.widget.ImgTextView
                 android:id="@+id/mine_order"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@color/white"
+                android:background="@drawable/selector_mine_item"
                 android:paddingBottom="10dp"
                 android:paddingLeft="17dp"
                 android:paddingRight="10dp"
@@ -70,13 +69,12 @@
                 app:itv_text_content="我的订单"
                 app:itv_text_size="14sp"/>
 
-            <com.ndboo.widget.ImgTextView
+            <!--<com.ndboo.widget.ImgTextView
                 android:id="@+id/mine_collection"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@color/white"
+                android:background="@drawable/selector_mine_item"
                 android:paddingBottom="10dp"
                 android:paddingLeft="17dp"
                 android:paddingRight="10dp"
@@ -85,15 +83,14 @@
                 app:itv_right_image="@mipmap/ic_arrow_right"
                 app:itv_text_color="@color/themeColor"
                 app:itv_text_content="我的收藏"
-                app:itv_text_size="14sp"/>
+                app:itv_text_size="14sp"/>-->
 
             <com.ndboo.widget.ImgTextView
                 android:id="@+id/mine_service"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
-                android:background="@color/white"
+                android:background="@drawable/selector_mine_item"
                 android:paddingBottom="10dp"
                 android:paddingLeft="17dp"
                 android:paddingRight="10dp"
@@ -106,11 +103,10 @@
 
             <com.ndboo.widget.ImgTextView
                 android:id="@+id/mine_aboutus"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@color/white"
+                android:background="@drawable/selector_mine_item"
                 android:paddingBottom="10dp"
                 android:paddingLeft="17dp"
                 android:paddingRight="10dp"
@@ -123,11 +119,10 @@
 
             <com.ndboo.widget.ImgTextView
                 android:id="@+id/mine_suggestion"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@color/white"
+                android:background="@drawable/selector_mine_item"
                 android:paddingBottom="10dp"
                 android:paddingLeft="17dp"
                 android:paddingRight="10dp"
@@ -140,11 +135,10 @@
 
             <com.ndboo.widget.ImgTextView
                 android:id="@+id/mine_setting"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:background="@color/white"
+                android:background="@drawable/selector_mine_item"
                 android:paddingBottom="10dp"
                 android:paddingLeft="17dp"
                 android:paddingRight="10dp"

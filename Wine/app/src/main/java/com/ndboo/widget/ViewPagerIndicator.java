@@ -285,7 +285,7 @@ public class ViewPagerIndicator extends LinearLayout {
         tv.setGravity(Gravity.CENTER);
         tv.setTextColor(COLOR_TEXT_NORMAL);
         tv.setText(text);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
         tv.setLayoutParams(lp);
         return tv;
     }
