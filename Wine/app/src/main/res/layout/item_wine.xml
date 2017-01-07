@@ -13,7 +13,7 @@
         android:scaleType="fitXY"/>
 
     <!--中间 包含商品名称  商品评价 价格 门市价-->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginEnd="10dp"
@@ -25,29 +25,39 @@
         android:paddingBottom="5dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_wine_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:lines="2"
-            android:text="进口国发生的房间卡华盛顿凤凰飞机"
-            android:textColor="@color/black"
-            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="进口国发生的房间卡华盛顿凤凰飞机"
-            android:gravity="left|center_vertical"
+            android:text="进口国发生的房"
             android:textColor="@color/themeColor"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:layout_margin="5dp"
+            android:layout_alignParentBottom="true"/>
 
+        <com.ndboo.widget.NumOperationView
+            android:id="@+id/view_num_operation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"/>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tv_wine_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="2"
+            android:text="进口国发生的房间卡华盛顿凤凰飞机"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+    </RelativeLayout>
 
 </LinearLayout>
 

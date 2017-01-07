@@ -67,7 +67,7 @@ public class MallFragment extends BaseFragment implements AdapterView.OnItemClic
 
         List<Wine> wines=new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            Wine wine=new Wine(R.drawable.ic_type+"","20","30","52°尖庄曲酒450ml*2双瓶礼盒");
+            Wine wine=new Wine(R.drawable.ic_type+"","20","30","52°尖庄曲酒450ml*2双瓶礼盒","0");
             wines.add(wine);
         }
         mWineAdapter=new WineAdapter(getContext(),wines);

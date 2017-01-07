@@ -38,9 +38,7 @@ public abstract class BaseFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
 
 
-
-
-        if (isVisibleToUser &&flag&&mUnBinder!=null) {
+        if (isVisibleToUser && flag && mUnBinder != null) {
             flag = false;
             firstVisibleDeal();
         }
@@ -53,14 +51,14 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void visibleDeal() {
-
+        unSubscribe();
     }
 
     /**
      * 界面不可见时的处理
      */
-    protected void inVisibleDeal(){
-
+    protected void inVisibleDeal() {
+        unSubscribe();
     }
 
 
@@ -77,13 +75,14 @@ public abstract class BaseFragment extends Fragment {
      * 显示内容
      */
     public void showContent() {
+        unSubscribe();
     }
 
     /**
      * 当界面第一次可见时的操作
      */
     public void firstVisibleDeal() {
-        
+        unSubscribe();
     }
 
     /**
@@ -98,7 +97,8 @@ public abstract class BaseFragment extends Fragment {
 
     /**
      * 将订阅添加进集合
-     * @param subscription  待添加的订阅
+     *
+     * @param subscription 待添加的订阅
      */
     protected void addSubscription(Subscription subscription) {
         if (mCompositeSubscription == null) {
@@ -113,7 +113,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 取消订阅
      */
-    protected void unSubscribe(){
+    protected void unSubscribe() {
         if (mCompositeSubscription != null) {
             mCompositeSubscription.unsubscribe();
         }

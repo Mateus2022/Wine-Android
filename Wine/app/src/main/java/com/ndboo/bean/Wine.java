@@ -13,14 +13,25 @@ public class Wine {
     private String mOriginalPrice;
     private String mWineName;
 
+    public String getNumber() {
+        return mNumber;
+    }
+
+    public void setNumber(String number) {
+        mNumber = number;
+    }
+
+    private String mNumber;
+
     public Wine() {
     }
 
-    public Wine(String imgUrl, String price, String originalPrice, String wineName) {
+    public Wine(String imgUrl, String price, String originalPrice, String wineName,String number) {
         mImgUrl = imgUrl;
         mPrice = price;
         mOriginalPrice = originalPrice;
         mWineName = wineName;
+        mNumber=number;
     }
 
     public String getImgUrl() {
