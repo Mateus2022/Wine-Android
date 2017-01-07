@@ -5,6 +5,9 @@ import com.ndboo.widget.TopBar;
 
 import butterknife.BindView;
 
+/**
+ * 关于我们界面
+ */
 public class AboutUsActivity extends BaseActivity {
     @BindView(R.id.aboutus_topbar)
     TopBar mTopBar;

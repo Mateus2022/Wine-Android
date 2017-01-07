@@ -1,16 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/activity_about_us"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:mC="com.ndboo.wine.AboutUsActivity">
+    android:background="#f2f2f2"
+    android:paddingBottom="11dp"
+    tools:context=".AboutUsActivity">
 
     <com.ndboo.widget.TopBar
         android:id="@+id/aboutus_topbar"
         android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#fe5001"
+        app:topbar_title="关于我们"/>
+
+    <LinearLayout
+        android:id="@+id/aboutus_footer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:topbar_title="关于我们 "/>
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="招商电话"
+                android:textColor="#969696"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="0512-66155111"
+                android:textColor="#646464"
+                android:textSize="13sp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="传真"
+                android:textColor="#969696"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="0512-66155111"
+                android:textColor="#646464"
+                android:textSize="13sp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="网址"
+                android:textColor="#969696"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="www.ndboo.com"
+                android:textColor="#646464"
+                android:textSize="13sp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="5dp"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="公司地址"
+                android:textColor="#969696"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="苏州市相城大道月星国际大厦3207室"
+                android:textColor="#646464"
+                android:textSize="13sp"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/aboutus_footer"
+        android:layout_below="@id/aboutus_topbar"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:src="@mipmap/ic_wine"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="8dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:text="       江苏农店宝供应链科技股份有限公司是一家专注于中国农村互联网 + 的企业，立足于中国农村便利店，通过整合上游供应商，减少多层中间商加价环节，并在县级行政区域建立集中仓储物管中心，直接配送至农村便利店，以达到整体惠民的结果，并运用互联网思维结合农村便利店的独特优势，建立集农业大数据采集，实事文化输出、惠民信息、供需信息、招聘信息、农村电商等为一体的互联网 + 多媒体终端系统，开阔农村端口消费品采购，农产品输出的便利性、快捷性，全面推动减少农村、农业、农民开支，构建畅通快速物流体系，逐渐增加农民收入，推动互联互通三农大战略的持续发展。"
+                android:textColor="#656565"
+                android:textSize="13sp"/>
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

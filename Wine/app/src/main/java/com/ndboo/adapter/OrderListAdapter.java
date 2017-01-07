@@ -24,7 +24,7 @@ import java.util.Map;
  * Created by ZhangHang on 2017/1/4.
  */
 
-public class OrderAdapter extends BaseAdapter {
+public class OrderListAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
     //Item1
@@ -32,8 +32,8 @@ public class OrderAdapter extends BaseAdapter {
     //Item2
     private Map<Integer, List<MyOrderSecondBean>> mSecondBeanList;
 
-    public OrderAdapter(Context context, Map<Integer, List<MyOrderSecondBean>> secondBeanList,
-                        List<MyOrderFirstBean> firstBeanList) {
+    public OrderListAdapter(Context context, Map<Integer, List<MyOrderSecondBean>> secondBeanList,
+                            List<MyOrderFirstBean> firstBeanList) {
         this.mContext = context;
         this.mSecondBeanList = secondBeanList;
         this.mFirstBeanList = firstBeanList;

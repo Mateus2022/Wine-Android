@@ -13,7 +13,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.ndboo.adapter.OrderAdapter;
+import com.ndboo.adapter.OrderListAdapter;
 import com.ndboo.bean.MyOrderFirstBean;
 import com.ndboo.bean.MyOrderSecondBean;
 import com.ndboo.wine.R;
@@ -39,7 +39,7 @@ public class OrderFragment extends Fragment {
 
     //列表
     private ListView mListView;
-    private OrderAdapter mAdapter;
+    private OrderListAdapter mAdapter;
     //订单的集合
     private List<MyOrderFirstBean> mFirstBeanList = new ArrayList<>();
     //每个订单中商品的集合
@@ -94,7 +94,7 @@ public class OrderFragment extends Fragment {
     private void initView() {
         mRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.order_swipe);
         mListView = (ListView) mView.findViewById(R.id.order_listview);
-        mAdapter = new OrderAdapter(getActivity(), mSecondBeanList, mFirstBeanList);
+        mAdapter = new OrderListAdapter(getActivity(), mSecondBeanList, mFirstBeanList);
         mListView.setAdapter(mAdapter);
 
         //设置刷新圆圈的颜色

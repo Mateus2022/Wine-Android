@@ -10,15 +10,12 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.ndboo.base.BaseFragment;
 import com.ndboo.widget.CircleImageView;
 import com.ndboo.widget.ImgTextView;
 import com.ndboo.widget.PortraitPopupWindow;
-import com.ndboo.widget.TopBar;
 import com.ndboo.wine.AboutUsActivity;
 import com.ndboo.wine.CollectionActivity;
 import com.ndboo.wine.OrderListActivity;
@@ -46,32 +43,28 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     private static final int CROP_SMALL_PICTURE = 2;//裁剪
     protected static Uri tempUri;
 
-    @BindView(R.id.mine_topbar)
-    TopBar mTopBar;//头部
-
     @BindView(R.id.mine_portrait)
     CircleImageView mPortraitImageView;//头像
     @BindView(R.id.mine_nickname)
     TextView mNickNameTextView;//昵称
 
     @BindView(R.id.mine_order)
-    ImgTextView mOrderImgTextView;//我的订单
+    ImgTextView mOrderImgTextView;//ic_mine_order
     @BindView(R.id.mine_collection)
-    ImgTextView mCollectionImgTextView;//我的收藏
+    ImgTextView mCollectionImgTextView;//ic_mine_collection
     @BindView(R.id.mine_service)
     ImgTextView mServiceImgTextView;//联系客服
     @BindView(R.id.mine_aboutus)
-    ImgTextView mAboutUsImgTextView;//关于我们
+    ImgTextView mAboutUsImgTextView;//ic_mine_aboutus
     @BindView(R.id.mine_suggestion)
-    ImgTextView mSuggestionImgTextView;//意见反馈
+    ImgTextView mSuggestionImgTextView;//ic_mine_suggestion
     @BindView(R.id.mine_setting)
-    ImgTextView mSettingImgTextView;//设置
+    ImgTextView mSettingImgTextView;//ic_mine_setting
 
     //修改头像
     private PortraitPopupWindow mPortraitPopupWindow;
     @BindView(R.id.mine_main)
     View mMineView;
-
 
     @Override
     protected int getLayoutId() {
@@ -154,14 +147,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                     startActivityForResult(openAlbumIntent, CHOOSE_PICTURE);
                 }
             });
-            mPortraitPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    setBackgroundAlpha(1f);
-                }
-            });
         }
-        setBackgroundAlpha(0.4f);
         mPortraitPopupWindow.showAtLocation(mMineView, Gravity.BOTTOM, 0, 0);
     }
 
@@ -195,7 +181,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             Log.i("tag", "The uri is not exist.");
         }
         tempUri = uri;
-        Log.e("my", "uri=" + uri);
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
         // 设置裁剪
@@ -235,15 +220,6 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         }
     }
 
-    /**
-     * 设置屏幕的背景透明度
-     */
-    public void setBackgroundAlpha(float bgAlpha) {
-        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-        lp.alpha = bgAlpha;
-        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        getActivity().getWindow().setAttributes(lp);
-    }
 
     /**
      * 弹框是否已经弹出
