@@ -38,15 +38,15 @@ public abstract class BaseFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
 
 
-        if (isVisibleToUser) {
-            visibleDeal();
-        }
+
 
         if (isVisibleToUser &&flag&&mUnBinder!=null) {
             flag = false;
             firstVisibleDeal();
         }
-
+        if (isVisibleToUser) {
+            visibleDeal();
+        }
         if (!isVisibleToUser) {
             inVisibleDeal();
         }
@@ -120,5 +120,6 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected abstract int getLayoutId();
+
 
 }

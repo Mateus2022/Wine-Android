@@ -21,7 +21,10 @@
         <item name="android:scaleType">fitXY</item>
         <item name="android:layout_margin">5dp</item>
     </style>
-
+    <!--CheckBox样式-->
+    <style name="ckBoxStyle">
+        <item name="android:button">@drawable/selector_check_box</item>
+    </style>
 
 
 

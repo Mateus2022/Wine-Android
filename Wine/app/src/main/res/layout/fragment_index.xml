@@ -19,7 +19,7 @@
         <com.jude.rollviewpager.RollPagerView
             android:id="@+id/roll_view_pager"
             android:layout_width="match_parent"
-            android:layout_height="150dp"/>
+            android:layout_height="160dp"/>
 
         <ImageView
             android:id="@+id/iv_red_wine"

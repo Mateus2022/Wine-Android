@@ -1,6 +1,5 @@
 package com.ndboo.ui.fragment;
 
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -46,8 +45,8 @@ public class IndexFragment extends BaseFragment {
      * 获取轮播
      */
     public void getCarousel() {
-        List<String> colors = Arrays.asList(getResources().getStringArray(R.array.roll_view_pager));
-        showCarousel(colors);
+        List<Integer> imgRes = Arrays.asList(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3);
+        showCarousel(imgRes);
     }
 
     /**
@@ -55,29 +54,29 @@ public class IndexFragment extends BaseFragment {
      *
      * @param colors 轮播集合
      */
-    public void showCarousel(final List<String> colors) {
+    public void showCarousel(final List<Integer> imgRes) {
 
         mRollPagerView.setPlayDelay(4000);
         mRollPagerView.setAnimationDurtion(500);
         mRollPagerView.setAdapter(new LoopPagerAdapter(mRollPagerView) {
             @Override
             public View getView(ViewGroup container, int position) {
-                View view = new View(container.getContext());
-                view.setBackgroundColor(Color.parseColor(colors.get(position)));
-                return view;
+                ImageView imageView = new ImageView(getContext());
+                imageView.setImageResource(imgRes.get(position));
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                return imageView;
             }
 
 
             @Override
             public int getRealCount() {
-                return colors.size();
+                return imgRes.size();
 
             }
         });
 
 
     }
-
 
 
     public void setGetWinTypeId(getWinTypeId getWinTypeId) {
@@ -87,7 +86,7 @@ public class IndexFragment extends BaseFragment {
 
     @OnClick({R.id.iv_red_wine, R.id.iv_rice_wine, R.id.iv_liquor, R.id.iv_beer})
     public void onClick(View view) {
-        int position= Integer.parseInt(view.getTag().toString());
+        int position = Integer.parseInt(view.getTag().toString());
         ((MainActivity) getActivity()).turnToMall();
         if (mGetWinTypeId != null) {
             mGetWinTypeId.showById(position);

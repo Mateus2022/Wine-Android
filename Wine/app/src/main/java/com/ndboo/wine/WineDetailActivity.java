@@ -1,15 +1,15 @@
 package com.ndboo.wine;
 
-import android.view.View;
-
 import com.ndboo.base.BaseActivity;
+import com.ndboo.widget.TopBar;
 
-import butterknife.OnClick;
+import butterknife.BindView;
 
 public class WineDetailActivity extends BaseActivity {
 
 
-
+    @BindView(R.id.top_bar_back)
+    TopBar mTopBarBack;
 
     @Override
     public int getLayoutId() {
@@ -18,17 +18,13 @@ public class WineDetailActivity extends BaseActivity {
 
     @Override
     public void init() {
-
-    }
-
-    @OnClick({R.id.top_bar_back, R.id.activity_wine_detail})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.top_bar_back:
+        mTopBarBack.setOnTopBarClickListener(new TopBar.OnTopBarClickListener() {
+            @Override
+            public void onBackClicked() {
                 finish();
-                break;
-            case R.id.activity_wine_detail:
-                break;
-        }
+            }
+        });
     }
+
+
 }
