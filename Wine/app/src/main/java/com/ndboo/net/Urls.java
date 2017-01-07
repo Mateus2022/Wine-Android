@@ -6,4 +6,7 @@ package com.ndboo.net;
 
 public class Urls {
     public static final String BASEURL="http://www.ndboo.com/wine";
+
+
+    public static final String URL_LOGIN="login";
 }
