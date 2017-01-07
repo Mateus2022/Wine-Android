@@ -16,12 +16,13 @@ public class RetrofitHelper {
     public static Api getApi() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://www.baidu.com")
+                    .baseUrl("http://www.ndboo.com/wine")
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
         }
+
         return retrofit.create(Api.class);
     }
 }

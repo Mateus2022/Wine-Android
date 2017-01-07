@@ -10,7 +10,20 @@
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         app:topbar_title="@string/main_tab_shopping_car"
-        app:topbar_isShowBackImg="false"/>
+        app:topbar_isShowBackImg="false">
+        <TextView
+            android:id="@+id/tv_edit_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/car_edit"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"/>
+        </com.ndboo.widget.TopBar>
     <LinearLayout
         android:id="@+id/layout_car_bottom"
         android:layout_width="match_parent"
