@@ -49,7 +49,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     @BindView(R.id.mine_order)
     ImgTextView mOrderImgTextView;//我的订单
-//    @BindView(R.id.mine_collection)
+    //    @BindView(R.id.mine_collection)
 //    ImgTextView mCollectionImgTextView;//我的收藏
     @BindView(R.id.mine_service)
     ImgTextView mServiceImgTextView;//联系客服
@@ -239,10 +239,10 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     }
 
     /**
-     * 可见时处理
+     * 每次可见时操作
      */
     @Override
-    public void firstVisibleDeal() {
-
+    protected void visibleDeal() {
     }
+
 }
