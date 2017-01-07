@@ -5,6 +5,7 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="blue">#0000ff</color>
+    <color name="LightGray">#f5f5f5</color>
     <color name="themeColor">#f88600</color>
     <color name="aidThemeColor">#300000ff</color>
 

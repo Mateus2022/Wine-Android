@@ -238,4 +238,12 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     public void closePop() {
         mPortraitPopupWindow.dismiss();
     }
+
+    /**
+     * 可见时处理
+     */
+    @Override
+    public void firstVisibleDeal() {
+
+    }
 }
