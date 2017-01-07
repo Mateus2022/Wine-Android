@@ -5,13 +5,14 @@ import android.app.DatePickerDialog;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.ndboo.base.BaseActivity;
+import com.ndboo.utils.ToastUtil;
 import com.ndboo.widget.TopBar;
 
-import java.util.Calendar;
-import java.util.Locale;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -26,29 +27,44 @@ public class UserInfoActivity extends BaseActivity {
     EditText mNickNameEditText;
     @BindView(R.id.userinfo_birthday)
     TextView mBirthdayTextView;
+    @BindView(R.id.userinfo_sex)
+    RadioGroup mSexRadioGroup;
 
-    //获取一个日历对象
-    private Calendar mCalendar = Calendar.getInstance(Locale.CHINA);
     //生日
-    private String mBirthday = "2017-01-06";
+    private String mBirthday = "1995-01-06";
+    //时间选择弹框
+    private DatePickerDialog mDatePickerDialog;
 
-    @OnClick({R.id.userinfo_birthday})
+    @OnClick({R.id.userinfo_birthday, R.id.userinfo_submit})
     void doClick(View view) {
         switch (view.getId()) {
             case R.id.userinfo_birthday:
                 showDatePickerDialog();
                 break;
+            case R.id.userinfo_submit:
+                submitUserInfo();
+                break;
         }
+    }
+
+    /**
+     * 提交信息
+     */
+    private void submitUserInfo() {
+        ToastUtil.showToast(this, "已保存");
     }
 
     /**
      * 生日选择弹框
      */
     private void showDatePickerDialog() {
+        if (mBirthday == null || mBirthday.equals("")) {
+            ToastUtil.showToast(this, "请刷新重试");
+            return;
+        }
         //将生日字符串拆分成年月日
         String[] dates = mBirthday.split("-");
-
-        final DatePickerDialog birthdayDialog = new DatePickerDialog(this,
+        mDatePickerDialog = new DatePickerDialog(this,
                 AlertDialog.THEME_HOLO_LIGHT,
                 new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -63,7 +79,8 @@ public class UserInfoActivity extends BaseActivity {
                 Integer.parseInt(dates[0]),
                 Integer.parseInt(dates[1]) - 1,
                 Integer.parseInt(dates[2]));
-        birthdayDialog.show();
+        mDatePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+        mDatePickerDialog.show();
     }
 
     @Override

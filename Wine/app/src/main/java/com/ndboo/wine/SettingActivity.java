@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ndboo.base.BaseActivity;
+import com.ndboo.utils.ToastUtil;
 import com.ndboo.widget.TopBar;
 
 import java.io.File;
@@ -45,7 +45,7 @@ public class SettingActivity extends BaseActivity {
                 clearAllCache();
                 break;
             case R.id.setting_version:
-                Toast.makeText(this, "已是最新版本", Toast.LENGTH_SHORT).show();
+                ToastUtil.showToast(this, "已是最新版本");
                 break;
         }
     }
@@ -84,7 +84,7 @@ public class SettingActivity extends BaseActivity {
                 editor.putBoolean("isEnablePush", checked);
                 editor.commit();
                 String text = checked ? "开启" : "关闭";
-                Toast.makeText(SettingActivity.this, "已" + text + "推送", Toast.LENGTH_SHORT).show();
+                ToastUtil.showToast(SettingActivity.this, "已" + text + "推送");
             }
         });
     }
@@ -107,7 +107,7 @@ public class SettingActivity extends BaseActivity {
         deleteDir(getCacheDir());
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             boolean isSuccess = deleteDir(getExternalCacheDir());
-            Toast.makeText(this, "清除缓存" + (isSuccess ? "成功" : "失败"), Toast.LENGTH_SHORT).show();
+            ToastUtil.showToast(SettingActivity.this, "清除缓存" + (isSuccess ? "成功" : "失败"));
             mCacheTextView.setText(getTotalCacheSize());
         }
     }

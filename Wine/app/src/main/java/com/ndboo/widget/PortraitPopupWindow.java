@@ -1,9 +1,10 @@
 package com.ndboo.widget;
 
-import android.content.Context;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -11,16 +12,17 @@ import com.ndboo.wine.R;
 
 /**
  * Created by ZhangHang on 2017/1/5.
+ * 修改头像弹框
  */
 
 public class PortraitPopupWindow extends PopupWindow {
     private View mContentView; // PopupWindow 菜单布局
-    private Context mContent; // 上下文参数
+    private Activity mActivity; // 上下文参数
     private OnPopClickListener mOnPopClickListener;//点击事件
 
-    public PortraitPopupWindow(Context context) {
-        this.mContent = context;
-        mContentView = LayoutInflater.from(mContent)
+    public PortraitPopupWindow(Activity activity) {
+        this.mActivity = activity;
+        mContentView = LayoutInflater.from(mActivity)
                 .inflate(R.layout.layout_popupwindow_portrait, null);
         init();
     }
@@ -60,6 +62,18 @@ public class PortraitPopupWindow extends PopupWindow {
         this.setOutsideTouchable(false);
     }
 
+    @Override
+    public void showAtLocation(View parent, int gravity, int x, int y) {
+        setBackgroundAlpha(0.4f);
+        super.showAtLocation(parent, gravity, x, y);
+    }
+
+    @Override
+    public void dismiss() {
+        setBackgroundAlpha(1f);
+        super.dismiss();
+    }
+
     public void setOnPopClickListener(OnPopClickListener onPopClickListener) {
         mOnPopClickListener = onPopClickListener;
     }
@@ -68,5 +82,15 @@ public class PortraitPopupWindow extends PopupWindow {
         void onTakePicClicked();
 
         void onChoosePicClicked();
+    }
+
+    /**
+     * 设置屏幕的背景透明度
+     */
+    private void setBackgroundAlpha(float bgAlpha) {
+        WindowManager.LayoutParams lp = mActivity.getWindow().getAttributes();
+        lp.alpha = bgAlpha;
+        mActivity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        mActivity.getWindow().setAttributes(lp);
     }
 }

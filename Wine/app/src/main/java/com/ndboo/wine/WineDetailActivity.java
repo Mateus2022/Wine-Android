@@ -8,9 +8,6 @@ import butterknife.OnClick;
 
 public class WineDetailActivity extends BaseActivity {
 
-
-
-
     @Override
     public int getLayoutId() {
         return R.layout.activity_wine_detail;

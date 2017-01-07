@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="com.ndboo.wine.OrderListActivity">
+    tools:activity="com.ndboo.wine.OrderListActivity">
 
     <com.ndboo.widget.TopBar
         android:id="@+id/orderlist_topbar"
