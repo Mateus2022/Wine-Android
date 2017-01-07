@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<in.srain.cube.views.ptr.PtrClassicFrameLayout
+    android:id="@+id/refresh_listview_frame"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f0f0">
+
+    <ListView
+        android:id="@+id/refresh_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:choiceMode="singleChoice"
+        android:divider="@color/LightGray"
+        android:dividerHeight="6dp"
+        android:fadingEdge="none"
+        android:scrollbarStyle="outsideOverlay"/>
+</in.srain.cube.views.ptr.PtrClassicFrameLayout>

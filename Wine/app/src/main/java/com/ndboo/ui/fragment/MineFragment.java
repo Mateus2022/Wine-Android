@@ -17,7 +17,6 @@ import com.ndboo.widget.CircleImageView;
 import com.ndboo.widget.ImgTextView;
 import com.ndboo.widget.PortraitPopupWindow;
 import com.ndboo.wine.AboutUsActivity;
-import com.ndboo.wine.CollectionActivity;
 import com.ndboo.wine.OrderListActivity;
 import com.ndboo.wine.R;
 import com.ndboo.wine.SettingActivity;
@@ -49,17 +48,17 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     TextView mNickNameTextView;//昵称
 
     @BindView(R.id.mine_order)
-    ImgTextView mOrderImgTextView;//ic_mine_order
-    @BindView(R.id.mine_collection)
-    ImgTextView mCollectionImgTextView;//ic_mine_collection
+    ImgTextView mOrderImgTextView;//我的订单
+//    @BindView(R.id.mine_collection)
+//    ImgTextView mCollectionImgTextView;//我的收藏
     @BindView(R.id.mine_service)
     ImgTextView mServiceImgTextView;//联系客服
     @BindView(R.id.mine_aboutus)
-    ImgTextView mAboutUsImgTextView;//ic_mine_aboutus
+    ImgTextView mAboutUsImgTextView;//关于我们
     @BindView(R.id.mine_suggestion)
-    ImgTextView mSuggestionImgTextView;//ic_mine_suggestion
+    ImgTextView mSuggestionImgTextView;//意见反馈
     @BindView(R.id.mine_setting)
-    ImgTextView mSettingImgTextView;//ic_mine_setting
+    ImgTextView mSettingImgTextView;//设置
 
     //修改头像
     private PortraitPopupWindow mPortraitPopupWindow;
@@ -81,7 +80,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         mPortraitImageView.setOnClickListener(this);
         mNickNameTextView.setOnClickListener(this);
         mOrderImgTextView.setOnClickListener(this);
-        mCollectionImgTextView.setOnClickListener(this);
+//        mCollectionImgTextView.setOnClickListener(this);
         mServiceImgTextView.setOnClickListener(this);
         mAboutUsImgTextView.setOnClickListener(this);
         mSuggestionImgTextView.setOnClickListener(this);
@@ -101,9 +100,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
             case R.id.mine_order:
                 startActivity(new Intent(getActivity(), OrderListActivity.class));
                 break;
-            case R.id.mine_collection:
+           /* case R.id.mine_collection:
                 startActivity(new Intent(getActivity(), CollectionActivity.class));
-                break;
+                break;*/
             case R.id.mine_service:
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 Uri data = Uri.parse("tel:" + "051266155111");

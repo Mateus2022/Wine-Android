@@ -5,23 +5,26 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.ndboo.adapter.OrderListAdapter;
 import com.ndboo.bean.MyOrderFirstBean;
 import com.ndboo.bean.MyOrderSecondBean;
+import com.ndboo.widget.LoadingDialog;
 import com.ndboo.wine.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler2;
+import in.srain.cube.views.ptr.PtrFrameLayout;
 
 
 /**
@@ -34,10 +37,15 @@ public class OrderFragment extends Fragment {
 
     private View mView;
 
-    //刷新
-    private SwipeRefreshLayout mRefreshLayout;
+
+    //当前Fragment是哪个分类
+    private int mCurrentSort;
+
+    //当前显示的是第几页
+    private int mCurrentPage = 1;
 
     //列表
+    private PtrClassicFrameLayout mPtrClassicFrameLayout;
     private ListView mListView;
     private OrderListAdapter mAdapter;
     //订单的集合
@@ -45,21 +53,17 @@ public class OrderFragment extends Fragment {
     //每个订单中商品的集合
     private Map<Integer, List<MyOrderSecondBean>> mSecondBeanList = new HashMap<>();
 
-    //加载类型
-    private int mCurrentType = TYPE_REFRESH;
-    //当前页数
-    private int mCurrentPage = 1;
-    //是否正在加载数据
-    private boolean mIsLoading = true;
+    //加载框
+    private LoadingDialog mLoadingDialog;
 
-    //当前Fragment是哪个分类
-    private int mCurrentSort;
+    //标记当前是刷新还是加载,默认刷新
+    private int mLoadingType = TYPE_REFRESH;
 
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1) {
-                if (mCurrentType == TYPE_REFRESH) {
+                if (mLoadingType == TYPE_REFRESH) {
                     mFirstBeanList.clear();
                     mSecondBeanList.clear();
                 }
@@ -72,8 +76,10 @@ public class OrderFragment extends Fragment {
                 mFirstBeanList.add(firstBean);
                 mSecondBeanList.putAll(secondList);
                 mAdapter.notifyDataSetChanged();
-                mIsLoading = false;
-                mRefreshLayout.setRefreshing(false);
+                mPtrClassicFrameLayout.refreshComplete();
+                if (mLoadingDialog.isShowing()) {
+                    mLoadingDialog.dismiss();
+                }
             }
         }
     };
@@ -92,17 +98,34 @@ public class OrderFragment extends Fragment {
     }
 
     private void initView() {
-        mRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.order_swipe);
-        mListView = (ListView) mView.findViewById(R.id.order_listview);
+        //加载框
+        mLoadingDialog = new LoadingDialog(getActivity(), R.style.dialog);
+
+        mPtrClassicFrameLayout = (PtrClassicFrameLayout) mView.findViewById(R.id.refresh_listview_frame);
+        mListView = (ListView) mView.findViewById(R.id.refresh_listview);
         mAdapter = new OrderListAdapter(getActivity(), mSecondBeanList, mFirstBeanList);
         mListView.setAdapter(mAdapter);
 
-        //设置刷新圆圈的颜色
-        mRefreshLayout.setColorSchemeResources(
-                android.R.color.holo_blue_light,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
+        //阻尼系数   默认: 1.7f，越大，感觉下拉时越吃力。
+        mPtrClassicFrameLayout.setResistance(1.7f);
+        //触发刷新时移动的位置比例  默认，1.2f，移动达到头部高度1.2倍时可触发刷新操作。
+        mPtrClassicFrameLayout.setRatioOfHeaderHeightToRefresh(1.2f);
+        //回弹延时  默认 200ms，回弹到刷新高度所用时间
+        mPtrClassicFrameLayout.setDurationToClose(200);
+        //头部回弹时间  默认1000ms
+        mPtrClassicFrameLayout.setDurationToCloseHeader(800);
+        //刷新时保持头部  默认值 true
+        mPtrClassicFrameLayout.setKeepHeaderWhenRefresh(true);
+        //下拉刷新 / 释放刷新 默认为释放刷新，即false。
+        mPtrClassicFrameLayout.setPullToRefresh(false);
+        //模式，支持上拉和下拉
+        mPtrClassicFrameLayout.setMode(PtrFrameLayout.Mode.BOTH);
+        //上次更新时间的key
+        mPtrClassicFrameLayout.setLastUpdateTimeHeaderKey("key-" + mCurrentSort);
+        //设置头部字体大小
+        mPtrClassicFrameLayout.getHeader().setLastUpdateTextSize(13);
+        mPtrClassicFrameLayout.getHeader().setTitleTextSize(14);
+        mPtrClassicFrameLayout.getFooter().setTitleTextSize(14);
     }
 
     private void addListener() {
@@ -116,44 +139,22 @@ public class OrderFragment extends Fragment {
             }
         });
 
-        //判断ListView是否滑到最后
-        mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            private int lastVisibleItemIndex;//当前ListView中最后一个可见的Item的索引
-
+        mPtrClassicFrameLayout.setPtrHandler(new PtrDefaultHandler2() {
             @Override
-            public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-                //当ListView不再滚动，并且最后一项的索引等于项数减一时，表示已经加载到最后一个
-                if (scrollState == SCROLL_STATE_IDLE &&
-                        lastVisibleItemIndex == mAdapter.getCount() - 1) {
-                    //判断最后一个是否完全显示(参数是可见的Item中的index)
-                    View lastVisibleItem = mListView.getChildAt(
-                            lastVisibleItemIndex - mListView.getFirstVisiblePosition());
-                    if (lastVisibleItem.getBottom() <= mListView.getBottom()) {
-                        if (!mIsLoading) {
-                            //加载
-                            mCurrentType = TYPE_LOAD;
-                            //页数增加
-                            mCurrentPage++;
-                            //获取数据
-                            requestData();
-                        }
-                    }
-                }
+            public void onLoadMoreBegin(PtrFrameLayout frame) {
+                //加载
+                mLoadingType = TYPE_LOAD;
+                //页数增加
+                mCurrentPage++;
+                //获取数据
+                requestData();
             }
 
             @Override
-            public void onScroll(AbsListView absListView, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
-                lastVisibleItemIndex = firstVisibleItem + visibleItemCount - 1;
-            }
-        });
-
-        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
+            public void onRefreshBegin(PtrFrameLayout frame) {
                 //刷新
-                mCurrentType = TYPE_REFRESH;
-                //页数重置为1
+                mLoadingType = TYPE_REFRESH;
+                //重置为第一页
                 mCurrentPage = 1;
                 //获取数据
                 requestData();
@@ -162,7 +163,9 @@ public class OrderFragment extends Fragment {
     }
 
     private void requestData() {
-        mIsLoading = true;
+        if (mFirstBeanList.size() == 0 && !mLoadingDialog.isShowing()) {
+            mLoadingDialog.show();
+        }
         mHandler.sendEmptyMessageDelayed(1, 1000);
     }
 }
