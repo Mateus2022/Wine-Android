@@ -1,5 +1,6 @@
 package com.ndboo.wine;
 
+import android.app.ProgressDialog;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
@@ -13,13 +14,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ndboo.base.BaseActivity;
+import com.ndboo.net.RetrofitHelper;
+import com.ndboo.utils.ToastUtil;
 import com.ndboo.utils.VerificationUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.smssdk.EventHandler;
 import cn.smssdk.OnSendMessageHandler;
 import cn.smssdk.SMSSDK;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * 注册界面
@@ -59,6 +69,7 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
     private String phone;
     private EventHandler eh;
     private RelativeLayout mCurrentLayout;
+    private ProgressDialog mProgressDialog;
 
     @OnClick({R.id.iv_back, R.id.tv_get_code, R.id.tv_next_step, R.id.tv_register})
     public void onClick(View view) {
@@ -78,7 +89,7 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
 
                 if (pwd.equals(confirmPwd) && pwd.length() >= 6 && pwd.length() <= 15) {
                     //验证成功，向后台请求注册返回结果
-                    register(getPhone(),getPassword());
+                    register(phone, pwd);
                 } else {
                     showErrorDialog("请确保两次输入内容一样，并且长度在6-15个字符之内");
                 }
@@ -250,20 +261,48 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
 
     /**
      * 注册
+     *
      * @param phone 电话号
      * @param pwd   密码
      */
-    private void register(String phone,String pwd) {
+    private void register(String phone, String pwd) {
+        mProgressDialog = new ProgressDialog(RegisterActivity.this);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setMessage("正在注册");
+        mProgressDialog.show();
+        Subscription subscription = RetrofitHelper.getApi()
+                .register(phone, pwd)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        mProgressDialog.cancel();
+                        JSONObject object;
+                        try {
+                            object = new JSONObject(s);
+                            String result = object.getString("returnStatus");
+                            if (result.equals("success")) {
+                                finish();
+                                ToastUtil.showToast(RegisterActivity.this, "注册成功");
+                            } else {
+                                ToastUtil.showToast(RegisterActivity.this, "用户已存在");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        mProgressDialog.cancel();
+                        ToastUtil.showToast(RegisterActivity.this, "注册失败,请检查网络连接");
+                    }
+                });
+        addSubscription(subscription);
     }
 
-    private String getPhone() {
-        return mEtPhone.getText().toString();
-    }
-
-    private String getPassword() {
-        return mEtPwd.getText().toString();
-    }
 
     class CodeCountDown extends CountDownTimer {
 

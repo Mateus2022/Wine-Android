@@ -57,7 +57,7 @@ public class SharedPreferencesUtil {
      * @return boolean
      */
     public static boolean isUserLoginIn(Context context) {
-        return getUserId(context).equals(DEFAULT_USER_ID);
+        return !getUserId(context).equals(DEFAULT_USER_ID);
     }
 
     /**

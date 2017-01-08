@@ -16,7 +16,7 @@ public class RetrofitHelper {
     public static Api getApi() {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://www.ndboo.com/wine")
+                    .baseUrl(Urls.URL_BASE)
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

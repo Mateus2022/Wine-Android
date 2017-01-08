@@ -7,10 +7,10 @@ import android.widget.RadioButton;
 
 import com.amap.api.location.AMapLocationClientOption;
 import com.ndboo.base.BaseActivity;
-import com.ndboo.ui.fragment.ShoppingCarFragment;
 import com.ndboo.ui.fragment.IndexFragment;
 import com.ndboo.ui.fragment.MallFragment;
 import com.ndboo.ui.fragment.MineFragment;
+import com.ndboo.ui.fragment.ShoppingCarFragment;
 import com.ndboo.widget.FixedViewPager;
 
 import java.util.ArrayList;
@@ -142,50 +142,5 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         mRbType.setChecked(true);
     }
 
-//    private void getLocation() {
-//        mAMapLocationClient = new AMapLocationClient(getApplicationContext());
-//        mAMapLocationClient.setLocationListener(mAMapLocationListener);
-//
-//        mLocationClientOption = new AMapLocationClientOption();
-//        mLocationClientOption.setOnceLocation(true);
-//        mLocationClientOption.setOnceLocationLatest(true);
-//        mAMapLocationClient.setLocationOption(mLocationClientOption);
-//        mAMapLocationClient.startLocation();
-//    }
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        if (mAMapLocationClient != null) {
-//            mAMapLocationClient.stopLocation();
-//            mAMapLocationClient.onDestroy();
-//        }
-//
-//    }
-
-//    private static final int REQUEST_LOCATION_CODE = 253;
-//
-//    private void checkLocationPermission() {
-//        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED) {
-//            getLocation();
-//        } else {
-//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-//                    REQUEST_LOCATION_CODE);
-//        }
-//    }
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        switch (requestCode) {
-//            case REQUEST_LOCATION_CODE:
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    getLocation();
-//                } else {
-//                    Toast.makeText(this, "定位失败", Toast.LENGTH_SHORT).show();
-//                }
-//                break;
-//        }
-//    }
 }
