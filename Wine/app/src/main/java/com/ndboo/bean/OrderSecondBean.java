@@ -3,7 +3,7 @@ package com.ndboo.bean;
 /**
  * Created by ZhangHang on 2016/8/22.
  */
-public class MyOrderSecondBean {
+public class OrderSecondBean {
     //图片资源
     private String imageUrl;
     //商品名称
@@ -17,8 +17,8 @@ public class MyOrderSecondBean {
     //商品小计
     private String totalPrice;
 
-    public MyOrderSecondBean(String imageUrl, String name, String count,
-                             String perPrice, String unit, String totalPrice) {
+    public OrderSecondBean(String imageUrl, String name, String count,
+                           String perPrice, String unit, String totalPrice) {
         this.imageUrl = imageUrl;
         this.name = name;
         this.count = count;
@@ -82,8 +82,8 @@ public class MyOrderSecondBean {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MyOrderSecondBean) {
-            MyOrderSecondBean bean = (MyOrderSecondBean) obj;
+        if (obj instanceof OrderSecondBean) {
+            OrderSecondBean bean = (OrderSecondBean) obj;
             return bean.name.equals(name);
         }
         return super.equals(obj);

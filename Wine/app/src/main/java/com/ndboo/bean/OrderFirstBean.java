@@ -3,7 +3,7 @@ package com.ndboo.bean;
 /**
  * Created by ZhangHang on 2016/8/22.
  */
-public class MyOrderFirstBean {
+public class OrderFirstBean {
     private String orderId;
     //下单时间
     private String placeTime;
@@ -14,8 +14,8 @@ public class MyOrderFirstBean {
     //状态(已支付、已取消...)
     private String status;
 
-    public MyOrderFirstBean(String orderId, String placeTime,
-                            String count, String price, String status) {
+    public OrderFirstBean(String orderId, String placeTime,
+                          String count, String price, String status) {
         this.orderId = orderId;
         this.placeTime = placeTime;
         this.count = count;
@@ -65,7 +65,7 @@ public class MyOrderFirstBean {
 
     @Override
     public String toString() {
-        return "MyOrderFirstBean{" +
+        return "OrderFirstBean{" +
                 "placeTime='" + placeTime + '\'' +
                 '}';
     }

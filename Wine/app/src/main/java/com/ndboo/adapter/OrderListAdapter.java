@@ -12,8 +12,8 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ndboo.bean.MyOrderFirstBean;
-import com.ndboo.bean.MyOrderSecondBean;
+import com.ndboo.bean.OrderFirstBean;
+import com.ndboo.bean.OrderSecondBean;
 import com.ndboo.widget.OrderItemView;
 import com.ndboo.wine.R;
 
@@ -28,12 +28,12 @@ public class OrderListAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
     //Item1
-    private List<MyOrderFirstBean> mFirstBeanList;
+    private List<OrderFirstBean> mFirstBeanList;
     //Item2
-    private Map<Integer, List<MyOrderSecondBean>> mSecondBeanList;
+    private Map<Integer, List<OrderSecondBean>> mSecondBeanList;
 
-    public OrderListAdapter(Context context, Map<Integer, List<MyOrderSecondBean>> secondBeanList,
-                            List<MyOrderFirstBean> firstBeanList) {
+    public OrderListAdapter(Context context, Map<Integer, List<OrderSecondBean>> secondBeanList,
+                            List<OrderFirstBean> firstBeanList) {
         this.mContext = context;
         this.mSecondBeanList = secondBeanList;
         this.mFirstBeanList = firstBeanList;
@@ -73,9 +73,9 @@ public class OrderListAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        MyOrderFirstBean firstBean = mFirstBeanList.get(i);
+        OrderFirstBean firstBean = mFirstBeanList.get(i);
         //嵌套的RecyclerView
-        List<MyOrderSecondBean> list = mSecondBeanList.get(new Integer(i));
+        List<OrderSecondBean> list = mSecondBeanList.get(new Integer(i));
         if (list != null && list.size() > 0) {
             holder.mTimeTextView.setText(firstBean.getPlaceTime());
             holder.mStatusTextView.setText(firstBean.getStatus());
@@ -99,7 +99,7 @@ public class OrderListAdapter extends BaseAdapter {
             holder.mLinearLayout.setDividerDrawable(mContext.getResources()
                     .getDrawable(R.drawable.shape_divider_horizontal));
             for (int j = 0; j < list.size(); j++) {
-                MyOrderSecondBean secondBean = list.get(j);
+                OrderSecondBean secondBean = list.get(j);
 
                 OrderItemView item2 = new OrderItemView(mContext);
                 item2.setImage(secondBean.getImageUrl());
