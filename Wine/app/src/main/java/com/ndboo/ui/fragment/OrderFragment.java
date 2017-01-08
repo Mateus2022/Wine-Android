@@ -1,5 +1,6 @@
 package com.ndboo.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,9 +13,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.ndboo.adapter.OrderListAdapter;
-import com.ndboo.bean.MyOrderFirstBean;
-import com.ndboo.bean.MyOrderSecondBean;
+import com.ndboo.bean.OrderFirstBean;
+import com.ndboo.bean.OrderSecondBean;
 import com.ndboo.widget.LoadingDialog;
+import com.ndboo.wine.OrderDetailActivity;
 import com.ndboo.wine.R;
 
 import java.util.ArrayList;
@@ -49,9 +51,9 @@ public class OrderFragment extends Fragment {
     private ListView mListView;
     private OrderListAdapter mAdapter;
     //订单的集合
-    private List<MyOrderFirstBean> mFirstBeanList = new ArrayList<>();
+    private List<OrderFirstBean> mFirstBeanList = new ArrayList<>();
     //每个订单中商品的集合
-    private Map<Integer, List<MyOrderSecondBean>> mSecondBeanList = new HashMap<>();
+    private Map<Integer, List<OrderSecondBean>> mSecondBeanList = new HashMap<>();
 
     //加载框
     private LoadingDialog mLoadingDialog;
@@ -67,10 +69,10 @@ public class OrderFragment extends Fragment {
                     mFirstBeanList.clear();
                     mSecondBeanList.clear();
                 }
-                MyOrderFirstBean firstBean = new MyOrderFirstBean("111", "2017-01-05", "10", "23.6", "1");
-                Map<Integer, List<MyOrderSecondBean>> secondList = new HashMap<>();
-                List<MyOrderSecondBean> secondBeanList = new ArrayList<>();
-                MyOrderSecondBean secondBean = new MyOrderSecondBean("", "aaaa", "10", "10.0", "袋", "2222");
+                OrderFirstBean firstBean = new OrderFirstBean("111", "2017-01-05", "10", "23.6", "1");
+                Map<Integer, List<OrderSecondBean>> secondList = new HashMap<>();
+                List<OrderSecondBean> secondBeanList = new ArrayList<>();
+                OrderSecondBean secondBean = new OrderSecondBean("", "aaaa", "10", "10.0", "袋", "2222");
                 secondBeanList.add(secondBean);
                 secondList.put(new Integer(mFirstBeanList.size()), secondBeanList);
                 mFirstBeanList.add(firstBean);
@@ -132,10 +134,9 @@ public class OrderFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //屏蔽ListView的Header和Footer
-//                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
-//                intent.putExtra("orderId", mFirstBeanList.get(i).getOrderId());
-//                startActivity(intent);
+                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
+                intent.putExtra("orderId", mFirstBeanList.get(i).getOrderId());
+                startActivity(intent);
             }
         });
 

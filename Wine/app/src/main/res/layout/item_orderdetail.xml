@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/orderdetail_order"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp">
+
+    <ImageView
+        android:id="@+id/item_orderdetail_img"
+        android:layout_width="77dp"
+        android:layout_height="77dp"
+        android:layout_marginRight="4dp"
+        android:scaleType="fitXY"/>
+
+    <RelativeLayout
+        android:id="@+id/orderdetail_info_info2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/item_orderdetail_img">
+
+        <TextView
+            android:id="@+id/item_orderdetail_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="沙家浜苏州大米"
+            android:textColor="#323232"
+            android:textSize="15sp"/>
+    </RelativeLayout>
+
+    <com.ndboo.widget.TextRightTextView
+        android:id="@+id/item_orderdetail_item"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/orderdetail_info_info2"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/item_orderdetail_img"
+        app:dataText="¥0.00"
+        app:dataTextColor="#feb080"
+        app:dataTextSize="15sp"
+        app:labelText="已选1袋"
+        app:labelTextColor="#838383"
+        app:labelTextSize="13sp"/>
+
+    <View
+        android:id="@+id/orderdetail_divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/item_orderdetail_item"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/item_orderdetail_img"
+        android:background="#9a9a9a"/>
+
+    <TextView
+        android:id="@+id/item_orderdetail_perprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/orderdetail_divider2"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/item_orderdetail_img"
+        android:text="¥0.00"
+        android:textColor="#222222"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/item_orderdetail_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/orderdetail_divider2"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="6dp"
+        android:layout_toRightOf="@id/item_orderdetail_perprice"
+        android:text="/袋"
+        android:textColor="#d3d3d3"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/item_orderdetail_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/orderdetail_divider2"
+        android:layout_marginTop="6dp"
+        android:text="x1"
+        android:textColor="@color/black"
+        android:textSize="14sp"/>
+</RelativeLayout>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OrderDetailActivity">
+
+    <com.ndboo.widget.TopBar
+        android:id="@+id/orderdetail_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:topbar_title="订单详情"/>
+
+    <RelativeLayout
+        android:id="@+id/orderdetail_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="8dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="12dp"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:id="@+id/orderdetail_ordermoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="¥108.5"
+            android:textColor="#ff721c"
+            android:textSize="15sp"/>
+
+        <Button
+            android:id="@+id/orderdetail_gotopay"
+            android:layout_width="80dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/shape_orderdetail_gotopay"
+            android:gravity="center"
+            android:text="去支付"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+
+        <Button
+            android:id="@+id/orderdetail_cancelorder"
+            android:layout_width="80dp"
+            android:layout_height="35dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/orderdetail_gotopay"
+            android:background="@drawable/shape_orderdetail_cancelorder"
+            android:gravity="center"
+            android:text="取消订单"
+            android:textColor="#666666"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/orderdetail_footer"
+        android:layout_below="@id/orderdetail_header"
+        android:background="@color/LightGray">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="12dp">
+
+            <RelativeLayout
+                android:id="@+id/orderdetail_img_waittopay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_orderdetail_waittopay"/>
+
+                <TextView
+                    android:id="@+id/orderdetail_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="30dp"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/orderdetail_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/orderdetail_img_waittopay"
+                android:background="@color/white"
+                android:paddingBottom="14dp"
+                android:paddingTop="14dp">
+
+                <TextView
+                    android:id="@+id/orderdetail_order_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:text="订单号："
+                    android:textColor="#010101"
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/orderdetail_order_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/orderdetail_order_label"
+                    android:textColor="#6d6d6d"
+                    android:textSize="14sp"/>
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/orderdetail_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@color/white"/>
+
+            <com.ndboo.widget.ImageTextTextView
+                android:id="@+id/orderdetail_consignee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:detaiLabel="收货人:"
+                app:detailData=""
+                app:detailImage="@drawable/ic_orderdetail_consignee"/>
+
+            <com.ndboo.widget.ImageTextTextView
+                android:id="@+id/orderdetail_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:detaiLabel="收货地址:"
+                app:detailData=""
+                app:detailImage="@drawable/ic_orderdetail_shipping_address"/>
+
+            <com.ndboo.widget.ImageTextTextView
+                android:id="@+id/orderdetail_payway"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:detaiLabel="支付方式:"
+                app:detailData=""
+                app:detailImage="@drawable/ic_orderdetail_payment_method"/>
+
+            <com.ndboo.widget.ImageTextTextView
+                android:id="@+id/orderdetail_placetime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:detaiLabel="下单时间:"
+                app:detailData=""
+                app:detailImage="@drawable/ic_orderdetail_time_place"/>
+
+            <com.ndboo.widget.ImageTextTextView
+                android:id="@+id/orderdetail_sendtime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:detaiLabel="配送时间:"
+                app:detailData=""
+                app:detailImage="@drawable/ic_orderdetail_time_delivery"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@color/white"
+                android:paddingBottom="6dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="23dp"
+                android:paddingTop="6dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="客服热线：0512-66155111"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"/>
+
+                <ImageView
+                    android:id="@+id/orderdetail_service_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_orderdetail_service_phone"/>
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="22dp"
+                    android:layout_toLeftOf="@id/orderdetail_service_phone"
+                    android:background="#716d6d"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

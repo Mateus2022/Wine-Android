@@ -60,4 +60,5 @@ dependencies {
     compile 'com.jude:rollviewpager:1.4.5'
     compile files('libs/AMap_Location_V3.2.1_20161228.jar')
     compile project(path: ':ptr-lib')
+    compile files('libs/alipaySdk-20160516.jar')
 }
