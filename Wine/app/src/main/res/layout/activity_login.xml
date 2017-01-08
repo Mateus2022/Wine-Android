@@ -114,7 +114,6 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/selector_tv_login"
         android:clickable="true"
-        android:enabled="false"
         android:gravity="center"
         android:padding="10dp"
         android:text="确认"

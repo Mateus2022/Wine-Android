@@ -2,13 +2,13 @@ package com.ndboo.ui.fragment;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
-import com.ndboo.adapter.WineAdapter;
 import com.ndboo.base.BaseFragment;
-import com.ndboo.bean.Wine;
 import com.ndboo.wine.MainActivity;
 import com.ndboo.wine.R;
 import com.ndboo.wine.WineDetailActivity;
@@ -29,11 +29,11 @@ public class MallFragment extends BaseFragment implements AdapterView.OnItemClic
 
     @BindView(R.id.tab_layout_type)
     TabLayout mTabLayoutType;
-    @BindView(R.id.list_view_wine)
-    ListView mListViewWine;
+    @BindView(R.id.view_pager_wine)
+    ViewPager mViewPagerWine;
 
 
-    private WineAdapter mWineAdapter;
+    private List<Fragment> mFragments;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_mall;
@@ -53,7 +53,34 @@ public class MallFragment extends BaseFragment implements AdapterView.OnItemClic
     }
 
     private void initData() {
-        List<String> mWineTypes = Arrays.asList(getResources().getStringArray(R.array.wine_type));
+        //酒的种类，目前有四种：红酒、黄酒、白酒、啤酒
+        final List<String> mWineTypes = Arrays.asList(getResources().getStringArray(R.array.wine_type));
+        mFragments=new ArrayList<>();
+        mViewPagerWine.setOffscreenPageLimit(mWineTypes.size());
+        mTabLayoutType.setupWithViewPager(mViewPagerWine);
+        for (int i = 0; i < mWineTypes.size(); i++) {
+            if (i==0) {
+                mFragments.add(WineFragment.newInstance(true));
+                continue;
+            }
+            mFragments.add(WineFragment.newInstance(false));
+        }
+        mViewPagerWine.setAdapter(new FragmentPagerAdapter(getActivity().getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return mFragments.get(position);
+            }
+
+            @Override
+            public int getCount() {
+                return mFragments.size();
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mWineTypes.get(position);
+            }
+        });
         addOnTabSelectedListener();
         /**
          * 为mTabLayoutType添加addTabSelectedListener监听事件，
@@ -61,18 +88,6 @@ public class MallFragment extends BaseFragment implements AdapterView.OnItemClic
          * 这样的话mTabLayoutType可以监听所有发生的变化
          * 不会漏掉添加TabItem时默认位置为0的事件
          */
-        for (String wineType : mWineTypes) {
-            mTabLayoutType.addTab(mTabLayoutType.newTab().setText(wineType));
-        }
-
-        List<Wine> wines=new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            Wine wine=new Wine(R.drawable.ic_type+"","20","30","52°尖庄曲酒450ml*2双瓶礼盒","0");
-            wines.add(wine);
-        }
-        mWineAdapter=new WineAdapter(getContext(),wines);
-        mListViewWine.setAdapter(mWineAdapter);
-        mListViewWine.setOnItemClickListener(this);
     }
 
     /**

@@ -13,7 +13,7 @@
     <!-- &lt;!&ndash;用于获取wifi的获取权限，wifi信息会用来进行网络定位&ndash;&gt; -->
     <!-- <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/> -->
     <!-- &lt;!&ndash;用于访问网络，网络定位需要上网&ndash;&gt; -->
-    <!-- <uses-permission android:name="android.permission.INTERNET"/> -->
+     <uses-permission android:name="android.permission.INTERNET"/>
     <!-- &lt;!&ndash;用于读取手机当前的状态&ndash;&gt; -->
     <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE"/> -->
     <!-- &lt;!&ndash;用于写入缓存数据到扩展存储卡&ndash;&gt; -->
@@ -35,6 +35,11 @@
         <!-- android:name="com.amap.api.v2.apikey" -->
         <!-- android:value="f65f55cc61ac999dd64a5ec74a52f044"/> -->
 
+        <!--短信验证的key和secret-->
+        <meta-data android:name="sms_key"
+                   android:value="1a9f22852b739"/>
+        <meta-data android:name="sms_secret"
+            android:value="14bd6efe936fb414d112e38a97029c4c"/>
         <activity
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation"
