@@ -10,7 +10,7 @@ import rx.Observable;
 
 public interface Api {
 
-    @POST(Urls.URL_LOGIN)
+    @POST(Urls.URL_LOGIN_BY_PASSWORD)
     Observable<String> login(@Query("name")String name,
                              @Query("password")String password);
 }

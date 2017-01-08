@@ -74,8 +74,6 @@ public class IndexFragment extends BaseFragment {
 
             }
         });
-
-
     }
 
 

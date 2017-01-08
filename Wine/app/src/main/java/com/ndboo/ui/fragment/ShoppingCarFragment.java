@@ -152,7 +152,7 @@ public class ShoppingCarFragment extends BaseFragment {
         TextView mTextGoodsDescription;
         @BindView(R.id.text_price)
         TextView mTextPrice;
-        @BindView(R.id.image_decrease)
+        @BindView(R.id.image_reduce)
         ImageView mImageDecrease;
         @BindView(R.id.text_number)
         TextView mTextNumber;
