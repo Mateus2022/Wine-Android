@@ -70,4 +70,23 @@
         <attr name="detaiLabel" format="string|reference"/>
         <attr name="detailData" format="string|reference"/>
     </declare-styleable>
+
+    <declare-styleable name="TextTextView">
+        <attr name="leftText" format="string|reference"/>
+        <attr name="leftTextColor" format="color|reference"/>
+        <attr name="leftTextSize" format="dimension|reference"/>
+        <attr name="leftTextWidth" format="dimension|reference"/>
+        <attr name="rightText" format="string|reference"/>
+        <attr name="rightTextColor" format="color|reference"/>
+        <attr name="rightTextSize" format="dimension|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="TextIndicatorView">
+        <attr name="indicatorWidth" format="dimension|reference"/>
+        <attr name="indicatorHeight" format="dimension|reference"/>
+        <attr name="indicatorColor" format="color|reference"/>
+        <attr name="indicatorTextColor" format="color|reference"/>
+        <attr name="indicatorText" format="string|reference"/>
+        <attr name="isShowIndicator" format="boolean"/>
+    </declare-styleable>
 </resources>

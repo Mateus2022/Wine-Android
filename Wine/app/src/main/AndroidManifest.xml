@@ -90,6 +90,8 @@
             android:exported="false"
             android:screenOrientation="behind">
         </activity>
+        <activity android:name=".GoodsDetailActivity">
+        </activity>
     </application>
 
 </manifest>
