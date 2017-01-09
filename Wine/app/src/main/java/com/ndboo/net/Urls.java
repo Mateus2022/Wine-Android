@@ -21,6 +21,26 @@ public class Urls {
     public static final String URL_MODIFY_USER_HEAD_IMAGE = "member/updateMemberShopLogo";
     //分类下酒的信息
     public static final String URL_SHOW_WINES_BY_TYPE = "ws/showAllWineByWineClass";
+
+    //添加至购物车
+    public static final String URL_ADD_TO_CAR="ws /addProductToCart";
+    //从购物车删除
+    public static final String URL_CART_DELETE_PRODUCT ="ws/delProductFromCart";
     //修改商品数量
     public static final String URL_MODIFY_PRODUCT_NUM="ws/updateProductNumFromCart";
+    //商品详情
+    public static final String URL_WINE_DETAIL="ws/showWineInformationById";
+    //去结算后跳转
+    public static final String URL_SUBMIT_ORDER = "ws/summitOrderView";
+    //提交订单
+    public static final String URL_ENSURE_ORDER = "ws/addIndentFromCart";
+    //获取单个订单详情
+    public static final String URL_ORDER_DETAIL = "ws/selectIndentDetail";
+    //根据订单状态获取订单列表
+    public static final String URL_GET_ORDER_BY_STATUS = "ws/selectIndentByStatus";
+    //支付宝支付
+    public static final String URL_PAY_ALIPAY = "ws/doPayForCart";
+    //购物车列表
+    public static final String URL_CART_GET_PRODUCT_LIST = "ws/getProductsFromCart";
+
 }

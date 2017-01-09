@@ -13,22 +13,19 @@ import android.widget.Scroller;
  * Created by baoyunlong on 16/6/8.
  */
 public class PullUpToLoadMore extends ViewGroup {
-
+    public static String TAG = PullUpToLoadMore.class.getName();
+    public int scaledTouchSlop;//最小滑动距离
+    public boolean bottomScrollVIewIsInTop = false;
+    public boolean topScrollViewIsBottom = false;
     MyScrollView topScrollView, bottomScrollView;
     VelocityTracker velocityTracker = VelocityTracker.obtain();
     Scroller scroller = new Scroller(getContext());
-
     int currPosition = 0;
     int position1Y;
     int lastY;
-    public int scaledTouchSlop;//最小滑动距离
     int speed = 200;
     boolean isIntercept;
-
-    public boolean bottomScrollVIewIsInTop = false;
-    public boolean topScrollViewIsBottom = false;
-
-    private OnPageChangeListener mOnPageChangeListener;
+    private IChanged iChanged;
 
     public PullUpToLoadMore(Context context) {
         super(context);
@@ -71,7 +68,9 @@ public class PullUpToLoadMore extends ViewGroup {
                     @Override
                     public void notBottom() {
                         topScrollViewIsBottom = false;
+
                     }
+
 
                 });
 
@@ -90,6 +89,7 @@ public class PullUpToLoadMore extends ViewGroup {
                     public void onScroll(int scrollY) {
                         if (scrollY == 0) {
                             bottomScrollVIewIsInTop = true;
+
                         } else {
                             bottomScrollVIewIsInTop = false;
                         }
@@ -99,6 +99,8 @@ public class PullUpToLoadMore extends ViewGroup {
                     public void notBottom() {
 
                     }
+
+
                 });
 
                 position1Y = topScrollView.getBottom();
@@ -179,22 +181,14 @@ public class PullUpToLoadMore extends ViewGroup {
                 if (currPosition == 0) {
                     if (yVelocity < 0 && yVelocity < -speed) {
                         smoothScroll(position1Y);
-                        //滑到第二屏
                         currPosition = 1;
-                        if (mOnPageChangeListener != null) {
-                            mOnPageChangeListener.pageChanged(currPosition);
-                        }
                     } else {
                         smoothScroll(0);
                     }
                 } else {
                     if (yVelocity > 0 && yVelocity > speed) {
                         smoothScroll(0);
-                        //滑到第一屏
                         currPosition = 0;
-                        if (mOnPageChangeListener != null) {
-                            mOnPageChangeListener.pageChanged(currPosition);
-                        }
                     } else {
                         smoothScroll(position1Y);
                     }
@@ -217,11 +211,6 @@ public class PullUpToLoadMore extends ViewGroup {
         int childTop = t;
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
-            if (i == 0) {
-                //如果是第一屏，需要减去距离顶部布局的距离
-                //不然会出现空白间隔
-                childTop -= t;
-            }
             child.layout(l, childTop, r, childTop + child.getMeasuredHeight());
             childTop += child.getMeasuredHeight();
         }
@@ -245,14 +234,19 @@ public class PullUpToLoadMore extends ViewGroup {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
+        if (iChanged != null) {
+            iChanged.changed(t);
+        }
+
     }
 
-    //监听页面改变
-    public interface OnPageChangeListener {
-        void pageChanged(int position);
+    public void setiChanged(IChanged iChanged) {
+        this.iChanged = iChanged;
     }
 
-    public void setOnPageChangeListener(OnPageChangeListener onPageChangeListener) {
-        mOnPageChangeListener = onPageChangeListener;
+    public interface IChanged {
+        void changed(int t);
     }
+
+
 }

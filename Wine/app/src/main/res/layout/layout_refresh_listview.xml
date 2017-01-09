@@ -13,7 +13,7 @@
         android:background="@android:color/white"
         android:choiceMode="singleChoice"
         android:divider="@color/LightGray"
-        android:dividerHeight="6dp"
+        android:dividerHeight="0.1dp"
         android:fadingEdge="none"
         android:scrollbarStyle="outsideOverlay"/>
 </in.srain.cube.views.ptr.PtrClassicFrameLayout>

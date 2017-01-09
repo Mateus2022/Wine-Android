@@ -74,4 +74,19 @@
         <item>老白干型</item>
         <item>其他</item>
     </string-array>
+
+    <!--商品详情-->
+    <string name="goods_detail_price">¥</string>
+    <string name="goods_detail_cost">原价：¥</string>
+    <string name="goods_detail_sale">已售：</string>
+    <string name="goods_detail_comment">商品评价：</string>
+    <string name="goods_detail_description">商品概要：</string>
+    <string name="goods_detail_store">商品库存：</string>
+
+    <string name="goods_detail_server">客服</string>
+    <string name="goods_detail_add_shopping_car">加入购物车</string>
+    <string name="goods_detail_buy_now">立即购买</string>
+
+    <string name="goods_detail_pull_more">继续拖动，查看图文详情</string>
+    <string name="goods_detail">图文详情</string>
 </resources>

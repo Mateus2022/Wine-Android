@@ -2,6 +2,7 @@ package com.ndboo.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ScrollView;
 
@@ -9,7 +10,7 @@ import android.widget.ScrollView;
  * Created by baoyunlong on 16/6/8.
  */
 public class MyScrollView extends ScrollView {
-//    private static String TAG=MyScrollView.class.getName();
+    private static String TAG=MyScrollView.class.getName();
 
     public void setScrollListener(ScrollListener scrollListener) {
         this.mScrollListener = scrollListener;
@@ -38,7 +39,7 @@ public class MyScrollView extends ScrollView {
                 if(mScrollListener!=null){
                     int contentHeight=getChildAt(0).getHeight();
                     int scrollHeight=getHeight();
-//                    Log.d(TAG,"scrollY:"+getScrollY()+"contentHeight:"+contentHeight+" scrollHeight"+scrollHeight+"object:"+this);
+                    Log.d(TAG,"scrollY:"+getScrollY()+"contentHeight:"+contentHeight+" scrollHeight"+scrollHeight+"object:"+this);
 
                     int scrollY=getScrollY();
                     mScrollListener.onScroll(scrollY);
@@ -59,7 +60,6 @@ public class MyScrollView extends ScrollView {
         }
         boolean result=super.onTouchEvent(ev);
         requestDisallowInterceptTouchEvent(false);
-//        Log.d("tttt","我是scrollView"+result);
 
         return result;
     }
@@ -74,6 +74,6 @@ public class MyScrollView extends ScrollView {
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
-//        Log.e("tag",t+"");
     }
+
 }

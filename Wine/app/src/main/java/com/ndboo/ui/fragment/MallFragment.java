@@ -1,17 +1,13 @@
 package com.ndboo.ui.fragment;
 
-import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.widget.AdapterView;
 
 import com.ndboo.base.BaseFragment;
 import com.ndboo.wine.MainActivity;
 import com.ndboo.wine.R;
-import com.ndboo.wine.WineDetailActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +20,7 @@ import butterknife.BindView;
  * “商城”界面
  */
 
-public class MallFragment extends BaseFragment implements AdapterView.OnItemClickListener {
+public class MallFragment extends BaseFragment{
 
 
     @BindView(R.id.tab_layout_type)
@@ -136,8 +132,5 @@ public class MallFragment extends BaseFragment implements AdapterView.OnItemClic
     }
 
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        startActivity(new Intent(getActivity(), WineDetailActivity.class));
-    }
+
 }

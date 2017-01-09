@@ -1,7 +1,10 @@
 package com.ndboo.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.ndboo.adapter.WineAdapter;
@@ -9,8 +12,11 @@ import com.ndboo.base.BaseFragment;
 import com.ndboo.bean.WineBean;
 import com.ndboo.net.RetrofitHelper;
 import com.ndboo.utils.SharedPreferencesUtil;
+import com.ndboo.wine.MainActivity;
 import com.ndboo.wine.R;
+import com.ndboo.wine.WineDetailActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,6 +41,7 @@ public class WineFragment extends BaseFragment {
 
 
     private WineAdapter mWineAdapter;
+    private List<WineBean> mWineBeen;
 
     public static WineFragment newInstance(boolean isFirstFragment, String wineType) {
 
@@ -54,17 +61,41 @@ public class WineFragment extends BaseFragment {
     @Override
     public void showContent() {
         super.showContent();
-        mWineAdapter = new WineAdapter(getContext(),this);
+        mWineBeen = new ArrayList<>();
+        mWineAdapter = new WineAdapter(getContext(), this);
         mRefreshListView.setAdapter(mWineAdapter);
+        mRefreshListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), WineDetailActivity.class);
+                intent.putExtra("wineId", mWineBeen.get(position).getProductId());
+                startActivityForResult(intent, 1);
+            }
+        });
         boolean isFirst = getArguments().getBoolean(IS_FIRST_FRAGMENT);
         String wineType = getArguments().getString(WINE_TYPE);
 
-        if (isFirst) {
-            showWinesByType(wineType, SharedPreferencesUtil.getUserId(getContext()));
+//        if (isFirst) {
+//            showWinesByType(wineType, SharedPreferencesUtil.getUserId(getContext()));
+//
+//        }
 
+
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 2) {
+
+            MainActivity mainActivity = (MainActivity) getActivity();
+            mainActivity.turnToShoppingCar();
         }
-
-
+        if (resultCode==3) {
+            String wineType = getArguments().getString(WINE_TYPE);
+            showWinesByType(wineType, SharedPreferencesUtil.getUserId(getContext()));
+        }
     }
 
     @Override
@@ -79,7 +110,7 @@ public class WineFragment extends BaseFragment {
         boolean isFirst = getArguments().getBoolean(IS_FIRST_FRAGMENT);
         String wineType = getArguments().getString(WINE_TYPE);
         showWinesByType(wineType, SharedPreferencesUtil.getUserId(getContext()));
-        Log.e("tag",wineType);
+        Log.e("tag", wineType);
 //        if (!isFirst) {
 //
 //        }
@@ -94,9 +125,7 @@ public class WineFragment extends BaseFragment {
                 .subscribe(new Action1<List<WineBean>>() {
                     @Override
                     public void call(List<WineBean> wineBeen) {
-                        for (WineBean wineBean : wineBeen) {
-                            Log.e("tag",wineBean.toString()+"huamnId:"+SharedPreferencesUtil.getUserId(getContext()));
-                        }
+                        mWineBeen = wineBeen;
                         mWineAdapter.setWines(wineBeen);
                     }
                 }, new Action1<Throwable>() {
