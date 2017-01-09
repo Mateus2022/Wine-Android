@@ -76,4 +76,12 @@ public interface Api {
     @POST(Urls.URL_SHOW_WINES_BY_TYPE)
     Observable<List<WineBean>> showWinesByType(@Query("typeIndexId") String wineType,
                                                @Query("memberId") String userId);
+
+    /**
+     * 获取购物车商品列表
+     * @param memberId 用户id
+     * @return 购物车信息
+     */
+    @POST(Urls.URL_CART_LIST)
+    Observable<String> getCartProductsList(@Query("memberId") String memberId);
 }
