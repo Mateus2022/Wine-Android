@@ -1,5 +1,8 @@
 package com.ndboo.ui.fragment;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -7,24 +10,22 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.ndboo.adapter.CartAdapter;
 import com.ndboo.base.BaseFragment;
 import com.ndboo.bean.CartBean;
 import com.ndboo.interfaces.ShoppingCarOnItemClickListener;
 import com.ndboo.net.RetrofitHelper;
 import com.ndboo.utils.SharedPreferencesUtil;
-import com.ndboo.adapter.CartAdapter;
 import com.ndboo.utils.ToastUtil;
+import com.ndboo.wine.EditOrderActivity;
 import com.ndboo.wine.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,18 +84,6 @@ public class ShoppingCarFragment extends BaseFragment {
         mEdit = getResources().getString(R.string.car_edit);
         mComplete = getResources().getString(R.string.car_complete);
 
-        /**
-         * 全选按钮
-         */
-        mCheckBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mCartBeanList.size() == 0) {
-                    mCheckBox.setChecked(false);
-                    ToastUtil.showToast(getActivity(), "暂无商品");
-                }
-            }
-        });
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
@@ -105,6 +94,7 @@ public class ShoppingCarFragment extends BaseFragment {
                 } else {
                     mSelectedList.clear();
                 }
+                mCartAdapter.setCheckedPositionList(mSelectedList);
                 mCartAdapter.notifyDataSetChanged();
             }
         });
@@ -114,38 +104,84 @@ public class ShoppingCarFragment extends BaseFragment {
         mCartAdapter.setListener(new ShoppingCarOnItemClickListener() {
             @Override
             public void numAdd(int position, View view) {
-                Toast.makeText(getContext(), "add:" + position, Toast.LENGTH_SHORT).show();
+                CartBean cartBean = mCartBeanList.get(position);
+                int productCount = Integer.parseInt(cartBean.getProductCount());
+                updateProductCount(cartBean.getProductId(), ++productCount);
             }
 
             @Override
             public void numReduce(int position, View view) {
-                Toast.makeText(getContext(), "reduce:" + position, Toast.LENGTH_SHORT).show();
+                CartBean cartBean = mCartBeanList.get(position);
+                int productCount = Integer.parseInt(cartBean.getProductCount());
+                if (productCount == 1) {
+                    deleteProduct(cartBean.getProductId());
+                } else {
+                    updateProductCount(cartBean.getProductId(), --productCount);
+                }
             }
 
             @Override
             public void viewClick(int position, View view) {
-                Toast.makeText(getContext(), "click:" + position, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCheckedChanged(int position, CompoundButton buttonView) {
-                Toast.makeText(getContext(), "check:" + position + " " +
-                        buttonView.isChecked(), Toast.LENGTH_SHORT).show();
             }
         });
         mListViewCarWines.setAdapter(mCartAdapter);
     }
 
+    /**
+     * 修改商品数量
+     */
+    private void updateProductCount(String productId, int productCount) {
+        Subscription subscription = RetrofitHelper.getApi()
+                .modifyProductNum(SharedPreferencesUtil.getUserId(getActivity()), productId, "" + productCount)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String string) {
+                        Log.e("ndb", "result:" + string);
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            String result = jsonObject.optString("result");
+                            if (result.equals("true")) {
+                                requestData();
+                                if (mCartBeanList.size() == 0) {
+                                    changeEditMode();
+                                }
+                            } else {
+                                ToastUtil.showToast(getActivity(), "修改数量失败");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        ToastUtil.showToast(getActivity(), "error:" + throwable.getMessage());
+                        Log.e("ndb", "error:" + throwable.getMessage());
+                    }
+                });
+    }
+
     @Override
     protected void visibleDeal() {
         super.visibleDeal();
-        requestData();
+        if (SharedPreferencesUtil.isUserLoginIn(getActivity())) {
+            mCartBeanList.clear();
+            mSelectedList.clear();
+            requestData();
+        }
     }
 
     /**
      * 获取购物车列表
      */
     private void requestData() {
+        mCartBeanList.clear();
         Subscription subscription = RetrofitHelper.getApi()
                 .getCartProductsList(SharedPreferencesUtil.getUserId(getActivity()))
                 .subscribeOn(Schedulers.io())
@@ -156,31 +192,34 @@ public class ShoppingCarFragment extends BaseFragment {
                         Log.e("ndb", "result:" + string);
                         try {
                             JSONObject jsonObject = new JSONObject(string);
+                            if (jsonObject == null) {
+                                return;
+                            }
                             //总价
                             String totalMoney = jsonObject.optString("totalMoney", "0.00");
-                            mTotalPriceTextView.setText("总价：" + totalMoney + "元");
                             //商品信息
-                            JSONArray jsonArray = jsonObject.optJSONArray("productInformation");
-                            Type type = new TypeToken<ArrayList<CartBean>>() {
-                            }.getType();
-                            List<CartBean> cartBeanList = new Gson().fromJson(jsonArray.toString(), type);
-                            mCartBeanList.addAll(cartBeanList);
+                            JSONArray jsonArray = jsonObject.optJSONArray("productInfromation");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject cartObject = jsonArray.getJSONObject(i);
+                                mCartBeanList.add(new Gson().fromJson(cartObject.toString(), CartBean.class));
+                            }
+                            mTotalPriceTextView.setText("总价：" + totalMoney + "元");
                             mCartAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            ToastUtil.showToast(getActivity(), "error");
                         }
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
                         ToastUtil.showToast(getActivity(), "error:" + throwable.getMessage());
+                        Log.e("ndb", "error:" + throwable.getMessage());
                     }
                 });
-
     }
 
-    @OnClick(R.id.tv_edit_complete)
+    @OnClick({R.id.tv_edit_complete, R.id.cart_bottom_delete_delete,
+            R.id.cart_bottom_pay_topay})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_edit_complete:
@@ -188,18 +227,114 @@ public class ShoppingCarFragment extends BaseFragment {
                     ToastUtil.showToast(getActivity(), "暂无商品");
                     return;
                 }
-                mCurrentType = !mCurrentType;
-                if (mCurrentType == TYPE_EDIT) {
-                    mTvEditComplete.setText(mComplete);
-                    mBottomLayout1.setVisibility(View.VISIBLE);
-                    mBottomLayout2.setVisibility(View.GONE);
-                } else {
-                    mTvEditComplete.setText(mEdit);
-                    mBottomLayout2.setVisibility(View.VISIBLE);
-                    mBottomLayout1.setVisibility(View.GONE);
+                changeEditMode();
+                break;
+            case R.id.cart_bottom_delete_delete:
+                //删除商品
+                if (mCartBeanList.size() == 0) {
+                    ToastUtil.showToast(getActivity(), "暂无商品");
+                    return;
                 }
-                mCartAdapter.notifyDataSetChanged();
+                mSelectedList = mCartAdapter.getCheckedPositionList();
+                if (mSelectedList.size() == 0) {
+                    ToastUtil.showToast(getActivity(), "请选择商品");
+                    return;
+                }
+                deleteDialog();
+                break;
+            case R.id.cart_bottom_pay_topay:
+                //去结算
+                if (mCartBeanList.size() == 0) {
+                    ToastUtil.showToast(getActivity(), "暂无商品");
+                    return;
+                }
+                Intent intent = new Intent(getActivity(), EditOrderActivity.class);
+                //获取所有id
+                String ids = "";
+                for (int i = 0; i < mCartBeanList.size(); i++) {
+                    ids += mCartBeanList.get(i).getProductId();
+                    if (i != mCartBeanList.size() - 1) {
+                        ids += ",";
+                    }
+                }
+                intent.putExtra("productIds", ids);
+                startActivity(intent);
                 break;
         }
+    }
+
+    private void deleteDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                .setTitle("温馨提示")
+                .setMessage("确认删除选中的商品吗？")
+                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int id) {
+                        //表示删除选中的
+                        String ids = "";
+                        for (int i = 0; i < mSelectedList.size(); i++) {
+                            String position = mSelectedList.get(i);
+                            CartBean cartBean = mCartBeanList.get(Integer.parseInt(position));
+                            ids += cartBean.getProductId();
+                            if (i != mSelectedList.size() - 1) {
+                                ids += ",";
+                            }
+                        }
+                        deleteProduct(ids);
+                    }
+                })
+                .create();
+        dialog.show();
+    }
+
+    /**
+     * 删除购物车商品
+     *
+     * @param ids 要删除的商品id
+     */
+    private void deleteProduct(String ids) {
+        Subscription subscription = RetrofitHelper.getApi()
+                .deleteFromCart(SharedPreferencesUtil.getUserId(getActivity()), ids)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String string) {
+                        Log.e("ndb", "result:" + string);
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            String result = jsonObject.optString("result");
+                            if (result.equals("true")) {
+                                ToastUtil.showToast(getActivity(), "删除成功");
+                                requestData();
+                            } else {
+                                ToastUtil.showToast(getActivity(), "删除失败");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        ToastUtil.showToast(getActivity(), "error:" + throwable.getMessage());
+                        Log.e("ndb", "error:" + throwable.getMessage());
+                    }
+                });
+    }
+
+    private void changeEditMode() {
+        if (mCurrentType == TYPE_EDIT) {
+            mTvEditComplete.setText(mEdit);
+            mBottomLayout1.setVisibility(View.VISIBLE);
+            mBottomLayout2.setVisibility(View.GONE);
+        } else {
+            mTvEditComplete.setText(mComplete);
+            mBottomLayout2.setVisibility(View.VISIBLE);
+            mBottomLayout1.setVisibility(View.GONE);
+        }
+        mCartAdapter.setShowCheckBox(mCurrentType);
+        mCurrentType = !mCurrentType;
+        mCartAdapter.notifyDataSetChanged();
     }
 }

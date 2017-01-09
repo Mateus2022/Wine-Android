@@ -42,18 +42,6 @@
             android:text="去支付"
             android:textColor="@color/white"
             android:textSize="14sp"/>
-
-        <Button
-            android:id="@+id/orderdetail_cancelorder"
-            android:layout_width="80dp"
-            android:layout_height="35dp"
-            android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@id/orderdetail_gotopay"
-            android:background="@drawable/shape_orderdetail_cancelorder"
-            android:gravity="center"
-            android:text="取消订单"
-            android:textColor="#666666"
-            android:textSize="14sp"/>
     </RelativeLayout>
 
     <ScrollView

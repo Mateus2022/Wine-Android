@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 public class CartAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Context mContext;
-    private List<CartBean> mCartBeens;
+    private List<CartBean> mCartBeanList;
     //选中的item
     private List<String> mCheckedPositionList;
     //是否显示复选框
@@ -34,7 +34,7 @@ public class CartAdapter extends BaseAdapter {
     private ShoppingCarOnItemClickListener mListener;
 
     public CartAdapter(Context context, List<CartBean> beanList) {
-        mCartBeens = beanList;
+        mCartBeanList = beanList;
         mContext = context;
         mInflater = LayoutInflater.from(mContext);
         mCheckedPositionList = new ArrayList<>();
@@ -42,12 +42,12 @@ public class CartAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mCartBeens.size();
+        return mCartBeanList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mCartBeens.get(position);
+        return mCartBeanList.get(position);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CartAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        CarWineHolder carWineHolder=null;
+        CarWineHolder carWineHolder = null;
         if (convertView != null) {
             carWineHolder = (CarWineHolder) convertView.getTag();
         } else {
@@ -65,13 +65,14 @@ public class CartAdapter extends BaseAdapter {
             carWineHolder = new CarWineHolder(convertView);
             convertView.setTag(carWineHolder);
         }
-        CartBean cartBean = mCartBeens.get(position);
+        CartBean cartBean = mCartBeanList.get(position);
         Glide.with(mContext)
-                .load(cartBean.getProductPrice())
+                .load(cartBean.getProductPicture())
                 .into(carWineHolder.mImageGoods);
         carWineHolder.mTextGoodsDescription.setText(cartBean.getProductName());
         carWineHolder.mTextPrice.setText(cartBean.getProductPrice() + "元");
-        carWineHolder.mNumPriceTextView.setText("小计：" + cartBean.getTotalPrice() + "元");
+        carWineHolder.mTextNumber.setText(cartBean.getProductCount());
+        carWineHolder.mNumPriceTextView.setText("小计：" + cartBean.getProductMoney() + "元");
         //是否显示复选框
         if (mShowCheckBox) {
             carWineHolder.mCheckBoxSelect.setVisibility(View.VISIBLE);

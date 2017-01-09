@@ -69,15 +69,97 @@ public interface Api {
 
     /**
      * 根据商品总类显示商品
-     * @param wineType  酒类
-     * @param userId    用户编号
-     * @return  酒类信息
+     *
+     * @param wineType 酒类
+     * @param userId   用户编号
+     * @return 酒类信息
      */
     @POST(Urls.URL_SHOW_WINES_BY_TYPE)
     Observable<List<WineBean>> showWinesByType(@Query("typeIndexId") String wineType,
                                                @Query("memberId") String userId);
+
     @POST(Urls.URL_MODIFY_PRODUCT_NUM)
-    Observable<String> modifyProductNum(@Query("memberId")String userId,
-                                        @Query("productId")String productId,
-                                        @Query("productCount")String productCount);
+    Observable<String> modifyProductNum(@Query("memberId") String userId,
+                                        @Query("productId") String productId,
+                                        @Query("productCount") String productCount);
+
+    /**
+     * 获取购物车商品列表
+     *
+     * @param memberId 用户id
+     * @return 商品列表信息
+     */
+    @POST(Urls.URL_CART_GET_PRODUCT_LIST)
+    Observable<String> getCartProductsList(@Query("memberId") String memberId);
+
+    /**
+     * 删除购物车内商品
+     *
+     * @param memberId   用户id
+     * @param productIds 商品id集合
+     * @return 删除成功或失败信息
+     */
+    @POST(Urls.URL_CART_DELETE_PRODUCT)
+    Observable<String> deleteFromCart(@Query("memberId") String memberId,
+                                      @Query("productIds") String productIds);
+
+    /**
+     * 购物车内商品去结算
+     *
+     * @param memberId   用户id
+     * @param productIds 商品id集合
+     * @return 操作成功或失败信息
+     */
+    @POST(Urls.URL_SUBMIT_ORDER)
+    Observable<String> submitOrder(@Query("memberId") String memberId,
+                                   @Query("productIds") String productIds);
+
+    /**
+     * 确认订单
+     *
+     * @param memberId   用户id
+     * @param productIds 商品id集合
+     * @param addressId  地址id
+     * @param payId      支付方式id
+     * @return 确认订单结果
+     */
+    @POST(Urls.URL_ENSURE_ORDER)
+    Observable<String> ensureOrder(@Query("memberId") String memberId,
+                                   @Query("productIds") String productIds,
+                                   @Query("addressId") String addressId,
+                                   @Query("payId") String payId);
+
+    /**
+     * 获取订单详情
+     *
+     * @param memberId 用户id
+     * @param orderId  订单id
+     * @return 订单信息
+     */
+    @POST(Urls.URL_ORDER_DETAIL)
+    Observable<String> getOrderDetail(@Query("memberId") String memberId,
+                                      @Query("orderId") String orderId);
+
+    /**
+     * 根据订单状态获取订单列表
+     *
+     * @param memberId    用户id
+     * @param orderStatus 订单状态
+     * @return
+     */
+    @POST(Urls.URL_GET_ORDER_BY_STATUS)
+    Observable<String> getOrderByStatus(@Query("memberId") String memberId,
+                                        @Query("orderStatus") String orderStatus);
+
+    /**
+     * 支付宝支付
+     *
+     * @param memberId 用户id
+     * @param orderId  订单id
+     * @return 支付路径等信息
+     */
+    @POST(Urls.URL_PAY_ALIPAY)
+    Observable<String> doAlipay(@Query("memberId") String memberId,
+                                @Query("orderId") String orderId);
+
 }

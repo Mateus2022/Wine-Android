@@ -6,64 +6,66 @@ package com.ndboo.bean;
 
 public class CartBean {
     /**
-     * picPath : 图片地址
-     * cartProductCount : 商品数量
+     * productPicture : 图片地址
+     * productCount : 商品数量
      * productPrice : 商品价格
      * productName : 商品名称
      * productId : 商品编号
-     * totalPrice : 小计
+     * productMoney : 小计
      */
 
-    private String picPath;
-    private String cartProductCount;
+    private String productCount;
+    private String productMoney;
     private String productPrice;
     private String productName;
     private String productId;
-    private String totalPrice;
+    private String productPicture;
 
-    public CartBean(String picPath, String cartProductCount, String productPrice,
-                    String productName, String productId, String totalPrice) {
-        this.picPath = picPath;
-        this.cartProductCount = cartProductCount;
-        this.productPrice = productPrice;
-        this.productName = productName;
-        this.productId = productId;
-        this.totalPrice = totalPrice;
+    public String getProductCount() {
+        return productCount;
     }
 
-    public String getPicPath() {
-        return picPath;
+    public void setProductCount(String productCount) {
+        this.productCount = productCount;
     }
 
-    public String getCartProductCount() {
-        return cartProductCount;
+    public String getProductMoney() {
+        return productMoney;
+    }
+
+    public void setProductMoney(String productMoney) {
+        this.productMoney = productMoney;
     }
 
     public String getProductPrice() {
         return productPrice;
     }
 
+    public void setProductPrice(String productPrice) {
+        this.productPrice = productPrice;
+    }
+
     public String getProductName() {
         return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getProductId() {
         return productId;
     }
 
-    public String getTotalPrice() {
-        return totalPrice;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
-    @Override
-    public String toString() {
-        return "CartBean{" +
-                "picPath='" + picPath + '\'' +
-                ", cartProductCount='" + cartProductCount + '\'' +
-                ", productPrice='" + productPrice + '\'' +
-                ", productName='" + productName + '\'' +
-                ", productId='" + productId + '\'' +
-                ", totalPrice='" + totalPrice + '\'' +
-                '}';
+    public String getProductPicture() {
+        return productPicture;
+    }
+
+    public void setProductPicture(String productPicture) {
+        this.productPicture = productPicture;
     }
 }

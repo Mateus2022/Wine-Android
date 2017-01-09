@@ -1,10 +1,10 @@
 package com.ndboo.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +14,15 @@ import android.widget.ListView;
 import com.ndboo.adapter.OrderListAdapter;
 import com.ndboo.bean.OrderFirstBean;
 import com.ndboo.bean.OrderSecondBean;
-import com.ndboo.widget.LoadingDialog;
+import com.ndboo.net.RetrofitHelper;
+import com.ndboo.utils.SharedPreferencesUtil;
+import com.ndboo.utils.ToastUtil;
+import com.ndboo.wine.OrderDetailActivity;
 import com.ndboo.wine.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +32,10 @@ import java.util.Map;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler2;
 import in.srain.cube.views.ptr.PtrFrameLayout;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -53,36 +64,8 @@ public class OrderFragment extends Fragment {
     //每个订单中商品的集合
     private Map<Integer, List<OrderSecondBean>> mSecondBeanList = new HashMap<>();
 
-    //加载框
-    private LoadingDialog mLoadingDialog;
-
     //标记当前是刷新还是加载,默认刷新
     private int mLoadingType = TYPE_REFRESH;
-
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == 1) {
-                if (mLoadingType == TYPE_REFRESH) {
-                    mFirstBeanList.clear();
-                    mSecondBeanList.clear();
-                }
-                OrderFirstBean firstBean = new OrderFirstBean("111", "2017-01-05", "10", "23.6", "1");
-                Map<Integer, List<OrderSecondBean>> secondList = new HashMap<>();
-                List<OrderSecondBean> secondBeanList = new ArrayList<>();
-                OrderSecondBean secondBean = new OrderSecondBean("", "aaaa", "10", "10.0", "袋", "2222");
-                secondBeanList.add(secondBean);
-                secondList.put(new Integer(mFirstBeanList.size()), secondBeanList);
-                mFirstBeanList.add(firstBean);
-                mSecondBeanList.putAll(secondList);
-                mAdapter.notifyDataSetChanged();
-                mPtrClassicFrameLayout.refreshComplete();
-                if (mLoadingDialog.isShowing()) {
-                    mLoadingDialog.dismiss();
-                }
-            }
-        }
-    };
 
     @Nullable
     @Override
@@ -93,14 +76,18 @@ public class OrderFragment extends Fragment {
 
         initView();
         addListener();
-        requestData();
         return mView;
     }
 
-    private void initView() {
-        //加载框
-        mLoadingDialog = new LoadingDialog(getActivity(), R.style.dialog);
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && mFirstBeanList.size() == 0) {
+            requestData();
+        }
+    }
 
+    private void initView() {
         mPtrClassicFrameLayout = (PtrClassicFrameLayout) mView.findViewById(R.id.refresh_listview_frame);
         mListView = (ListView) mView.findViewById(R.id.refresh_listview);
         mAdapter = new OrderListAdapter(getActivity(), mSecondBeanList, mFirstBeanList);
@@ -132,9 +119,9 @@ public class OrderFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
-//                intent.putExtra("orderId", mFirstBeanList.get(i).getOrderId());
-//                startActivity(intent);
+                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
+                intent.putExtra("orderId", mFirstBeanList.get(i).getOrderId());
+                startActivity(intent);
             }
         });
 
@@ -162,9 +149,77 @@ public class OrderFragment extends Fragment {
     }
 
     private void requestData() {
-        if (mFirstBeanList.size() == 0 && !mLoadingDialog.isShowing()) {
-            mLoadingDialog.show();
-        }
-        mHandler.sendEmptyMessageDelayed(1, 1000);
+        Subscription subscription = RetrofitHelper.getApi()
+                .getOrderByStatus(SharedPreferencesUtil.getUserId(getActivity()), "" + mCurrentSort)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String string) {
+                        Log.e("ndb", "result:" + string);
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            //总价
+                            JSONArray jsonArray = jsonObject.optJSONArray("productInformation");
+                            int length = jsonArray.length();
+
+                            if (mLoadingType == TYPE_LOAD) {
+                                if (length == 0) {
+                                    mCurrentPage--;
+                                }
+                            } else if (mLoadingType == TYPE_REFRESH) {
+                                mFirstBeanList.clear();
+                                mSecondBeanList.clear();
+                            }
+
+                            List<OrderFirstBean> firstList = new ArrayList<>();
+                            Map<Integer, List<OrderSecondBean>> secondList = new HashMap<>();
+                            for (int i = 0; i < length; i++) {
+                                JSONObject object1 = jsonArray.optJSONObject(i);
+                                String orderTotal = object1.optString("orderTotal", "");
+                                String orderTime = object1.optString("orderTime", "");
+                                String orderStatus = object1.optString("orderStatus", "");
+                                String orderId = object1.optString("orderId", "");
+                                String productTypeCount = object1.optString("productTypeCount", "");
+                                JSONArray jsonArray1 = object1.optJSONArray("productInformation");
+
+                                List<OrderSecondBean> secondBeenList = new ArrayList<>();
+                                for (int k = 0; k < jsonArray1.length(); k++) {
+                                    JSONObject object = jsonArray1.optJSONObject(k);
+                                    String productCount = object.optString("productCount", "");
+                                    String productName = object.optString("productName", "");
+                                    String bazaarPrice = object.optString("bazaarPrice", "");
+                                    String productPicture = object.optString("productPicture", "");
+                                    String specName = object.optString("specName", "");
+                                    String money = object.optString("money", "");
+
+                                    secondBeenList.add(new OrderSecondBean(productPicture, productName,
+                                            productCount, bazaarPrice, specName, money));
+                                }
+                                secondList.put(new Integer(mFirstBeanList.size() + firstList.size()),
+                                        secondBeenList);
+                                firstList.add(new OrderFirstBean(orderId, orderTime, productTypeCount,
+                                        orderTotal, orderStatus));
+                            }
+                            mSecondBeanList.putAll(secondList);
+                            mFirstBeanList.addAll(firstList);
+
+                            if (length == 0) {
+                                ToastUtil.showToast(getActivity(), "暂无数据");
+                            } else {
+                                mAdapter.notifyDataSetChanged();
+                                mListView.setSelection(mFirstBeanList.size() - firstList.size());
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        ToastUtil.showToast(getActivity(), "error:" + throwable.getMessage());
+                        Log.e("ndb", "error:" + throwable.getMessage());
+                    }
+                });
     }
 }

@@ -26,3 +26,38 @@
 -keep class com.alipay.sdk.app.AuthTask{ public *;}
 -dontwarn android.net.**
 -keep class android.net.SSLCertificateSocketFactory{*;}
+
+-keepattributes Signature
+# Gson specific classes
+-keep class sun.misc.Unsafe { *; }
+#-keep class com.google.gson.stream.** { *; }
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.ndboo.bean.** { *; }
+
+#-dontwarn和-keep 结合使用，意思是保持com.xx.bbb.**这个包里面的所有类和所有方法而不混淆，接着还叫ProGuard不要警告找不到
+#-dontwarn com.xx.bbb.**
+#-keep class com.xx.bbb.** { *;}
+#参数来保持第三方库中的类而不乱，
+
+-dontwarn javax.annotation.**
+-dontwarn javax.inject.**
+# OkHttp3
+-dontwarn okhttp3.logging.**
+-keep class okhttp3.internal.**{*;}
+-dontwarn okio.**
+# Retrofit
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+
+# RxJava RxAndroid
+-dontwarn sun.misc.**
+-keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
+    long producerIndex;
+    long consumerIndex;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueProducerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode producerNode;
+}
+-keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
+    rx.internal.util.atomic.LinkedQueueNode consumerNode;
+}

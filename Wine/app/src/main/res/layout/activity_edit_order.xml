@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f7f9f8"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".EditOrderActivity">
+
+    <com.ndboo.widget.TopBar
+        android:id="@+id/editorder_header"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/white"
+        app:topbar_title="填写订单"/>
+
+    <RelativeLayout
+        android:id="@+id/editorder_footer"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#999"/>
+
+        <TextView
+            android:id="@+id/editorder_footer_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:text="总价："
+            android:textColor="#b4b4b4"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:id="@+id/editorder_footer_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/editorder_footer_label"
+            android:text="240.00元"
+            android:textColor="#ff4f01"
+            android:textSize="17sp"/>
+
+        <Button
+            android:id="@+id/editorder_footer_submit"
+            android:layout_width="104dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="#de3031"
+            android:text="提交订单"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/editorder_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/editorder_footer"
+        android:layout_below="@id/editorder_header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/editorder_delivery"
+                android:layout_width="match_parent"
+                android:layout_height="85dp"
+                android:background="@drawable/ic_editorder_bg"
+                android:orientation="vertical"
+                android:paddingLeft="9dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="#999999"/>
+
+                <TextView
+                    android:id="@+id/editorder_delivery_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="收货人 廖某某 12345678909"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/editorder_delivery_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:drawableLeft="@drawable/ic_editorder_address"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:text="江苏省苏州市相城区苏州高铁新城相城区"
+                    android:textSize="13sp"/>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="19px"
+                android:background="@color/white"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="配送时间"
+                    android:textColor="#6c6c6c"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/editorder_delivery_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:drawablePadding="5dp"
+                    android:drawableRight="@drawable/ic_forward"
+                    android:text="2016-08-25 10:00-11:00"
+                    android:textSize="15sp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="19px"
+                android:background="@color/white"
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="支付方式"
+                    android:textColor="#6c6c6c"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/editorder_delivery_payment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:drawablePadding="5dp"
+                    android:drawableRight="@mipmap/ic_arrow_right"
+                    android:gravity="center_vertical"
+                    android:text="在线支付"
+                    android:textSize="15sp"/>
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/editorder_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="19px"
+                android:overScrollMode="never"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

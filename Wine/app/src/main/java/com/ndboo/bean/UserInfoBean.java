@@ -60,4 +60,15 @@ public class UserInfoBean {
     public void setShopLogo(String shopLogo) {
         this.shopLogo = shopLogo;
     }
+
+    @Override
+    public String toString() {
+        return "UserInfoBean{" +
+                "memberSex='" + memberSex + '\'' +
+                ", memberNickname='" + memberNickname + '\'' +
+                ", memberAccount='" + memberAccount + '\'' +
+                ", memberBirthday='" + memberBirthday + '\'' +
+                ", shopLogo='" + shopLogo + '\'' +
+                '}';
+    }
 }
