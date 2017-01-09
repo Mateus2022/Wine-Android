@@ -2,6 +2,7 @@ package com.ndboo.net;
 
 import com.ndboo.bean.UserInfoBean;
 import com.ndboo.bean.WineBean;
+import com.ndboo.bean.WineDetailBean;
 
 import java.util.List;
 
@@ -78,10 +79,48 @@ public interface Api {
     Observable<List<WineBean>> showWinesByType(@Query("typeIndexId") String wineType,
                                                @Query("memberId") String userId);
 
+    /**
+     * 添加商品至购物车
+     * @param userId    用户编号
+     * @param productId 商品编号
+     * @param productCount  商品数量
+     * @return  添加结果
+     */
+    @POST(Urls.URL_ADD_TO_CAR)
+    Observable<String> addWineToCar(@Query("memberId")String userId,
+                                    @Query("productId")String productId,
+                                    @Query("productCount")String productCount);
+
+    /**
+     * 删除购物车商品数量
+     * @param memberId  用户编号
+     * @param productIds    商品编号，用逗号隔开
+     * @return  删除结果
+     */
+    @POST(Urls.URL_CART_DELETE_PRODUCT)
+    Observable<String> deleteFromCart(@Query("memberId")String memberId,
+                                      @Query("productIds")String productIds);
+
+    /**
+     * 修改商品数量
+     *
+     * @param userId       用户编号
+     * @param productId    商品编号
+     * @param productCount 商品数量
+     * @return 修改结果
+     */
     @POST(Urls.URL_MODIFY_PRODUCT_NUM)
     Observable<String> modifyProductNum(@Query("memberId") String userId,
                                         @Query("productId") String productId,
                                         @Query("productCount") String productCount);
+
+    /**
+     * 商品详情
+     * @param productId 商品编号
+     * @return  详情信息
+     */
+    @POST(Urls.URL_WINE_DETAIL)
+    Observable<WineDetailBean> showWineDetail(@Query("productId") String productId);
 
     /**
      * 获取购物车商品列表
@@ -91,18 +130,6 @@ public interface Api {
      */
     @POST(Urls.URL_CART_GET_PRODUCT_LIST)
     Observable<String> getCartProductsList(@Query("memberId") String memberId);
-
-    /**
-     * 删除购物车内商品
-     *
-     * @param memberId   用户id
-     * @param productIds 商品id集合
-     * @return 删除成功或失败信息
-     */
-    @POST(Urls.URL_CART_DELETE_PRODUCT)
-    Observable<String> deleteFromCart(@Query("memberId") String memberId,
-                                      @Query("productIds") String productIds);
-
     /**
      * 购物车内商品去结算
      *
@@ -161,5 +188,4 @@ public interface Api {
     @POST(Urls.URL_PAY_ALIPAY)
     Observable<String> doAlipay(@Query("memberId") String memberId,
                                 @Query("orderId") String orderId);
-
 }

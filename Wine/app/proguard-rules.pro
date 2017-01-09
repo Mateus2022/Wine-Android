@@ -27,6 +27,19 @@
 -dontwarn android.net.**
 -keep class android.net.SSLCertificateSocketFactory{*;}
 
+
+
+
+-dontwarn com.alipay.**
+-keep class com.alipay.** { *;}
+
+-dontwarn com.mob.commons.**
+-keep class com.mob.commons.** { *;}
+
+-dontwarn com.mob.tools.**
+-keep class com.mob.tools.** { *;}
+
+# removes such information by default, so configure it to keep all of it.
 -keepattributes Signature
 # Gson specific classes
 -keep class sun.misc.Unsafe { *; }

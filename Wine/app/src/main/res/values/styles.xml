@@ -6,7 +6,11 @@
     </style>
 
 
-
+    <style name="ratingBar" parent="Base.Widget.AppCompat.RatingBar.Small">
+        <item name="android:progressDrawable">@drawable/layer_list_star</item>
+        <item name="android:minHeight">20dp</item>
+        <item name="android:maxHeight">20dp</item>
+    </style>
 
     <style name="MainTabStyle">
         <item name="android:width">0dp</item>

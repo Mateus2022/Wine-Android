@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 
-import com.amap.api.location.AMapLocationClientOption;
 import com.ndboo.base.BaseActivity;
 import com.ndboo.ui.fragment.IndexFragment;
 import com.ndboo.ui.fragment.MallFragment;
@@ -21,24 +20,6 @@ import butterknife.BindView;
 public class MainActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
 
 
-//    public AMapLocationClient mAMapLocationClient = null;
-//    public AMapLocationListener mAMapLocationListener = new AMapLocationListener() {
-//        @Override
-//        public void onLocationChanged(AMapLocation aMapLocation) {
-//            if (aMapLocation != null) {
-//                if (aMapLocation.getErrorCode() == 0) {
-//                    String location =
-//                            aMapLocation.getCountry() + aMapLocation.getProvince() +
-//                                    aMapLocation.getCity() + aMapLocation.getDistrict() +
-//                                    aMapLocation.getStreet() + aMapLocation.getStreetNum();
-//                    mTvLocation.setText(location);
-//                } else {
-//                    Toast.makeText(MainActivity.this, "定位失败" + aMapLocation.getErrorCode(), Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        }
-//    };
-    public AMapLocationClientOption mLocationClientOption = null;
     @BindView(R.id.view_pager_main)
     FixedViewPager mViewPagerMain;
     @BindView(R.id.rb_index)
@@ -49,8 +30,6 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
     RadioButton mRbShoppingCar;
     @BindView(R.id.rb_mine)
     RadioButton mRbMine;
-//    @BindView(R.id.tv_location)
-//    TextView mTvLocation;
     /**
      * fragment集合
      * 包含首页、商城、商家、我的四个界面
@@ -142,5 +121,7 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         mRbType.setChecked(true);
     }
 
-
+    public void turnToShoppingCar() {
+        mRbShoppingCar.setChecked(true);
+    }
 }

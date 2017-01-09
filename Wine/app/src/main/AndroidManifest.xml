@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.ndboo.wine"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.ndboo.wine">
 
     <!-- &lt;!&ndash;用于进行网络定位&ndash;&gt; -->
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> -->
@@ -14,6 +14,7 @@
     <!-- <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/> -->
     <!-- &lt;!&ndash;用于访问网络，网络定位需要上网&ndash;&gt; -->
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <!-- &lt;!&ndash;用于读取手机当前的状态&ndash;&gt; -->
     <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE"/> -->
     <!-- &lt;!&ndash;用于写入缓存数据到扩展存储卡&ndash;&gt; -->
@@ -35,7 +36,8 @@
         <!-- android:name="com.amap.api.v2.apikey" -->
         <!-- android:value="f65f55cc61ac999dd64a5ec74a52f044"/> -->
 
-        <!--短信验证的key和secret-->
+
+        <!-- 短信验证的key和secret -->
         <meta-data
             android:name="sms_key"
             android:value="1a9f22852b739"/>
@@ -90,6 +92,8 @@
         </activity>
         <activity android:name=".OrderDetailActivity">
         </activity>
+        <activity android:name=".PayActivity">
+        </activity>
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
@@ -97,8 +101,6 @@
             android:screenOrientation="behind">
         </activity>
         <activity android:name=".GoodsDetailActivity">
-        </activity>
-        <activity android:name=".EditOrderActivity">
         </activity>
     </application>
 

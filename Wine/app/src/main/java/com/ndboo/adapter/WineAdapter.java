@@ -84,35 +84,61 @@ public class WineAdapter extends BaseAdapter {
         }
         Glide.with(mContext).load(wine.getPicPath()).into(wineViewHolder.mIv);
         wineViewHolder.mTvWineName.setText(wine.getProductName());
-        wineViewHolder.mTvPrice.setText("¥：" + wine.getProductPrice());
+        wineViewHolder.mTvPrice.setText("¥" + wine.getProductPrice());
         wineViewHolder.mViewNumOperation.setNumber(wine.getCartProductCount());
         wineViewHolder.mViewNumOperation.setNumOperationListener(new NumOperationListener() {
             @Override
-            public void numAdd(int position, final View view) {
+            public void numAdd(final int position, final View view) {
                 view.setEnabled(false);
                 if (SharedPreferencesUtil.isUserLoginIn(mContext)) {
-                    Subscription subscription = RetrofitHelper.getApi()
-                            .modifyProductNum(SharedPreferencesUtil.getUserId(mContext), wine.getProductId(),
-                                    Integer.parseInt(wine.getCartProductCount()) + 1 + "")
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Action1<String>() {
-                                @Override
-                                public void call(String s) {
-                                    view.setEnabled(true);
-                                    Log.e("tag", s);
-                                }
-                            }, new Action1<Throwable>() {
-                                @Override
-                                public void call(Throwable throwable) {
-                                    view.setEnabled(true);
-                                    ToastUtil.showToast(mBaseFragment.getActivity(),"网络连接错误");
-                                }
-                            });
-                    mBaseFragment.addSubscription(subscription);
-                    wineViewHolder.mViewNumOperation.numAdd();
-                    mWines.get(position).setCartProductCount(wineViewHolder.mViewNumOperation.getNumber());
-                    notifyDataSetChanged();
+                    //数量为0时，调用添加接口
+                    if (mWines.get(position).getCartProductCount().equals("0")) {
+                        Subscription addSubscription = RetrofitHelper.getApi()
+                                .addWineToCar(SharedPreferencesUtil.getUserId(mContext), wine.getProductId(), "1")
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Action1<String>() {
+                                    @Override
+                                    public void call(String s) {
+                                        view.setEnabled(true);
+                                        wineViewHolder.mViewNumOperation.numAdd();
+                                        mWines.get(position).setCartProductCount(wineViewHolder.mViewNumOperation.getNumber());
+                                        notifyDataSetChanged();
+                                    }
+                                }, new Action1<Throwable>() {
+                                    @Override
+                                    public void call(Throwable throwable) {
+                                        view.setEnabled(true);
+                                    }
+                                });
+
+                        mBaseFragment.addSubscription(addSubscription);
+                    } else {
+                        Subscription subscription = RetrofitHelper.getApi()
+                                .modifyProductNum(SharedPreferencesUtil.getUserId(mContext), wine.getProductId(),
+                                        Integer.parseInt(wine.getCartProductCount()) + 1 + "")
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Action1<String>() {
+                                    @Override
+                                    public void call(String s) {
+                                        view.setEnabled(true);
+                                        wineViewHolder.mViewNumOperation.numAdd();
+                                        mWines.get(position).setCartProductCount(wineViewHolder.mViewNumOperation.getNumber());
+                                        notifyDataSetChanged();
+                                        Log.e("tag", s);
+                                    }
+                                }, new Action1<Throwable>() {
+                                    @Override
+                                    public void call(Throwable throwable) {
+                                        view.setEnabled(true);
+                                        ToastUtil.showToast(mBaseFragment.getActivity(), "网络连接错误");
+                                    }
+                                });
+                        mBaseFragment.addSubscription(subscription);
+                    }
+
+
                 } else {
                     view.setEnabled(true);
                     mContext.startActivity(new Intent(mContext, LoginActivity.class));
@@ -121,31 +147,56 @@ public class WineAdapter extends BaseAdapter {
             }
 
             @Override
-            public void numReduce(int position, final View view) {
+            public void numReduce(final int position, final View view) {
                 view.setEnabled(false);
                 if (SharedPreferencesUtil.isUserLoginIn(mContext)) {
-                    Subscription subscription = RetrofitHelper.getApi()
-                            .modifyProductNum(SharedPreferencesUtil.getUserId(mContext), wine.getProductId(),
-                                    Integer.parseInt(wine.getCartProductCount()) - 1 + "")
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Action1<String>() {
-                                @Override
-                                public void call(String s) {
-                                    view.setEnabled(true);
-                                    Log.e("tag", s);
-                                }
-                            }, new Action1<Throwable>() {
-                                @Override
-                                public void call(Throwable throwable) {
-                                    view.setEnabled(true);
-                                    ToastUtil.showToast(mBaseFragment.getActivity(),"网络连接错误");
-                                }
-                            });
-                    mBaseFragment.addSubscription(subscription);
-                    wineViewHolder.mViewNumOperation.numAdd();
-                    mWines.get(position).setCartProductCount(wineViewHolder.mViewNumOperation.getNumber());
-                    notifyDataSetChanged();
+
+                    if (wine.getCartProductCount().equals("1")) {
+                        Subscription reduceSub = RetrofitHelper.getApi()
+                                .deleteFromCart(SharedPreferencesUtil.getUserId(mContext), wine.getProductId())
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Action1<String>() {
+                                    @Override
+                                    public void call(String s) {
+                                        view.setEnabled(true);
+                                        wineViewHolder.mViewNumOperation.numReduce();
+                                        mWines.get(position).setCartProductCount(wineViewHolder.mViewNumOperation.getNumber());
+                                        notifyDataSetChanged();
+                                    }
+                                }, new Action1<Throwable>() {
+                                    @Override
+                                    public void call(Throwable throwable) {
+                                        view.setEnabled(true);
+                                    }
+                                });
+                        mBaseFragment.addSubscription(reduceSub);
+                    } else {
+                        Subscription subscription = RetrofitHelper.getApi()
+                                .modifyProductNum(SharedPreferencesUtil.getUserId(mContext), wine.getProductId(),
+                                        Integer.parseInt(wine.getCartProductCount()) - 1 + "")
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Action1<String>() {
+                                    @Override
+                                    public void call(String s) {
+                                        view.setEnabled(true);
+                                        wineViewHolder.mViewNumOperation.numReduce();
+                                        mWines.get(position).setCartProductCount(wineViewHolder.mViewNumOperation.getNumber());
+                                        notifyDataSetChanged();
+                                    }
+                                }, new Action1<Throwable>() {
+                                    @Override
+                                    public void call(Throwable throwable) {
+                                        view.setEnabled(true);
+                                        Log.e("tag", throwable.getMessage());
+                                        ToastUtil.showToast(mBaseFragment.getActivity(), "网络连接错误");
+                                    }
+                                });
+                        mBaseFragment.addSubscription(subscription);
+                    }
+
+
                 } else {
                     view.setEnabled(true);
                     mContext.startActivity(new Intent(mContext, LoginActivity.class));

@@ -4,12 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:paddingBottom="6dp"
+    android:paddingTop="10dp"
     android:orientation="horizontal">
     <!--左边 商品图片-->
     <ImageView
         android:id="@+id/iv"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
         android:scaleType="fitXY"/>
 
     <!--中间 包含商品名称  商品评价 价格 门市价-->
@@ -30,8 +34,7 @@
             android:id="@+id/tv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="进口国发生的房"
-            android:textColor="@color/themeColor"
+            android:textColor="#ff5000"
             android:textSize="14sp"
             android:layout_margin="5dp"
             android:layout_alignParentBottom="true"/>
@@ -50,9 +53,8 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="2"
-            android:text="进口国发生的房间卡华盛顿凤凰飞机"
-            android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textColor="#323232"
+            android:textSize="13sp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"/>
