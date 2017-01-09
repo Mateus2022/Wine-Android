@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Li on 2016/12/23.
@@ -22,7 +24,7 @@ public abstract class BaseFragment extends Fragment {
     private View mView;
     private Unbinder mUnBinder;
     private boolean flag = true;
-    private CompositeSubscription mCompositeSubscription;
+    private List<Subscription> mSubscriptions;
 
     @Nullable
     @Override
@@ -75,14 +77,12 @@ public abstract class BaseFragment extends Fragment {
      * 显示内容
      */
     public void showContent() {
-        unSubscribe();
     }
 
     /**
      * 当界面第一次可见时的操作
      */
     public void firstVisibleDeal() {
-        unSubscribe();
     }
 
     /**
@@ -101,11 +101,11 @@ public abstract class BaseFragment extends Fragment {
      * @param subscription 待添加的订阅
      */
     protected void addSubscription(Subscription subscription) {
-        if (mCompositeSubscription == null) {
-            mCompositeSubscription = new CompositeSubscription();
+        if (mSubscriptions == null) {
+            mSubscriptions = new ArrayList<>();
         }
         if (subscription != null) {
-            mCompositeSubscription.add(subscription);
+            mSubscriptions.add(subscription);
         }
     }
 
@@ -114,8 +114,12 @@ public abstract class BaseFragment extends Fragment {
      * 取消订阅
      */
     protected void unSubscribe() {
-        if (mCompositeSubscription != null) {
-            mCompositeSubscription.unsubscribe();
+        if (mSubscriptions != null) {
+            for (Subscription subscription : mSubscriptions) {
+                if (!subscription.isUnsubscribed()) {
+                    subscription.unsubscribe();
+                }
+            }
         }
     }
 

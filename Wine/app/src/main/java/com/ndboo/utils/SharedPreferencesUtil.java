@@ -50,6 +50,10 @@ public class SharedPreferencesUtil {
         return getUserInfoSharePreferences(context).getString(USER_ID, DEFAULT_USER_ID);
     }
 
+    public static String getUserAccount(Context context){
+        return getUserInfoSharePreferences(context).getString(USER_ACCOUNT, "好来酒");
+    }
+
     /**
      * 判断当前是否有用户在线
      *
@@ -57,7 +61,7 @@ public class SharedPreferencesUtil {
      * @return boolean
      */
     public static boolean isUserLoginIn(Context context) {
-        return getUserId(context).equals(DEFAULT_USER_ID);
+        return !getUserId(context).equals(DEFAULT_USER_ID);
     }
 
     /**

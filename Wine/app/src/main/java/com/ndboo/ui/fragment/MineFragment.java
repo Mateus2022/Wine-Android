@@ -10,15 +10,22 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ndboo.base.BaseFragment;
+import com.ndboo.bean.UserInfoBean;
+import com.ndboo.net.RetrofitHelper;
+import com.ndboo.utils.SharedPreferencesUtil;
 import com.ndboo.widget.CircleImageView;
 import com.ndboo.widget.ImgTextView;
 import com.ndboo.widget.PortraitPopupWindow;
 import com.ndboo.wine.AboutUsActivity;
+import com.ndboo.wine.LoginActivity;
 import com.ndboo.wine.OrderListActivity;
 import com.ndboo.wine.R;
+import com.ndboo.wine.RegisterActivity;
 import com.ndboo.wine.SettingActivity;
 import com.ndboo.wine.SuggestionActivity;
 import com.ndboo.wine.UserInfoActivity;
@@ -28,6 +35,11 @@ import java.io.File;
 import java.io.IOException;
 
 import butterknife.BindView;
+import butterknife.OnClick;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -36,7 +48,7 @@ import static android.app.Activity.RESULT_OK;
  * “我的”界面
  */
 
-public class MineFragment extends BaseFragment implements View.OnClickListener {
+public class MineFragment extends BaseFragment {
     protected static final int CHOOSE_PICTURE = 0;//选择本地图片
     protected static final int TAKE_PICTURE = 1;//照相
     private static final int CROP_SMALL_PICTURE = 2;//裁剪
@@ -59,66 +71,18 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
     ImgTextView mSuggestionImgTextView;//意见反馈
     @BindView(R.id.mine_setting)
     ImgTextView mSettingImgTextView;//设置
-
-    //修改头像
-    private PortraitPopupWindow mPortraitPopupWindow;
+    @BindView(R.id.layout_user_not_exist)
+    LinearLayout mLayoutUserNotExist;
+    @BindView(R.id.layout_user_exist)
+    LinearLayout mLayoutUserExist;
     @BindView(R.id.mine_main)
     View mMineView;
+    //修改头像
+    private PortraitPopupWindow mPortraitPopupWindow;
 
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_mine;
-    }
-
-    @Override
-    public void showContent() {
-        super.showContent();
-        addListener();
-    }
-
-    private void addListener() {
-        mPortraitImageView.setOnClickListener(this);
-        mNickNameTextView.setOnClickListener(this);
-        mOrderImgTextView.setOnClickListener(this);
-//        mCollectionImgTextView.setOnClickListener(this);
-        mServiceImgTextView.setOnClickListener(this);
-        mAboutUsImgTextView.setOnClickListener(this);
-        mSuggestionImgTextView.setOnClickListener(this);
-        mSettingImgTextView.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.mine_portrait:
-                //修改头像
-                showChangePicDialog();
-                break;
-            case R.id.mine_nickname:
-                startActivity(new Intent(getActivity(), UserInfoActivity.class));
-                break;
-            case R.id.mine_order:
-                startActivity(new Intent(getActivity(), OrderListActivity.class));
-                break;
-           /* case R.id.mine_collection:
-                startActivity(new Intent(getActivity(), CollectionActivity.class));
-                break;*/
-            case R.id.mine_service:
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                Uri data = Uri.parse("tel:" + "051266155111");
-                intent.setData(data);
-                startActivity(intent);
-                break;
-            case R.id.mine_aboutus:
-                startActivity(new Intent(getActivity(), AboutUsActivity.class));
-                break;
-            case R.id.mine_suggestion:
-                startActivity(new Intent(getActivity(), SuggestionActivity.class));
-                break;
-            case R.id.mine_setting:
-                startActivity(new Intent(getActivity(), SettingActivity.class));
-                break;
-        }
     }
 
     private void showChangePicDialog() {
@@ -141,7 +105,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 public void onChoosePicClicked() {
                     // 选择本地照片
                     Intent openAlbumIntent = new Intent(Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     openAlbumIntent.setType("image/*");
                     startActivityForResult(openAlbumIntent, CHOOSE_PICTURE);
                 }
@@ -212,11 +176,30 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 byte[] buffer = byteArrayOutputStream.toByteArray();
                 //将图片的字节流数据加密成base64字符输出
                 String photo = Base64.encodeToString(buffer, 0, buffer.length, Base64.DEFAULT);
-//                uploadLogo(photo);
+                uploadLogo(photo);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void uploadLogo(String photo) {
+        Subscription subscription = RetrofitHelper.getApi()
+                .modifyUserHead(SharedPreferencesUtil.getUserId(getContext()), photo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        Log.e("tag", s);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e("tag", throwable.getMessage());
+                    }
+                });
+        addSubscription(subscription);
     }
 
 
@@ -238,11 +221,96 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         mPortraitPopupWindow.dismiss();
     }
 
-    /**
-     * 每次可见时操作
-     */
-    @Override
-    protected void visibleDeal() {
+
+    public void showHeadByUserIsExist() {
+        if (SharedPreferencesUtil.isUserLoginIn(getContext())) {
+            mLayoutUserExist.setVisibility(View.VISIBLE);
+            mLayoutUserNotExist.setVisibility(View.GONE);
+        } else {
+            mLayoutUserExist.setVisibility(View.GONE);
+            mLayoutUserNotExist.setVisibility(View.VISIBLE);
+        }
     }
 
+
+    @OnClick({R.id.btn_login, R.id.btn_register, R.id.mine_portrait, R.id.mine_nickname, R.id.mine_order,
+            R.id.mine_service, R.id.mine_aboutus, R.id.mine_suggestion, R.id.mine_setting})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_login:
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+                break;
+            case R.id.btn_register:
+                startActivity(new Intent(getActivity(), RegisterActivity.class));
+                break;
+            case R.id.mine_portrait:
+                //修改头像
+                showChangePicDialog();
+                break;
+            case R.id.mine_nickname:
+                startActivity(new Intent(getActivity(), UserInfoActivity.class));
+                break;
+            case R.id.mine_order:
+                startActivity(new Intent(getActivity(), OrderListActivity.class));
+                break;
+           /* case R.id.mine_collection:
+                startActivity(new Intent(getActivity(), CollectionActivity.class));
+                break;*/
+            case R.id.mine_service:
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                Uri data = Uri.parse("tel:" + "051266155111");
+                intent.setData(data);
+                startActivity(intent);
+                break;
+            case R.id.mine_aboutus:
+                startActivity(new Intent(getActivity(), AboutUsActivity.class));
+                break;
+            case R.id.mine_suggestion:
+                startActivity(new Intent(getActivity(), SuggestionActivity.class));
+                break;
+            case R.id.mine_setting:
+                startActivity(new Intent(getActivity(), SettingActivity.class));
+                break;
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showHeadByUserIsExist();
+        showUserInfo();
+    }
+
+    /**
+     * 显示用户信息
+     */
+    private void showUserInfo() {
+        if (!SharedPreferencesUtil.isUserLoginIn(getContext())) {
+            return;
+        }
+        String humanId = SharedPreferencesUtil.getUserId(getActivity());
+        Subscription subscription = RetrofitHelper.getApi()
+                .getUserInfo(humanId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<UserInfoBean>() {
+                    @Override
+                    public void call(UserInfoBean userInfoBean) {
+                        Glide.with(getActivity()).load(userInfoBean.getShopLogo()).error(R.drawable.ic_tab_mine_on).into(mPortraitImageView);
+                        mNickNameTextView.setText(userInfoBean.getMemberNickname());
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        mNickNameTextView.setText(getResources().getText(R.string.app_name));
+                    }
+                });
+        addSubscription(subscription);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        unSubscribe();
+    }
 }

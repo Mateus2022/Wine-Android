@@ -1,15 +1,18 @@
 package com.ndboo.wine;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.ndboo.base.BaseActivity;
+import com.ndboo.utils.SharedPreferencesUtil;
 import com.ndboo.utils.ToastUtil;
 import com.ndboo.widget.TopBar;
 
@@ -31,11 +34,13 @@ public class SettingActivity extends BaseActivity {
     TextView mCacheTextView;
     @BindView(R.id.setting_version_current)
     TextView mVersionTextView;
+    @BindView(R.id.setting_logout)
+    Button mSettingLogout;
 
     //保存推送开启的关闭
     private SharedPreferences mSharedPreferences;
 
-    @OnClick({R.id.setting_push, R.id.setting_cache, R.id.setting_version})
+    @OnClick({R.id.setting_push, R.id.setting_cache, R.id.setting_version,R.id.setting_logout})
     void doClick(View view) {
         switch (view.getId()) {
             case R.id.setting_push:
@@ -43,6 +48,11 @@ public class SettingActivity extends BaseActivity {
                 break;
             case R.id.setting_cache:
                 clearAllCache();
+                break;
+            case R.id.setting_logout:
+                SharedPreferencesUtil.userLogout(SettingActivity.this);
+                startActivity(new Intent(this,LoginActivity.class));
+                finish();
                 break;
             case R.id.setting_version:
                 ToastUtil.showToast(this, "已是最新版本");
@@ -57,6 +67,11 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     public void init() {
+        if (SharedPreferencesUtil.isUserLoginIn(SettingActivity.this)) {
+            mSettingLogout.setVisibility(View.VISIBLE);
+        }else {
+            mSettingLogout.setVisibility(View.GONE);
+        }
         mSharedPreferences = getSharedPreferences("push_mode", MODE_PRIVATE);
 
         //是否开启推送

@@ -58,12 +58,13 @@ public class MallFragment extends BaseFragment implements AdapterView.OnItemClic
         mFragments=new ArrayList<>();
         mViewPagerWine.setOffscreenPageLimit(mWineTypes.size());
         mTabLayoutType.setupWithViewPager(mViewPagerWine);
+        addOnTabSelectedListener();
         for (int i = 0; i < mWineTypes.size(); i++) {
             if (i==0) {
-                mFragments.add(WineFragment.newInstance(true));
+                mFragments.add(WineFragment.newInstance(true,i+""));
                 continue;
             }
-            mFragments.add(WineFragment.newInstance(false));
+            mFragments.add(WineFragment.newInstance(false,i+""));
         }
         mViewPagerWine.setAdapter(new FragmentPagerAdapter(getActivity().getSupportFragmentManager()) {
             @Override
@@ -81,7 +82,7 @@ public class MallFragment extends BaseFragment implements AdapterView.OnItemClic
                 return mWineTypes.get(position);
             }
         });
-        addOnTabSelectedListener();
+
         /**
          * 为mTabLayoutType添加addTabSelectedListener监听事件，
          * 要放在为mTabLayoutType添加TabItem之前

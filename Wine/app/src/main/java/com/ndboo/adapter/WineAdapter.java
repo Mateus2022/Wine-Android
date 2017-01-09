@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ndboo.bean.WineBean;
 import com.ndboo.interfaces.NumOperationListener;
 import com.ndboo.widget.NumOperationView;
@@ -27,9 +28,8 @@ public class WineAdapter extends BaseAdapter {
     private Context mContext;
     private List<WineBean> mWines;
 
-    public WineAdapter(Context context, List<WineBean> wines) {
+    public WineAdapter(Context context) {
         mContext = context;
-        mWines = wines;
     }
 
     public void setWines(List<WineBean> wines) {
@@ -40,7 +40,7 @@ public class WineAdapter extends BaseAdapter {
     @Override
     public int getCount() {
 
-        return mWines.size();
+        return mWines==null?0:mWines.size();
     }
 
     @Override
@@ -65,7 +65,7 @@ public class WineAdapter extends BaseAdapter {
         } else {
             wineViewHolder = (WineViewHolder) convertView.getTag();
         }
-//        wineViewHolder.mIv.setImageResource(Integer.parseInt(wine.getImgUrl()));
+        Glide.with(mContext).load(wine.getPicPath()).into(wineViewHolder.mIv);
         wineViewHolder.mTvWineName.setText(wine.getProductName());
         wineViewHolder.mTvPrice.setText("¥：" + wine.getProductPrice());
         wineViewHolder.mViewNumOperation.setNumber(wine.getCartProductCount());

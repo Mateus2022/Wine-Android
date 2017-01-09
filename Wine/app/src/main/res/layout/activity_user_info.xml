@@ -49,7 +49,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:background="@null"
-                android:text="行长"
                 android:textColor="#413f3f"
                 android:textSize="16sp"/>
         </LinearLayout>
@@ -77,7 +76,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:clickable="true"
-                android:text="2017-01-06"
                 android:textColor="#413f3f"
                 android:textSize="16sp"/>
         </LinearLayout>
@@ -109,7 +107,6 @@
                     android:id="@+id/userinfo_sex_male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="true"
                     android:text="男"/>
 
                 <RadioButton

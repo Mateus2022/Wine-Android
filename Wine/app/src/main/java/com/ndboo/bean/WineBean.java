@@ -20,15 +20,6 @@ public class WineBean {
     private String productName;
     private String productId;
 
-    public WineBean(String productId, String productName, String picPath,
-                    String cartProductCount, String productPrice) {
-        this.productId = productId;
-        this.productName = productName;
-        this.picPath = picPath;
-        this.cartProductCount = cartProductCount;
-        this.productPrice = productPrice;
-    }
-
     public String getPicPath() {
         return picPath;
     }
