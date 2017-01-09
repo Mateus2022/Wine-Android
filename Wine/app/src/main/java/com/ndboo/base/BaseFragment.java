@@ -53,14 +53,12 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void visibleDeal() {
-        unSubscribe();
     }
 
     /**
      * 界面不可见时的处理
      */
     protected void inVisibleDeal() {
-        unSubscribe();
     }
 
 
@@ -100,7 +98,7 @@ public abstract class BaseFragment extends Fragment {
      *
      * @param subscription 待添加的订阅
      */
-    protected void addSubscription(Subscription subscription) {
+    public void addSubscription(Subscription subscription) {
         if (mSubscriptions == null) {
             mSubscriptions = new ArrayList<>();
         }

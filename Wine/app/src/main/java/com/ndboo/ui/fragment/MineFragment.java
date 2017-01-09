@@ -167,7 +167,6 @@ public class MineFragment extends BaseFragment {
         Bundle extras = data.getExtras();
         if (extras != null) {
             Bitmap bitmap = extras.getParcelable("data");
-            mPortraitImageView.setImageBitmap(bitmap);
             //将Bitmap转换成字节流
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);

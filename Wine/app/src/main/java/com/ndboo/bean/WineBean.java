@@ -60,6 +60,10 @@ public class WineBean {
         this.productId = productId;
     }
 
+    @Override
+    public String toString() {
+        return getProductId()+" "+getProductName()+" "+getCartProductCount();
+    }
 
 //    private String mImgUrl;
 //    private String mPrice;

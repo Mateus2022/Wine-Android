@@ -1,6 +1,7 @@
 package com.ndboo.ui.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.ndboo.adapter.WineAdapter;
@@ -53,7 +54,7 @@ public class WineFragment extends BaseFragment {
     @Override
     public void showContent() {
         super.showContent();
-        mWineAdapter = new WineAdapter(getContext());
+        mWineAdapter = new WineAdapter(getContext(),this);
         mRefreshListView.setAdapter(mWineAdapter);
         boolean isFirst = getArguments().getBoolean(IS_FIRST_FRAGMENT);
         String wineType = getArguments().getString(WINE_TYPE);
@@ -77,11 +78,11 @@ public class WineFragment extends BaseFragment {
         super.visibleDeal();
         boolean isFirst = getArguments().getBoolean(IS_FIRST_FRAGMENT);
         String wineType = getArguments().getString(WINE_TYPE);
-
-        if (!isFirst) {
-            showWinesByType(wineType, SharedPreferencesUtil.getUserId(getContext()));
-
-        }
+        showWinesByType(wineType, SharedPreferencesUtil.getUserId(getContext()));
+        Log.e("tag",wineType);
+//        if (!isFirst) {
+//
+//        }
     }
 
     private void showWinesByType(String wineType, String userId) {
@@ -93,6 +94,9 @@ public class WineFragment extends BaseFragment {
                 .subscribe(new Action1<List<WineBean>>() {
                     @Override
                     public void call(List<WineBean> wineBeen) {
+                        for (WineBean wineBean : wineBeen) {
+                            Log.e("tag",wineBean.toString()+"huamnId:"+SharedPreferencesUtil.getUserId(getContext()));
+                        }
                         mWineAdapter.setWines(wineBeen);
                     }
                 }, new Action1<Throwable>() {
@@ -104,5 +108,9 @@ public class WineFragment extends BaseFragment {
         addSubscription(subscription);
     }
 
-
+    @Override
+    protected void inVisibleDeal() {
+        super.inVisibleDeal();
+        unSubscribe();
+    }
 }
