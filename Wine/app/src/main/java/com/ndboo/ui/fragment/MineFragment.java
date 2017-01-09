@@ -13,7 +13,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ndboo.base.BaseFragment;
+import com.ndboo.bean.UserInfoBean;
+import com.ndboo.net.RetrofitHelper;
 import com.ndboo.utils.SharedPreferencesUtil;
 import com.ndboo.widget.CircleImageView;
 import com.ndboo.widget.ImgTextView;
@@ -33,6 +36,10 @@ import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -169,11 +176,30 @@ public class MineFragment extends BaseFragment {
                 byte[] buffer = byteArrayOutputStream.toByteArray();
                 //将图片的字节流数据加密成base64字符输出
                 String photo = Base64.encodeToString(buffer, 0, buffer.length, Base64.DEFAULT);
-//                uploadLogo(photo);
+                uploadLogo(photo);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void uploadLogo(String photo) {
+        Subscription subscription = RetrofitHelper.getApi()
+                .modifyUserHead(SharedPreferencesUtil.getUserId(getContext()), photo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        Log.e("tag", s);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e("tag", throwable.getMessage());
+                    }
+                });
+        addSubscription(subscription);
     }
 
 
@@ -195,13 +221,6 @@ public class MineFragment extends BaseFragment {
         mPortraitPopupWindow.dismiss();
     }
 
-
-
-    @Override
-    public void showContent() {
-        super.showContent();
-        showHeadByUserIsExist();
-    }
 
     public void showHeadByUserIsExist() {
         if (SharedPreferencesUtil.isUserLoginIn(getContext())) {
@@ -253,5 +272,45 @@ public class MineFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), SettingActivity.class));
                 break;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showHeadByUserIsExist();
+        showUserInfo();
+    }
+
+    /**
+     * 显示用户信息
+     */
+    private void showUserInfo() {
+        if (!SharedPreferencesUtil.isUserLoginIn(getContext())) {
+            return;
+        }
+        String humanId = SharedPreferencesUtil.getUserId(getActivity());
+        Subscription subscription = RetrofitHelper.getApi()
+                .getUserInfo(humanId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<UserInfoBean>() {
+                    @Override
+                    public void call(UserInfoBean userInfoBean) {
+                        Glide.with(getActivity()).load(userInfoBean.getShopLogo()).error(R.drawable.ic_tab_mine_on).into(mPortraitImageView);
+                        mNickNameTextView.setText(userInfoBean.getMemberNickname());
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        mNickNameTextView.setText(getResources().getText(R.string.app_name));
+                    }
+                });
+        addSubscription(subscription);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        unSubscribe();
     }
 }
