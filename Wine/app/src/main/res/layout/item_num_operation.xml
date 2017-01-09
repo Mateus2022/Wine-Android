@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_edit"
+    android:id="@+id/item_cart_goods_acccunt"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@drawable/rectangle">
     <ImageView
-        android:id="@+id/image_reduce"
+        android:id="@+id/item_cart_goods_acccunt_reduce"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/decrease"
         android:contentDescription="@null"
         android:clickable="true"/>
     <TextView
-        android:id="@+id/text_number"
+        android:id="@+id/item_cart_goods_acccunt_number"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:textColor="#000"
@@ -22,7 +22,7 @@
         android:text="20"
         android:gravity="center"/>
     <ImageView
-        android:id="@+id/image_add"
+        android:id="@+id/item_cart_goods_acccunt_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/add"

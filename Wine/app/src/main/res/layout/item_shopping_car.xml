@@ -3,87 +3,95 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingRight="20dp"
+    android:paddingBottom="15dp"
     android:paddingLeft="20dp"
-    android:paddingTop="15dp"
-    android:paddingBottom="15dp">
-    <ImageView
-        android:id="@+id/image_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_centerVertical="true"
-        android:src="@drawable/image_delete"
-        android:visibility="invisible"/>
+    android:paddingRight="20dp"
+    android:paddingTop="15dp">
+
     <CheckBox
-        android:id="@+id/check_box_select"
+        android:id="@+id/item_cart_checkbox"
+        style="@style/ckBoxStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/ckBoxStyle"
-        android:padding="10dp"
-        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:padding="10dp"
+        android:visibility="gone"/>
+
     <ImageView
-        android:id="@+id/image_goods"
+        android:id="@+id/item_cart_goods_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:scaleType="fitXY"
-        android:layout_toRightOf="@id/check_box_select"
-        android:layout_toEndOf="@id/check_box_select"
+        android:layout_marginEnd="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginEnd="20dp"/>
+        android:layout_toEndOf="@id/item_cart_checkbox"
+        android:layout_toRightOf="@id/item_cart_checkbox"
+        android:scaleType="fitXY"/>
 
     <TextView
-        android:id="@+id/text_goods_description"
+        android:id="@+id/item_cart_goods_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/image_goods"
-        android:layout_toEndOf="@id/image_goods"
-        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:lines="2"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/item_cart_goods_image"
+        android:layout_toRightOf="@id/item_cart_goods_image"
         android:ellipsize="end"
+        android:lines="2"
         android:textColor="#000"/>
+
     <TextView
-        android:id="@+id/text_price"
+        android:id="@+id/item_cart_goods_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000"
-        android:layout_toRightOf="@id/image_goods"
-        android:layout_toEndOf="@id/image_goods"
-        android:layout_marginRight="50dp"
+        android:layout_below="@id/item_cart_goods_name"
         android:layout_marginEnd="50dp"
-        android:layout_below="@id/text_goods_description"/>
+        android:layout_marginRight="50dp"
+        android:layout_toEndOf="@id/item_cart_goods_image"
+        android:layout_toRightOf="@id/item_cart_goods_image"
+        android:textColor="#000"/>
 
     <LinearLayout
-        android:id="@+id/layout_edit"
+        android:id="@+id/item_cart_goods_acccunt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text_goods_description"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:orientation="horizontal"
-        android:background="@drawable/rectangle">
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/item_cart_goods_name"
+        android:background="@drawable/rectangle"
+        android:orientation="horizontal">
+
         <ImageView
-            android:id="@+id/image_reduce"
+            android:id="@+id/item_cart_goods_acccunt_reduce"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/decrease"/>
+
         <TextView
-            android:id="@+id/text_number"
+            android:id="@+id/item_cart_goods_acccunt_number"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:textColor="#000"
             android:layout_weight="1"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:textColor="#000"/>
+
         <ImageView
-            android:id="@+id/image_add"
+            android:id="@+id/item_cart_goods_acccunt_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/add"/>
     </LinearLayout>
 
-
+    <TextView
+        android:id="@+id/item_cart_goods_acccunt_numprice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/item_cart_goods_acccunt"
+        android:layout_marginRight="3dp"
+        android:layout_marginTop="5dp"
+        android:text="小计：62.5元"
+        android:textColor="#ef591d"
+        android:textSize="12sp"/>
 </RelativeLayout>

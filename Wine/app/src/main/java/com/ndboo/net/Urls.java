@@ -6,13 +6,17 @@ package com.ndboo.net;
  */
 
 public class Urls {
-    public static final String URL_BASE="http://www.ndboo.com/wine";
+    public static final String URL_BASE = "http://www.ndboo.com/wine";
 
 
     //通过密码登录
-    public static final String URL_LOGIN_BY_PASSWORD="loginByPassword";
+    public static final String URL_LOGIN_BY_PASSWORD = "loginByPassword";
     //注册
-    public static final String URL_REGISTER="register";
+    public static final String URL_REGISTER = "register";
     //获取个人信息
-    public static final String URL_FET_USER_INFO="getMemberInformationById";
+    public static final String URL_FET_USER_INFO = "getMemberInformationById";
+    //获取订单列表
+    public static final String URL_ORDER_LIST = "";
+    //获取购物车商品列表
+    public static final String URL_CART_LIST = "getProductsFromCart";
 }

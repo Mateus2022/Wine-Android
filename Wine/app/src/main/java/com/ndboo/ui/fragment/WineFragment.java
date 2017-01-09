@@ -9,7 +9,6 @@ import android.widget.ListView;
 
 import com.ndboo.adapter.WineAdapter;
 import com.ndboo.base.BaseFragment;
-import com.ndboo.bean.Wine;
 import com.ndboo.wine.LoginActivity;
 import com.ndboo.wine.R;
 

@@ -10,8 +10,6 @@ import android.widget.CompoundButton;
 
 public interface ShoppingCarOnItemClickListener {
 
-    void delete(int position, View view);
-
     void numAdd(int position, View view);
 
     void numReduce(int position, View view);
