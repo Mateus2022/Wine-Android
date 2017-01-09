@@ -17,9 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * http://blog.csdn.net/lmj623565791/article/details/42160391
- *
- * @author zhy
+ *订单指示器
  */
 public class ViewPagerIndicator extends LinearLayout {
     /**
@@ -60,7 +58,7 @@ public class ViewPagerIndicator extends LinearLayout {
     /**
      * 默认的Tab数量
      */
-    private static final int COUNT_DEFAULT_TAB = 5;
+    private static final int COUNT_DEFAULT_TAB = 4;
     /**
      * tab数量
      */

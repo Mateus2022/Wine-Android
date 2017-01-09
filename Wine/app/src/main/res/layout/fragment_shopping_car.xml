@@ -4,40 +4,139 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <com.ndboo.widget.TopBar
         android:id="@+id/top_bar"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:topbar_title="@string/main_tab_shopping_car"
-        app:topbar_isShowBackImg="false">
+        app:topbar_isShowBackImg="false"
+        app:topbar_title="@string/main_tab_shopping_car">
+
         <TextView
             android:id="@+id/tv_edit_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             android:text="@string/car_edit"
             android:textColor="@color/white"
-            android:textSize="12sp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"/>
-        </com.ndboo.widget.TopBar>
-    <LinearLayout
-        android:id="@+id/layout_car_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:background="@color/themeColor">
+            android:textSize="12sp"/>
+    </com.ndboo.widget.TopBar>
 
+    <LinearLayout
+        android:id="@+id/layout_cart_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/cart_bottom_divider1"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#d0d0d0"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp">
+
+            <TextView
+                android:layout_width="71dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/shape_bg_orange_corner"
+                android:gravity="center"
+                android:text="起送说明"
+                android:textColor="@color/white"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:text="单日累计下单金额满100.00元起送"
+                android:textColor="@color/themeColor"
+                android:textSize="13sp"/>
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/cart_bottom_divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#d0d0d0"/>
+
+        <RelativeLayout
+            android:id="@+id/cart_bottom_pay"
+            android:layout_width="match_parent"
+            android:layout_height="49dp">
+
+            <TextView
+                android:id="@+id/cart_bottom_pay_totalprice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="总价：0.00元"
+                android:layout_centerVertical="true"
+                android:textColor="#6c6c6c"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/cart_bottom_pay_topay"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@color/themeColor"
+                android:gravity="center"
+                android:text="去结算"
+                android:textColor="#fffeff"
+                android:textSize="17sp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/cart_bottom_delete"
+            android:layout_width="match_parent"
+            android:layout_height="49dp"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone">
+
+            <CheckBox
+                android:id="@+id/cart_bottom_delete_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:button="@drawable/selector_check_box"
+                android:paddingLeft="5dp"
+                android:text="全选"/>
+
+            <Button
+                android:id="@+id/cart_bottom_delete_delete"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@color/themeColor"
+                android:text="删除"
+                android:textColor="@color/white"
+                android:textSize="15sp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#d0d0d0"/>
     </LinearLayout>
 
     <ListView
         android:id="@+id/list_view_car_wines"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/top_bar"
-        android:layout_above="@id/layout_car_bottom"/>
+        android:layout_above="@id/layout_cart_bottom"
+        android:layout_below="@id/top_bar"/>
 </RelativeLayout>

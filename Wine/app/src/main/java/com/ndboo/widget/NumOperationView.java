@@ -41,10 +41,10 @@ public class NumOperationView extends LinearLayout {
     }
 
     private void initView() {
-        mImageViewAdd = (ImageView) findViewById(R.id.image_add);
-        mImageViewReduce = (ImageView) findViewById(R.id.image_reduce);
-        mTextViewNumber = (TextView) findViewById(R.id.text_number);
-        mLayout = (LinearLayout) findViewById(R.id.layout_edit);
+        mImageViewAdd = (ImageView) findViewById(R.id.item_cart_goods_acccunt_add);
+        mImageViewReduce = (ImageView) findViewById(R.id.item_cart_goods_acccunt_reduce);
+        mTextViewNumber = (TextView) findViewById(R.id.item_cart_goods_acccunt_number);
+        mLayout = (LinearLayout) findViewById(R.id.item_cart_goods_acccunt);
 
         mImageViewAdd.setOnClickListener(new OnClickListener() {
             @Override

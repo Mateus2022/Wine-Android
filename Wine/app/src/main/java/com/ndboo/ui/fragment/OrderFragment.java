@@ -1,6 +1,5 @@
 package com.ndboo.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,7 +15,6 @@ import com.ndboo.adapter.OrderListAdapter;
 import com.ndboo.bean.OrderFirstBean;
 import com.ndboo.bean.OrderSecondBean;
 import com.ndboo.widget.LoadingDialog;
-import com.ndboo.wine.OrderDetailActivity;
 import com.ndboo.wine.R;
 
 import java.util.ArrayList;
@@ -134,9 +132,9 @@ public class OrderFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
-                intent.putExtra("orderId", mFirstBeanList.get(i).getOrderId());
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
+//                intent.putExtra("orderId", mFirstBeanList.get(i).getOrderId());
+//                startActivity(intent);
             }
         });
 
