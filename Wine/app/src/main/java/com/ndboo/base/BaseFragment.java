@@ -98,7 +98,7 @@ public abstract class BaseFragment extends Fragment {
      *
      * @param subscription 待添加的订阅
      */
-    protected void addSubscription(Subscription subscription) {
+    public void addSubscription(Subscription subscription) {
         if (mSubscriptions == null) {
             mSubscriptions = new ArrayList<>();
         }

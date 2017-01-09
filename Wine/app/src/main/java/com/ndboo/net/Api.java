@@ -76,4 +76,8 @@ public interface Api {
     @POST(Urls.URL_SHOW_WINES_BY_TYPE)
     Observable<List<WineBean>> showWinesByType(@Query("typeIndexId") String wineType,
                                                @Query("memberId") String userId);
+    @POST(Urls.URL_MODIFY_PRODUCT_NUM)
+    Observable<String> modifyProductNum(@Query("memberId")String userId,
+                                        @Query("productId")String productId,
+                                        @Query("productCount")String productCount);
 }

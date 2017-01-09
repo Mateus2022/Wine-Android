@@ -19,6 +19,8 @@ public class Urls {
     public static final String URL_MODIFY_USER_INFO = "member/updateUserInformationById";
     //修改头像
     public static final String URL_MODIFY_USER_HEAD_IMAGE = "member/updateMemberShopLogo";
-//分类下酒的信息
-    public static final String URL_SHOW_WINES_BY_TYPE="ws/showAllWineByWineClass";
+    //分类下酒的信息
+    public static final String URL_SHOW_WINES_BY_TYPE = "ws/showAllWineByWineClass";
+    //修改商品数量
+    public static final String URL_MODIFY_PRODUCT_NUM="ws/updateProductNumFromCart";
 }

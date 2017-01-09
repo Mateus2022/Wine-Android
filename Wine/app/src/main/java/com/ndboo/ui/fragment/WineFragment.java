@@ -54,7 +54,7 @@ public class WineFragment extends BaseFragment {
     @Override
     public void showContent() {
         super.showContent();
-        mWineAdapter = new WineAdapter(getContext());
+        mWineAdapter = new WineAdapter(getContext(),this);
         mRefreshListView.setAdapter(mWineAdapter);
         boolean isFirst = getArguments().getBoolean(IS_FIRST_FRAGMENT);
         String wineType = getArguments().getString(WINE_TYPE);
@@ -94,7 +94,9 @@ public class WineFragment extends BaseFragment {
                 .subscribe(new Action1<List<WineBean>>() {
                     @Override
                     public void call(List<WineBean> wineBeen) {
-                        Log.e("tag","show");
+                        for (WineBean wineBean : wineBeen) {
+                            Log.e("tag",wineBean.toString()+"huamnId:"+SharedPreferencesUtil.getUserId(getContext()));
+                        }
                         mWineAdapter.setWines(wineBeen);
                     }
                 }, new Action1<Throwable>() {
