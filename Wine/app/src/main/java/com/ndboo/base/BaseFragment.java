@@ -53,14 +53,12 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void visibleDeal() {
-        unSubscribe();
     }
 
     /**
      * 界面不可见时的处理
      */
     protected void inVisibleDeal() {
-        unSubscribe();
     }
 
 

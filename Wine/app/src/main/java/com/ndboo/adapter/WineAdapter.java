@@ -14,6 +14,7 @@ import com.ndboo.interfaces.NumOperationListener;
 import com.ndboo.widget.NumOperationView;
 import com.ndboo.wine.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -30,6 +31,9 @@ public class WineAdapter extends BaseAdapter {
 
     public WineAdapter(Context context) {
         mContext = context;
+        if (mWines != null) {
+            mWines=new ArrayList<>();
+        }
     }
 
     public void setWines(List<WineBean> wines) {
