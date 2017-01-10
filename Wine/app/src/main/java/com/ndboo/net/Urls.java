@@ -42,5 +42,13 @@ public class Urls {
     public static final String URL_PAY_ALIPAY = "ws/doPayForCart";
     //购物车列表
     public static final String URL_CART_GET_PRODUCT_LIST = "ws/getProductsFromCart";
+    //查询收货地址
+    public static final String URL_QUERY_ADDRESS="ws/showAddressByHumanId";
+    //添加收货地址
+    public static final String URL_ADD_ADDRESS="ws/addAddress";
+    //修改收货地址
+    public static final String URL_UPDATE_ADDRESS="ws/updateAddress";
+    //删除收货地址
+    public static final String URL_DELETE_ADDRESS="ws/deleteAddress";
 
 }

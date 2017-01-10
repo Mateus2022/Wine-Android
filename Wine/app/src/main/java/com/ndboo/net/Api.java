@@ -1,5 +1,6 @@
 package com.ndboo.net;
 
+import com.ndboo.bean.AddressBean;
 import com.ndboo.bean.UserInfoBean;
 import com.ndboo.bean.WineBean;
 import com.ndboo.bean.WineDetailBean;
@@ -196,4 +197,52 @@ public interface Api {
     @POST(Urls.URL_PAY_ALIPAY)
     Observable<String> doAlipay(@Query("memberId") String memberId,
                                 @Query("orderId") String orderId);
+
+    /**
+     * 查询收货地址
+     *
+     * @param userId 用户编号
+     * @return 收货地址
+     */
+    @POST(Urls.URL_QUERY_ADDRESS)
+    Observable<List<AddressBean>> queryAddress(@Query("humanId") String userId);
+
+    /**
+     * 添加地址
+     *
+     * @param userId        用户编号
+     * @param addressName   联系人
+     * @param detailAddress 送货地址
+     * @param addressPhone  联系电话
+     * @return 添加结果
+     */
+    @POST(Urls.URL_ADD_ADDRESS)
+    Observable<String> addAddress(@Query("humanId") String userId,
+                                  @Query("addresseeName") String addressName,
+                                  @Query("detailAddress") String detailAddress,
+                                  @Query("addresseePhone") String addressPhone);
+
+    /**
+     * 修改地址信息
+     *
+     * @param addressId     地址编号
+     * @param addressName   收货人
+     * @param addressPhone  收货电话
+     * @param addressDetail 收货地址
+     * @return 修改结果
+     */
+    @FormUrlEncoded
+    @POST(Urls.URL_UPDATE_ADDRESS)
+    Observable<String> updateAddress(@Query("addressId") String addressId,
+                                     @Field("addresseeName") String addressName,
+                                     @Query("addresseePhone") String addressPhone,
+                                     @Field("detailAddress") String addressDetail);
+
+    /**
+     * 删除地址
+     * @param addressId 地址编号
+     * @return  删除结果
+     */
+    @POST(Urls.URL_DELETE_ADDRESS)
+    Observable<String> deleteAddress(@Query("addressId") String addressId);
 }

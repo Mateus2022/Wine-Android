@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_address"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.ndboo.widget.TopBar
+        android:id="@+id/top_bar"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:topbar_isShowBackImg="true"
+        app:topbar_title="收货地址"/>
+    <TextView
+        android:id="@+id/tv_add_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="@color/themeColor"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:text="新增地址"/>
+    <ListView
+        android:id="@+id/lv_address"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/tv_add_address"
+        android:layout_below="@id/top_bar"
+        android:dividerHeight="10dp"/>
+</RelativeLayout>

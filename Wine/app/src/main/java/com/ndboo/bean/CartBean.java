@@ -5,6 +5,8 @@ package com.ndboo.bean;
  */
 
 public class CartBean {
+
+
     /**
      * productPicture : 图片地址
      * productCount : 商品数量
