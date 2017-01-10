@@ -23,13 +23,13 @@ public class Urls {
     public static final String URL_SHOW_WINES_BY_TYPE = "ws/showAllWineByWineClass";
 
     //添加至购物车
-    public static final String URL_ADD_TO_CAR="ws /addProductToCart";
+    public static final String URL_ADD_TO_CAR = "ws /addProductToCart";
     //从购物车删除
-    public static final String URL_CART_DELETE_PRODUCT ="ws/delProductFromCart";
+    public static final String URL_CART_DELETE_PRODUCT = "ws/delProductFromCart";
     //修改商品数量
-    public static final String URL_MODIFY_PRODUCT_NUM="ws/updateProductNumFromCart";
+    public static final String URL_MODIFY_PRODUCT_NUM = "ws/updateProductNumFromCart";
     //商品详情
-    public static final String URL_WINE_DETAIL="ws/showWineInformationById";
+    public static final String URL_WINE_DETAIL = "ws/showWineInformationById";
     //去结算后跳转
     public static final String URL_SUBMIT_ORDER = "ws/summitOrderView";
     //提交订单
@@ -43,14 +43,16 @@ public class Urls {
     //购物车列表
     public static final String URL_CART_GET_PRODUCT_LIST = "ws/getProductsFromCart";
     //查询收货地址
-    public static final String URL_QUERY_ADDRESS="ws/showAddressByHumanId";
+    public static final String URL_QUERY_ADDRESS = "ws/showAddressByHumanId";
     //添加收货地址
-    public static final String URL_ADD_ADDRESS="ws/addAddress";
+    public static final String URL_ADD_ADDRESS = "ws/addAddress";
     //修改收货地址
-    public static final String URL_UPDATE_ADDRESS="ws/updateAddress";
+    public static final String URL_UPDATE_ADDRESS = "ws/updateAddress";
     //删除收货地址
-    public static final String URL_DELETE_ADDRESS="ws/deleteAddress";
+    public static final String URL_DELETE_ADDRESS = "ws/deleteAddress";
     //通过地址编号查询地址信息
-    public static final String URL_QUERY_ADDRESS_BY_ID ="ws/selectAddressById";
+    public static final String URL_QUERY_ADDRESS_BY_ID = "ws/selectAddressById";
+    //立即支付
+    public static final String URL_PAY_RIGHTAWAY = "ws/addIndentFromProductDetail";
 
 }

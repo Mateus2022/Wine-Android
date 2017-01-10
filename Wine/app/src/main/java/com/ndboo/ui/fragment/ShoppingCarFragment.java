@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -21,6 +22,7 @@ import com.ndboo.utils.SharedPreferencesUtil;
 import com.ndboo.utils.ToastUtil;
 import com.ndboo.wine.EditOrderActivity;
 import com.ndboo.wine.R;
+import com.ndboo.wine.WineDetailActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,6 +85,7 @@ public class ShoppingCarFragment extends BaseFragment {
     protected int getLayoutId() {
         return R.layout.fragment_shopping_car;
     }
+
 
     /**
      * 修改商品数量
@@ -353,6 +356,15 @@ public class ShoppingCarFragment extends BaseFragment {
             }
         });
         mListViewCarWines.setAdapter(mCartAdapter);
+
+        mListViewCarWines.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), WineDetailActivity.class);
+                intent.putExtra("wineId", mCartBeanList.get(i).getProductId());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

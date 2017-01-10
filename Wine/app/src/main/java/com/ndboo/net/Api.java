@@ -240,17 +240,36 @@ public interface Api {
 
     /**
      * 删除地址
+     *
      * @param addressId 地址编号
-     * @return  删除结果
+     * @return 删除结果
      */
     @POST(Urls.URL_DELETE_ADDRESS)
     Observable<String> deleteAddress(@Query("addressId") String addressId);
 
     /**
      * 通过地址编号查看地址
+     *
      * @param addressId 地址编号
-     * @return  地址信息
+     * @return 地址信息
      */
     @POST(Urls.URL_QUERY_ADDRESS_BY_ID)
-    Observable<String> queryAddressById(@Query("addressId")String addressId);
+    Observable<String> queryAddressById(@Query("addressId") String addressId);
+
+    /**
+     * 确认订单(立即购买)
+     *
+     * @param memberId     用户id
+     * @param productId   商品id集合
+     * @param addressId    地址id
+     * @param payId        支付方式id
+     * @param productCount 商品数量
+     * @return 确认订单结果
+     */
+    @POST(Urls.URL_PAY_RIGHTAWAY)
+    Observable<String> submitOrderByCash(@Query("memberId") String memberId,
+                                         @Query("productId") String productId,
+                                         @Query("addressId") String addressId,
+                                         @Query("payId") String payId,
+                                         @Query("productCount") String productCount);
 }

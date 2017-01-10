@@ -108,13 +108,13 @@ public class CartAdapter extends BaseAdapter {
             public void onClick(View v) {
                 mListener.onCheckedChanged(position, (CompoundButton) v);
             }
-        });
+        });/*
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mListener.viewClick(position, v);
             }
-        });
+        });*/
         carWineHolder.mImageAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

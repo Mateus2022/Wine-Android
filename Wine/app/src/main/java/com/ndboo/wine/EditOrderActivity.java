@@ -76,11 +76,23 @@ public class EditOrderActivity extends BaseActivity {
     private String[] payWay = new String[]{"货到付款", "支付宝"};
     private WineDetailBean mWineDetailBean;
 
+    /**
+     * 订单支付类型
+     */
+    private int mType = 0;
+
     @OnClick({R.id.editorder_footer_submit, R.id.editorder_delivery,
             R.id.editorder_delivery_payment})
     void doClick(View view) {
         switch (view.getId()) {
             case R.id.editorder_footer_submit:
+                if (mType == 2) {
+                    double money = Double.parseDouble(mWineDetailBean.getProductPrice());
+                    if (money < 100) {
+                        ToastUtil.showToast(this, "满100起送");
+                        return;
+                    }
+                }
                 submitOrder();
                 break;
             case R.id.editorder_delivery:
@@ -127,16 +139,17 @@ public class EditOrderActivity extends BaseActivity {
     @Override
     public void init() {
         initView();
-        int type = getIntent().getIntExtra("type", 0);
-        if (type == 2) {
+        mType = getIntent().getIntExtra("type", 0);
+        if (mType == 2) {
             mWineDetailBean = (WineDetailBean) getIntent().getSerializableExtra("wine");
             CartBean cartBean = new CartBean("1", mWineDetailBean.getProductPrice(),
                     mWineDetailBean.getProductPrice(), mWineDetailBean.getProductName(),
                     mWineDetailBean.getProductId(), mWineDetailBean.getPricturePath());
             mBeanList.add(cartBean);
             mTotalPriceTextView.setText(mWineDetailBean.getProductPrice() + "元");
+            mProductIds = mWineDetailBean.getProductId();
             mAdapter.notifyDataSetChanged();
-        } else if (type == 1) {
+        } else if (mType == 1) {
             mProductIds = getIntent().getStringExtra("productIds");
             getData();
         }
@@ -194,40 +207,76 @@ public class EditOrderActivity extends BaseActivity {
             builder.create().show();
             return;
         }
-        Subscription subscription = RetrofitHelper.getApi()
-                .ensureOrder(SharedPreferencesUtil.getUserId(this),
-                        mProductIds, mAddressId, "" + mCurrentPayment)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String string) {
-                        Log.e("tag", mCurrentPayment + "");
-                        try {
-                            JSONObject jsonObject = new JSONObject(string);
-                            //总价
-                            String result = jsonObject.optString("result", "");
-                            if (result.equals("")) {
-                                ToastUtil.showToast(EditOrderActivity.this, "提交订单失败,请稍后再试");
-                                return;
+        //从购物车支付
+        if (mType == 1) {
+            Subscription subscription = RetrofitHelper.getApi()
+                    .ensureOrder(SharedPreferencesUtil.getUserId(this),
+                            mProductIds, mAddressId, "" + mCurrentPayment)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<String>() {
+                        @Override
+                        public void call(String string) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(string);
+                                //总价
+                                String result = jsonObject.optString("result", "");
+                                if (result.equals("")) {
+                                    ToastUtil.showToast(EditOrderActivity.this, "提交订单失败,请稍后再试");
+                                    return;
+                                }
+                                String orderId = jsonObject.optString("orderId", "");
+                                Intent intent = new Intent(EditOrderActivity.this, OrderDetailActivity.class);
+                                intent.putExtra("orderId", orderId);
+                                startActivity(intent);
+                                finish();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                            String orderId = jsonObject.optString("orderId", "");
-                            Intent intent = new Intent(EditOrderActivity.this, OrderDetailActivity.class);
-                            intent.putExtra("orderId", orderId);
-                            startActivity(intent);
-                            finish();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        ToastUtil.showToast(EditOrderActivity.this, "网络错误");
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            ToastUtil.showToast(EditOrderActivity.this, "网络错误");
 
-                    }
-                });
-        addSubscription(subscription);
+                        }
+                    });
+            addSubscription(subscription);
+        } else if (mType == 2) {
+            Subscription subscription2 = RetrofitHelper.getApi()
+                    .submitOrderByCash(SharedPreferencesUtil.getUserId(this),
+                            mProductIds, mAddressId, "" + mCurrentPayment, "1")
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<String>() {
+                        @Override
+                        public void call(String string) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(string);
+                                //订单id
+                                String orderId = jsonObject.optString("orderId", "");
+                                if (orderId.equals("")) {
+                                    ToastUtil.showToast(EditOrderActivity.this, "提交订单失败,请稍后再试");
+                                    return;
+                                }
+                                Intent intent = new Intent(EditOrderActivity.this, OrderDetailActivity.class);
+                                intent.putExtra("orderId", orderId);
+                                startActivity(intent);
+                                finish();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            Log.e("my", throwable.getMessage());
+                            ToastUtil.showToast(EditOrderActivity.this, "网络错误");
+
+                        }
+                    });
+            addSubscription(subscription2);
+        }
     }
 
     private void initView() {

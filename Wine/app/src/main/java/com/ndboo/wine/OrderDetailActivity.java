@@ -85,7 +85,7 @@ public class OrderDetailActivity extends BaseActivity {
     void doClick(View v) {
         switch (v.getId()) {
             case R.id.orderdetail_gotopay:
-                if (mOrderStaus.equals("未付款")&&!mOrderPayWay.equals("货到付款")) {
+                if (mOrderStaus.equals("未付款") && !mOrderPayWay.equals("货到付款")) {
                     Intent payIntent = new Intent(this, PayActivity.class);
                     payIntent.putExtra("orderId", mOrderId);
                     payIntent.putExtra("orderPrice", mOrderPrice);
@@ -140,7 +140,6 @@ public class OrderDetailActivity extends BaseActivity {
                     @Override
                     public void call(String string) {
                         Log.e("tag", "result:" + string);
-                        mPayButton.setEnabled(true);
                         try {
                             JSONObject jsonObject = new JSONObject(string);
                             //总价
@@ -183,8 +182,12 @@ public class OrderDetailActivity extends BaseActivity {
 
                             if (mOrderPayWay.equals(CASH)) {
                                 mPayButton.setText(CASH);
-                            }else {
-                                mPayButton.setText(mOrderStaus);
+                            } else {
+                                if (mOrderStaus.equals("未付款")) {
+                                    mPayButton.setText("去支付");
+                                } else {
+                                    mPayButton.setText(mOrderStaus);
+                                }
                             }
 
                         } catch (JSONException e) {
@@ -212,6 +215,6 @@ public class OrderDetailActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private static final String CASH="货到付款";
+    private static final String CASH = "货到付款";
 
 }
