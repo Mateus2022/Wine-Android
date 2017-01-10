@@ -263,6 +263,20 @@ public class EditOrderActivity extends BaseActivity {
                 mDeliveryAddressTextView.setText(addressArea);
                 mAddressId = data.getStringExtra("addressId");
 
+            }else {
+                mDeliveryInfoTextView.setText("请添加收货地址");
+                mDeliveryAddressTextView.setText("");
+                mAddressId=ERROR_ADDRESS_ID;
+            }
+        }
+        if (resultCode==15) {
+            if (data != null) {
+                String addressId = data.getStringExtra("addressId");
+                if (addressId.equals(mAddressId)) {
+                    mDeliveryInfoTextView.setText("请添加收货地址");
+                    mDeliveryAddressTextView.setText("");
+                    mAddressId=ERROR_ADDRESS_ID;
+                }
             }
         }
     }

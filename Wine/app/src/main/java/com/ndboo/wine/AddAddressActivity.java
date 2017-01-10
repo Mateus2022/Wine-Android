@@ -1,5 +1,6 @@
 package com.ndboo.wine;
 
+import android.os.Bundle;
 import android.widget.EditText;
 
 import com.ndboo.base.BaseActivity;
@@ -32,6 +33,10 @@ public class AddAddressActivity extends BaseActivity {
     EditText mEditAddressDetail;
 
     private String mUserId;
+    private String mAddressId;
+    private String mAddressName;
+    private String mAddressPhone;
+    private String mAddressDetail;
 
     @Override
     public int getLayoutId() {
@@ -47,38 +52,83 @@ public class AddAddressActivity extends BaseActivity {
                 finish();
             }
         });
+        if (getIntent().getExtras() != null) {
+            Bundle bundle=getIntent().getExtras();
+
+            mAddressId = bundle.getString("addressId");
+            mAddressName = bundle.getString("addressName");
+            mAddressPhone = bundle.getString("addressPhone");
+            mAddressDetail = bundle.getString("addressDetail");
+
+            mEditAddressName.setText(mAddressName);
+            mEditAddressPhone.setText(mAddressPhone);
+            mEditAddressDetail.setText(mAddressDetail);
+
+        }
     }
 
 
     @OnClick(R.id.edit_address_save)
     public void onClick() {
         if (checkInput()) {
-            Subscription subscription = RetrofitHelper.getApi()
-                    .addAddress(mUserId, mEditAddressName.getText().toString(),
-                            mEditAddressDetail.getText().toString(), mEditAddressPhone.getText().toString())
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<String>() {
-                        @Override
-                        public void call(String s) {
-                            try {
-                                JSONObject object=new JSONObject(s);
-                                if (object.getString("result").equals("success")) {
-                                    finish();
-                                }else {
-                                    ToastUtil.showToast(AddAddressActivity.this,"添加失败");
+            if (getIntent().getExtras() != null) {
+                Subscription subscription=RetrofitHelper.getApi()
+                        .updateAddress(mAddressId,mEditAddressName.getText().toString()
+                                ,mEditAddressPhone.getText().toString()
+                                ,mEditAddressDetail.getText().toString())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<String>() {
+                            @Override
+                            public void call(String s) {
+
+                                try {
+                                    JSONObject object=new JSONObject(s);
+                                    if (object.getString("result").equals("success")) {
+                                        finish();
+                                    }else {
+                                        ToastUtil.showToast(AddAddressActivity.this,"修改失败");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
-                        }
-                    }, new Action1<Throwable>() {
-                        @Override
-                        public void call(Throwable throwable) {
-                            ToastUtil.showToast(AddAddressActivity.this,"网络连接错误");
-                        }
-                    });
-            addSubscription(subscription);
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                ToastUtil.showToast(AddAddressActivity.this,"网络连接错误");
+                            }
+                        });
+                addSubscription(subscription);
+            }else {
+                Subscription subscription = RetrofitHelper.getApi()
+                        .addAddress(mUserId, mEditAddressName.getText().toString(),
+                                mEditAddressDetail.getText().toString(), mEditAddressPhone.getText().toString())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<String>() {
+                            @Override
+                            public void call(String s) {
+                                try {
+                                    JSONObject object = new JSONObject(s);
+                                    if (object.getString("result").equals("success")) {
+                                        finish();
+                                    } else {
+                                        ToastUtil.showToast(AddAddressActivity.this, "添加失败");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                ToastUtil.showToast(AddAddressActivity.this, "网络连接错误");
+                            }
+                        });
+                addSubscription(subscription);
+            }
+
         }
 
     }

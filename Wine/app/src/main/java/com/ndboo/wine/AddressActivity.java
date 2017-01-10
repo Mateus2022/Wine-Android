@@ -1,6 +1,8 @@
 package com.ndboo.wine;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,9 @@ import com.ndboo.net.RetrofitHelper;
 import com.ndboo.utils.SharedPreferencesUtil;
 import com.ndboo.utils.ToastUtil;
 import com.ndboo.widget.TopBar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -83,24 +88,79 @@ public class AddressActivity extends BaseActivity {
                 finish();
             }
         });
+        getAddressList();
+
+    }
+
+    private void getAddressList() {
         Subscription subscription = RetrofitHelper.getApi()
                 .queryAddress(mUserId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<AddressBean>>() {
                     @Override
-                    public void call(List<AddressBean> addressBeen) {
-                        Log.e("tag", addressBeen.size() + "");
+                    public void call(final List<AddressBean> addressBeen) {
                         mAddressAdapter.setAddressBeen(addressBeen);
                         mAddressAdapter.setEditDelete(new EditDelete() {
                             @Override
-                            public void edit() {
-                                ToastUtil.showToast(AddressActivity.this,"edit");
+                            public void edit(int pos) {
+                                AddressBean addressBean = addressBeen.get(pos);
+                                String addressId = addressBean.getAddressId();
+                                String addressName = addressBean.getAddresseeName();
+                                String addressPhone = addressBean.getAddresseePhone();
+                                String addressDetail = addressBean.getDetailAddress();
+                                Intent intent = new Intent(AddressActivity.this, AddAddressActivity.class);
+                                intent.putExtra("addressId", addressId);
+                                intent.putExtra("addressName", addressName);
+                                intent.putExtra("addressPhone", addressPhone);
+                                intent.putExtra("addressDetail", addressDetail);
+                                startActivity(intent);
                             }
 
                             @Override
-                            public void delete() {
-                                ToastUtil.showToast(AddressActivity.this,"delete");
+                            public void delete(final int pos) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(AddressActivity.this)
+                                        .setTitle("温馨提示")
+                                        .setMessage("是否删除地址")
+                                        .setNegativeButton("取消", null)
+                                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                AddressBean addressBean = addressBeen.get(pos);
+                                                final String addressId = addressBean.getAddressId();
+                                                Subscription subscription1 = RetrofitHelper.getApi()
+                                                        .deleteAddress(addressId)
+                                                        .subscribeOn(Schedulers.io())
+                                                        .observeOn(AndroidSchedulers.mainThread())
+                                                        .subscribe(new Action1<String>() {
+                                                            @Override
+                                                            public void call(String s) {
+                                                                try {
+                                                                    JSONObject object = new JSONObject(s);
+                                                                    if (object.getString("result").equals("success")) {
+                                                                        Intent intent=new Intent();
+                                                                        intent.putExtra("addressId",addressId);
+                                                                        setResult(15,intent);
+                                                                        getAddressList();
+                                                                    }else {
+                                                                        ToastUtil.showToast(AddressActivity.this,"删除失败");
+                                                                    }
+                                                                } catch (JSONException e) {
+                                                                    e.printStackTrace();
+                                                                    ToastUtil.showToast(AddressActivity.this,"网络连接错误");
+                                                                }
+                                                            }
+                                                        }, new Action1<Throwable>() {
+                                                            @Override
+                                                            public void call(Throwable throwable) {
+                                                                Log.e("tag", throwable.getMessage());
+                                                            }
+                                                        });
+                                                addSubscription(subscription1);
+                                            }
+                                        });
+                                builder.create().show();
+
                             }
                         });
                     }
@@ -115,9 +175,9 @@ public class AddressActivity extends BaseActivity {
     }
 
     public interface EditDelete {
-        void edit();
+        void edit(int position);
 
-        void delete();
+        void delete(int position);
     }
 
     static class AddressViewHolder {
@@ -168,6 +228,7 @@ public class AddressActivity extends BaseActivity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            final int pos = position;
             AddressViewHolder addressViewHolder;
             convertView = LayoutInflater.from(getApplicationContext())
                     .inflate(R.layout.item_address, null);
@@ -182,13 +243,13 @@ public class AddressActivity extends BaseActivity {
                 addressViewHolder.mItemDeliveryEdit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mEditDelete.edit();
+                        mEditDelete.edit(pos);
                     }
                 });
                 addressViewHolder.mItemDeliveryDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mEditDelete.delete();
+                        mEditDelete.delete(pos);
                     }
                 });
             }

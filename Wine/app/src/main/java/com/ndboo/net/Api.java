@@ -82,25 +82,27 @@ public interface Api {
 
     /**
      * 添加商品至购物车
-     * @param userId    用户编号
-     * @param productId 商品编号
-     * @param productCount  商品数量
-     * @return  添加结果
+     *
+     * @param userId       用户编号
+     * @param productId    商品编号
+     * @param productCount 商品数量
+     * @return 添加结果
      */
     @POST(Urls.URL_ADD_TO_CAR)
-    Observable<String> addWineToCar(@Query("memberId")String userId,
-                                    @Query("productId")String productId,
-                                    @Query("productCount")String productCount);
+    Observable<String> addWineToCar(@Query("memberId") String userId,
+                                    @Query("productId") String productId,
+                                    @Query("productCount") String productCount);
 
     /**
      * 删除购物车商品数量
-     * @param memberId  用户编号
-     * @param productIds    商品编号，用逗号隔开
-     * @return  删除结果
+     *
+     * @param memberId   用户编号
+     * @param productIds 商品编号，用逗号隔开
+     * @return 删除结果
      */
     @POST(Urls.URL_CART_DELETE_PRODUCT)
-    Observable<String> deleteFromCart(@Query("memberId")String memberId,
-                                      @Query("productIds")String productIds);
+    Observable<String> deleteFromCart(@Query("memberId") String memberId,
+                                      @Query("productIds") String productIds);
 
     /**
      * 修改商品数量
@@ -117,8 +119,9 @@ public interface Api {
 
     /**
      * 商品详情
+     *
      * @param productId 商品编号
-     * @return  详情信息
+     * @return 详情信息
      */
     @POST(Urls.URL_WINE_DETAIL)
     Observable<WineDetailBean> showWineDetail(@Query("productId") String productId);
@@ -131,6 +134,7 @@ public interface Api {
      */
     @POST(Urls.URL_CART_GET_PRODUCT_LIST)
     Observable<String> getCartProductsList(@Query("memberId") String memberId);
+
     /**
      * 购物车内商品去结算
      *
@@ -192,23 +196,49 @@ public interface Api {
 
     /**
      * 查询收货地址
-     * @param userId    用户编号
-     * @return  收货地址
+     *
+     * @param userId 用户编号
+     * @return 收货地址
      */
     @POST(Urls.URL_QUERY_ADDRESS)
     Observable<List<AddressBean>> queryAddress(@Query("humanId") String userId);
 
     /**
      * 添加地址
-     * @param userId    用户编号
+     *
+     * @param userId        用户编号
      * @param addressName   联系人
      * @param detailAddress 送货地址
      * @param addressPhone  联系电话
-     * @return  添加结果
+     * @return 添加结果
      */
     @POST(Urls.URL_ADD_ADDRESS)
-    Observable<String> addAddress(@Query("humanId")String userId,
-                                  @Query("addresseeName")String addressName,
-                                  @Query("detailAddress")String detailAddress,
-                                  @Query("addresseePhone")String addressPhone);
+    Observable<String> addAddress(@Query("humanId") String userId,
+                                  @Query("addresseeName") String addressName,
+                                  @Query("detailAddress") String detailAddress,
+                                  @Query("addresseePhone") String addressPhone);
+
+    /**
+     * 修改地址信息
+     *
+     * @param addressId     地址编号
+     * @param addressName   收货人
+     * @param addressPhone  收货电话
+     * @param addressDetail 收货地址
+     * @return 修改结果
+     */
+    @FormUrlEncoded
+    @POST(Urls.URL_UPDATE_ADDRESS)
+    Observable<String> updateAddress(@Query("addressId") String addressId,
+                                     @Field("addresseeName") String addressName,
+                                     @Query("addresseePhone") String addressPhone,
+                                     @Field("detailAddress") String addressDetail);
+
+    /**
+     * 删除地址
+     * @param addressId 地址编号
+     * @return  删除结果
+     */
+    @POST(Urls.URL_DELETE_ADDRESS)
+    Observable<String> deleteAddress(@Query("addressId") String addressId);
 }
