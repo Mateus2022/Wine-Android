@@ -193,6 +193,7 @@ public class ShoppingCarFragment extends BaseFragment {
                             JSONObject jsonObject = new JSONObject(string);
                             //总价
                             String totalMoney = jsonObject.optString("totalMoney", "0.00");
+                            mTotalPriceTextView.setText("总价：" + totalMoney + "元");
                             //商品信息
                             JSONArray jsonArray = jsonObject.optJSONArray("productInfromation");
                             if (jsonArray == null) {
@@ -205,7 +206,6 @@ public class ShoppingCarFragment extends BaseFragment {
                                 JSONObject cartObject = jsonArray.getJSONObject(i);
                                 mCartBeanList.add(new Gson().fromJson(cartObject.toString(), CartBean.class));
                             }
-                            mTotalPriceTextView.setText("总价：" + totalMoney + "元");
                             mCartAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -339,4 +339,5 @@ public class ShoppingCarFragment extends BaseFragment {
         mCartAdapter.setShowCheckBox(mCurrentType);
         mCurrentType = !mCurrentType;
     }
+
 }
