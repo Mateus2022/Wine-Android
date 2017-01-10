@@ -73,6 +73,9 @@ public class ShoppingCarFragment extends BaseFragment {
     @BindView(R.id.cart_bottom_delete_checkbox)
     CheckBox mCheckBox;
 
+    //总价
+    private String mTotalMoney = "0";
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_shopping_car;
@@ -94,8 +97,7 @@ public class ShoppingCarFragment extends BaseFragment {
                             JSONObject jsonObject = new JSONObject(string);
                             String result = jsonObject.optString("result");
                             if (result.equals("true")) {
-                                mCartBeanList.get(position).setProductCount(productCount + "");
-                                mCartAdapter.notifyDataSetChanged();
+                                requestData();
                             } else {
                                 ToastUtil.showToast(getActivity(), "修改数量失败");
                             }
@@ -139,8 +141,8 @@ public class ShoppingCarFragment extends BaseFragment {
                         try {
                             JSONObject jsonObject = new JSONObject(string);
                             //总价
-                            String totalMoney = jsonObject.optString("totalMoney", "0.00");
-                            mTotalPriceTextView.setText("总价：" + totalMoney + "元");
+                            mTotalMoney = jsonObject.optString("totalMoney", "0.00");
+                            mTotalPriceTextView.setText("总价：" + mTotalMoney + "元");
                             //商品信息
                             JSONArray jsonArray = jsonObject.optJSONArray("productInfromation");
                             if (jsonArray == null) {
@@ -183,6 +185,11 @@ public class ShoppingCarFragment extends BaseFragment {
                 //删除商品
                 if (mCartBeanList.size() == 0) {
                     ToastUtil.showToast(getActivity(), "暂无商品");
+                    return;
+                }
+                double money = Double.parseDouble(mTotalMoney);
+                if (money < 100) {
+                    ToastUtil.showToast(getActivity(), "满100起送");
                     return;
                 }
                 mSelectedList = mCartAdapter.getCheckedPositionList();
