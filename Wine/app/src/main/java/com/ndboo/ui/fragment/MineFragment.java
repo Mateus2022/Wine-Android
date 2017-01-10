@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -93,21 +92,28 @@ public class MineFragment extends BaseFragment {
                 public void onTakePicClicked() {
                     // 拍照
                     Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    tempUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
-                            "image.jpg"));
-                    // 指定照片保存路径（SD卡），image.jpg为一个临时文件，
-                    // 每次拍照后这个图片都会被替换
-                    openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
+
+                    openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(
+                            new File(getActivity().getExternalCacheDir(), "image.jpg")));
+//                    tempUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),
+//                            "image.jpg"));
+//                    // 指定照片保存路径（SD卡），image.jpg为一个临时文件，
+//                    // 每次拍照后这个图片都会被替换
+//                    openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
                     startActivityForResult(openCameraIntent, TAKE_PICTURE);
                 }
 
                 @Override
                 public void onChoosePicClicked() {
                     // 选择本地照片
-                    Intent openAlbumIntent = new Intent(Intent.ACTION_PICK,
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    openAlbumIntent.setType("image/*");
-                    startActivityForResult(openAlbumIntent, CHOOSE_PICTURE);
+
+                    Intent intentFromLocal = new Intent(Intent.ACTION_PICK);
+                    intentFromLocal.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    startActivityForResult(intentFromLocal, CHOOSE_PICTURE);
+//                    Intent openAlbumIntent = new Intent(Intent.ACTION_PICK,
+//                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                    openAlbumIntent.setType("image/*");
+//                    startActivityForResult(openAlbumIntent, CHOOSE_PICTURE);
                 }
             });
         }
@@ -120,7 +126,9 @@ public class MineFragment extends BaseFragment {
         if (resultCode == RESULT_OK) { // 如果返回码是可以用的
             switch (requestCode) {
                 case TAKE_PICTURE:
-                    startPhotoZoom(tempUri); // 开始对图片进行裁剪处理
+                    File tmpFile=new File(getActivity().getExternalCacheDir(),"image.jpg");
+                    // 开始对图片进行裁剪处理
+                    startPhotoZoom(Uri.fromFile(tmpFile));
                     break;
                 case CHOOSE_PICTURE:
                     startPhotoZoom(data.getData()); // 开始对图片进行裁剪处理
@@ -140,22 +148,23 @@ public class MineFragment extends BaseFragment {
      * @param uri
      */
     protected void startPhotoZoom(Uri uri) {
-        if (uri == null) {
-            Log.i("tag", "The uri is not exist.");
-        }
-        tempUri = uri;
+
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
+
         // 设置裁剪
         intent.putExtra("crop", "true");
-        // aspectX aspectY 是宽高的比例
+
+        // aspectX , aspectY :宽高的比例
         intent.putExtra("aspectX", 1);
         intent.putExtra("aspectY", 1);
-        // outputX outputY 是裁剪图片宽高
+
+        // outputX , outputY : 裁剪图片宽高
         intent.putExtra("outputX", 200);
         intent.putExtra("outputY", 200);
         intent.putExtra("return-data", true);
         startActivityForResult(intent, CROP_SMALL_PICTURE);
+
     }
 
     /**
@@ -171,11 +180,12 @@ public class MineFragment extends BaseFragment {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
             try {
-                byteArrayOutputStream.close();
+
                 byte[] buffer = byteArrayOutputStream.toByteArray();
                 //将图片的字节流数据加密成base64字符输出
                 String photo = Base64.encodeToString(buffer, 0, buffer.length, Base64.DEFAULT);
                 uploadLogo(photo);
+                byteArrayOutputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -190,7 +200,7 @@ public class MineFragment extends BaseFragment {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String s) {
-                        Log.e("tag", s);
+                        showUserInfo();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -250,11 +260,13 @@ public class MineFragment extends BaseFragment {
                 startActivity(new Intent(getActivity(), UserInfoActivity.class));
                 break;
             case R.id.mine_order:
-                startActivity(new Intent(getActivity(), OrderListActivity.class));
+                if (!SharedPreferencesUtil.isUserLoginIn(getContext())) {
+                    startActivity(new Intent(getActivity(),LoginActivity.class));
+                }else {
+                    startActivity(new Intent(getActivity(), OrderListActivity.class));
+                }
+
                 break;
-           /* case R.id.mine_collection:
-                startActivity(new Intent(getActivity(), CollectionActivity.class));
-                break;*/
             case R.id.mine_service:
                 Intent intent = new Intent(Intent.ACTION_DIAL);
                 Uri data = Uri.parse("tel:" + "051266155111");

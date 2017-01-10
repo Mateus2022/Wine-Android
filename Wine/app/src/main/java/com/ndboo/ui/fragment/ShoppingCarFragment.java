@@ -21,6 +21,7 @@ import com.ndboo.net.RetrofitHelper;
 import com.ndboo.utils.SharedPreferencesUtil;
 import com.ndboo.utils.ToastUtil;
 import com.ndboo.wine.EditOrderActivity;
+import com.ndboo.wine.LoginActivity;
 import com.ndboo.wine.R;
 import com.ndboo.wine.WineDetailActivity;
 
@@ -183,6 +184,10 @@ public class ShoppingCarFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_edit_complete:
+                if (!SharedPreferencesUtil.isUserLoginIn(getActivity())) {
+                    startActivity(new Intent(getActivity(),LoginActivity.class));
+                    return;
+                }
                 if (mCartBeanList.size() == 0) {
                     ToastUtil.showToast(getActivity(), "暂无商品");
                     return;
@@ -204,28 +209,33 @@ public class ShoppingCarFragment extends BaseFragment {
                 deleteDialog();
                 break;
             case R.id.cart_bottom_pay_topay:
-                //去结算
-                if (mCartBeanList.size() == 0) {
-                    ToastUtil.showToast(getActivity(), "暂无商品");
-                    return;
-                }
-                double money = Double.parseDouble(mTotalMoney);
-                if (money < 100) {
-                    ToastUtil.showToast(getActivity(), "满100起送");
-                    return;
-                }
-                Intent intent = new Intent(getActivity(), EditOrderActivity.class);
-                //获取所有id
-                String ids = "";
-                for (int i = 0; i < mCartBeanList.size(); i++) {
-                    ids += mCartBeanList.get(i).getProductId();
-                    if (i != mCartBeanList.size() - 1) {
-                        ids += ",";
+                if (!SharedPreferencesUtil.isUserLoginIn(getActivity())) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                }else {
+                    //去结算
+                    if (mCartBeanList.size() == 0) {
+                        ToastUtil.showToast(getActivity(), "暂无商品");
+                        return;
                     }
+                    double money = Double.parseDouble(mTotalMoney);
+                    if (money < 100) {
+                        ToastUtil.showToast(getActivity(), "满100起送");
+                        return;
+                    }
+                    Intent intent = new Intent(getActivity(), EditOrderActivity.class);
+                    //获取所有id
+                    String ids = "";
+                    for (int i = 0; i < mCartBeanList.size(); i++) {
+                        ids += mCartBeanList.get(i).getProductId();
+                        if (i != mCartBeanList.size() - 1) {
+                            ids += ",";
+                        }
+                    }
+                    intent.putExtra("productIds", ids);
+                    intent.putExtra("type", 1);
+                    startActivity(intent);
                 }
-                intent.putExtra("productIds", ids);
-                intent.putExtra("type", 1);
-                startActivity(intent);
+
                 break;
         }
     }

@@ -9,7 +9,6 @@ import java.util.List;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -65,9 +64,10 @@ public interface Api {
      * @param userHeadImage 用户头像（Base64字符串）
      * @return 成功/失败
      */
-    @GET(Urls.URL_MODIFY_USER_HEAD_IMAGE)
-    Observable<String> modifyUserHead(@Query("memberId") String userId,
-                                      @Query("shopLogo") String userHeadImage);
+    @FormUrlEncoded
+    @POST(Urls.URL_MODIFY_USER_HEAD_IMAGE)
+    Observable<String> modifyUserHead(@Field("memberId") String userId,
+                                      @Field("shopLogo") String userHeadImage);
 
     /**
      * 根据商品总类显示商品
