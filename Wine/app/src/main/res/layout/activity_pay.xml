@@ -32,10 +32,10 @@
         android:layout_marginTop="55dp"
         android:src="@drawable/ic_pay_alipay"/>
 
-    <ImageView
-        android:id="@+id/pay_wechat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:src="@drawable/ic_pay_wechat"/>
+    <!--<ImageView-->
+        <!--android:id="@+id/pay_wechat"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="30dp"-->
+        <!--android:src="@drawable/ic_pay_wechat"/>-->
 </LinearLayout>

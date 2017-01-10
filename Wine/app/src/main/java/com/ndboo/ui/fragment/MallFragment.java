@@ -31,6 +31,9 @@ public class MallFragment extends BaseFragment{
 
 
     private List<Fragment> mFragments;
+    private List<String> mMWineTypes;
+    private int mCurrentPosition=0;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_mall;
@@ -38,7 +41,6 @@ public class MallFragment extends BaseFragment{
 
     @Override
     public void firstVisibleDeal() {
-
         initData();
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.getIndexFragment().setGetWinTypeId(new IndexFragment.getWinTypeId() {
@@ -47,28 +49,13 @@ public class MallFragment extends BaseFragment{
                 setCurrentPosition(id);
             }
         });
+
+
     }
 
     @Override
     protected void visibleDeal() {
         super.visibleDeal();
-        Log.e("tag","mall visible");
-    }
-
-    private void initData() {
-        //酒的种类，目前有四种：红酒、黄酒、白酒、啤酒
-        final List<String> mWineTypes = Arrays.asList(getResources().getStringArray(R.array.wine_type));
-        mFragments=new ArrayList<>();
-        mViewPagerWine.setOffscreenPageLimit(mWineTypes.size());
-        mTabLayoutType.setupWithViewPager(mViewPagerWine);
-        addOnTabSelectedListener();
-        for (int i = 0; i < mWineTypes.size(); i++) {
-            if (i==0) {
-                mFragments.add(WineFragment.newInstance(true,i+""));
-                continue;
-            }
-            mFragments.add(WineFragment.newInstance(false,i+""));
-        }
         mViewPagerWine.setAdapter(new FragmentPagerAdapter(getActivity().getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -82,10 +69,35 @@ public class MallFragment extends BaseFragment{
 
             @Override
             public CharSequence getPageTitle(int position) {
-                return mWineTypes.get(position);
+                return mMWineTypes.get(position);
             }
         });
+        mViewPagerWine.setCurrentItem(mCurrentPosition);
+    }
 
+    @Override
+    protected void inVisibleDeal() {
+        super.inVisibleDeal();
+        if (mTabLayoutType != null) {
+            mCurrentPosition=mTabLayoutType.getSelectedTabPosition();
+        }
+    }
+
+    private void initData() {
+
+        //酒的种类，目前有四种：红酒、黄酒、白酒、啤酒
+        mMWineTypes = Arrays.asList(getResources().getStringArray(R.array.wine_type));
+        mFragments=new ArrayList<>();
+        mViewPagerWine.setOffscreenPageLimit(mMWineTypes.size());
+        mTabLayoutType.setupWithViewPager(mViewPagerWine);
+        addOnTabSelectedListener();
+        for (int i = 0; i < mMWineTypes.size(); i++) {
+            if (i==0) {
+                mFragments.add(WineFragment.newInstance(true,i+""));
+                continue;
+            }
+            mFragments.add(WineFragment.newInstance(false,i+""));
+        }
         /**
          * 为mTabLayoutType添加addTabSelectedListener监听事件，
          * 要放在为mTabLayoutType添加TabItem之前
@@ -108,7 +120,6 @@ public class MallFragment extends BaseFragment{
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 unSubscribe();
-                requestContent();
             }
 
             @Override
@@ -130,14 +141,5 @@ public class MallFragment extends BaseFragment{
     public void setCurrentPosition(int currentPosition) {
         mTabLayoutType.getTabAt(currentPosition).select();
     }
-
-    /**
-     * 请求数据
-     */
-    private void requestContent() {
-
-    }
-
-
 
 }

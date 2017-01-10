@@ -78,13 +78,14 @@ public class OrderDetailActivity extends BaseActivity {
     //去支付
     @BindView(R.id.orderdetail_gotopay)
     Button mPayButton;
+    private String mOrderPayWay;
 
     @OnClick({R.id.orderdetail_gotopay,
             R.id.orderdetail_service_phone})
     void doClick(View v) {
         switch (v.getId()) {
             case R.id.orderdetail_gotopay:
-                if (mOrderStaus.equals("未付款")) {
+                if (mOrderStaus.equals("未付款")&&!mOrderPayWay.equals("货到付款")) {
                     Intent payIntent = new Intent(this, PayActivity.class);
                     payIntent.putExtra("orderId", mOrderId);
                     payIntent.putExtra("orderPrice", mOrderPrice);
@@ -138,7 +139,8 @@ public class OrderDetailActivity extends BaseActivity {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String string) {
-                        Log.e("ndb", "result:" + string);
+                        Log.e("tag", "result:" + string);
+                        mPayButton.setEnabled(true);
                         try {
                             JSONObject jsonObject = new JSONObject(string);
                             //总价
@@ -161,12 +163,12 @@ public class OrderDetailActivity extends BaseActivity {
                             String orderTime = jsonObject.optString("orderTime", "");
                             String orderNum = jsonObject.optString("orderNum", "");
                             String orderStatus = jsonObject.optString("orderStatus", "");
-                            String orderPayWay = jsonObject.optString("orderPayWay", "");
+                            mOrderPayWay = jsonObject.optString("orderPayWay", "");
                             String consignee = jsonObject.optString("consignee", "");
                             String addressDetail = jsonObject.optString("addressDetail", "");
                             String area = jsonObject.optString("area", "");
 
-                            mPayment = orderPayWay;
+                            mPayment = mOrderPayWay;
                             mOrderStaus = orderStatus;
                             mOrderPrice = orderTotal;
                             mPayentStatusTextView.setText(mOrderStaus);
@@ -176,8 +178,15 @@ public class OrderDetailActivity extends BaseActivity {
                             mAddressView.setDataString(area + addressDetail);
                             mPayentStatusTextView.setText(orderStatus);
                             mPlaceTimeView.setDataString(orderTime);
-                            mPayWayView.setDataString(orderPayWay);
+                            mPayWayView.setDataString(mOrderPayWay);
                             mAdapter.notifyDataSetChanged();
+
+                            if (mOrderPayWay.equals(CASH)) {
+                                mPayButton.setText(CASH);
+                            }else {
+                                mPayButton.setText(mOrderStaus);
+                            }
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -189,6 +198,7 @@ public class OrderDetailActivity extends BaseActivity {
                         Log.e("ndb", "error:" + throwable.getMessage());
                     }
                 });
+        addSubscription(subscription);
     }
 
     private void initRecyclerView() {
@@ -201,5 +211,7 @@ public class OrderDetailActivity extends BaseActivity {
         mAdapter = new OrderDetailAdapter(this, mList);
         mRecyclerView.setAdapter(mAdapter);
     }
+
+    private static final String CASH="货到付款";
 
 }

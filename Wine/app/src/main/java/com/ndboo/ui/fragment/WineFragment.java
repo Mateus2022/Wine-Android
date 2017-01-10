@@ -71,13 +71,6 @@ public class WineFragment extends BaseFragment {
                 startActivityForResult(intent, 1);
             }
         });
-        boolean isFirst = getArguments().getBoolean(IS_FIRST_FRAGMENT);
-        String wineType = getArguments().getString(WINE_TYPE);
-
-//        if (isFirst) {
-//            showWinesByType(wineType, SharedPreferencesUtil.getUserId(getContext()));
-//
-//        }
 
 
     }
@@ -91,7 +84,7 @@ public class WineFragment extends BaseFragment {
             MainActivity mainActivity = (MainActivity) getActivity();
             mainActivity.turnToShoppingCar();
         }
-        if (resultCode==3) {
+        if (resultCode == 3) {
             String wineType = getArguments().getString(WINE_TYPE);
             showWinesByType(wineType, SharedPreferencesUtil.getUserId(getContext()));
         }
@@ -106,13 +99,9 @@ public class WineFragment extends BaseFragment {
     @Override
     protected void visibleDeal() {
         super.visibleDeal();
-        boolean isFirst = getArguments().getBoolean(IS_FIRST_FRAGMENT);
         String wineType = getArguments().getString(WINE_TYPE);
         showWinesByType(wineType, SharedPreferencesUtil.getUserId(getContext()));
 
-//        if (!isFirst) {
-//
-//        }
     }
 
     @Override

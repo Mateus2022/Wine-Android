@@ -39,14 +39,13 @@ public class PayActivity extends BaseActivity {
     private String mOrderId = "";
     private String mOrderPrice = "";
 
-    @OnClick({R.id.pay_alipay, R.id.pay_wechat})
+    @OnClick({R.id.pay_alipay})
     void doClick(View view) {
         switch (view.getId()) {
             case R.id.pay_alipay:
                 doAlipay();
                 break;
-            case R.id.pay_wechat:
-                break;
+
         }
     }
 

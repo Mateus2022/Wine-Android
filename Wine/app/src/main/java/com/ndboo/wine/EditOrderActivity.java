@@ -202,6 +202,7 @@ public class EditOrderActivity extends BaseActivity {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String string) {
+                        Log.e("tag", mCurrentPayment + "");
                         try {
                             JSONObject jsonObject = new JSONObject(string);
                             //总价
@@ -290,7 +291,7 @@ public class EditOrderActivity extends BaseActivity {
                                 JSONObject object = new JSONObject(s);
                                 String addressName = object.getString("consignee");
                                 String addressPhone = object.getString("consigneePhone");
-                                String addressArea = object.getString("area")+object.getString("addressDetail");
+                                String addressArea = object.getString("area") + object.getString("addressDetail");
                                 mDeliveryInfoTextView.setText("收货人：" + addressName + "  " + addressPhone);
                                 mDeliveryAddressTextView.setText(addressArea);
                                 mAddressId = object.getString("addressId");
