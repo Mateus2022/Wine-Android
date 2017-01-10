@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.ndboo.adapter.EditOrderAdapter;
 import com.ndboo.base.BaseActivity;
 import com.ndboo.bean.CartBean;
+import com.ndboo.bean.WineDetailBean;
 import com.ndboo.extra.MyLinearLayoutManager;
 import com.ndboo.net.RetrofitHelper;
 import com.ndboo.utils.SharedPreferencesUtil;
@@ -47,6 +48,7 @@ public class EditOrderActivity extends BaseActivity {
 
     //订单中商品id
     private String mProductIds;
+    private WineDetailBean mWineDetailBean;
 
     //收货信息
     @BindView(R.id.editorder_delivery_info)
@@ -105,10 +107,21 @@ public class EditOrderActivity extends BaseActivity {
 
     @Override
     public void init() {
-        mProductIds = getIntent().getStringExtra("productIds");
-
         initView();
-        getData();
+
+        int type = getIntent().getIntExtra("type", 0);
+        if (type == 2) {
+            mWineDetailBean = (WineDetailBean) getIntent().getSerializableExtra("wine");
+            CartBean cartBean = new CartBean("1", mWineDetailBean.getProductPrice(),
+                    mWineDetailBean.getProductPrice(), mWineDetailBean.getProductName(),
+                    mWineDetailBean.getProductId(), mWineDetailBean.getPricturePath());
+            mBeanList.add(cartBean);
+            mTotalPriceTextView.setText(mWineDetailBean.getProductPrice() + "元");
+            mAdapter.notifyDataSetChanged();
+        } else if (type == 1) {
+            mProductIds = getIntent().getStringExtra("productIds");
+            getData();
+        }
     }
 
 

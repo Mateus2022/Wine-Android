@@ -50,7 +50,7 @@ public class ShoppingCarFragment extends BaseFragment {
     @BindView(R.id.tv_edit_complete)
     TextView mTvEditComplete;
 
-    private List<CartBean> mCartBeanList;
+    private List<CartBean> mCartBeanList = new ArrayList<>();
     private CartAdapter mCartAdapter;
 
     private String mEdit;
@@ -76,59 +76,6 @@ public class ShoppingCarFragment extends BaseFragment {
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_shopping_car;
-    }
-
-    @Override
-    public void firstVisibleDeal() {
-        super.firstVisibleDeal();
-        mEdit = getResources().getString(R.string.car_edit);
-        mComplete = getResources().getString(R.string.car_complete);
-
-        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if (checked) {
-                    for (int i = 0; i < mCartBeanList.size(); i++) {
-                        mSelectedList.add("" + i);
-                    }
-                } else {
-                    mSelectedList.clear();
-                }
-                mCartAdapter.setCheckedPositionList(mSelectedList);
-                mCartAdapter.notifyDataSetChanged();
-            }
-        });
-
-        mCartBeanList = new ArrayList<>();
-        mCartAdapter = new CartAdapter(getActivity(), mCartBeanList);
-        mCartAdapter.setListener(new ShoppingCarOnItemClickListener() {
-            @Override
-            public void numAdd(int position, View view) {
-                CartBean cartBean = mCartBeanList.get(position);
-                int productCount = Integer.parseInt(cartBean.getProductCount());
-                updateProductCount(cartBean.getProductId(), ++productCount, position);
-            }
-
-            @Override
-            public void numReduce(int position, View view) {
-                CartBean cartBean = mCartBeanList.get(position);
-                int productCount = Integer.parseInt(cartBean.getProductCount());
-                if (productCount == 1) {
-                    deleteProduct(cartBean.getProductId());
-                } else {
-                    updateProductCount(cartBean.getProductId(), --productCount, position);
-                }
-            }
-
-            @Override
-            public void viewClick(int position, View view) {
-            }
-
-            @Override
-            public void onCheckedChanged(int position, CompoundButton buttonView) {
-            }
-        });
-        mListViewCarWines.setAdapter(mCartAdapter);
     }
 
     /**
@@ -261,6 +208,7 @@ public class ShoppingCarFragment extends BaseFragment {
                     }
                 }
                 intent.putExtra("productIds", ids);
+                intent.putExtra("type", 1);
                 startActivity(intent);
                 break;
         }
@@ -340,4 +288,56 @@ public class ShoppingCarFragment extends BaseFragment {
         mCurrentType = !mCurrentType;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mEdit = getResources().getString(R.string.car_edit);
+        mComplete = getResources().getString(R.string.car_complete);
+
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    for (int i = 0; i < mCartBeanList.size(); i++) {
+                        mSelectedList.add("" + i);
+                    }
+                } else {
+                    mSelectedList.clear();
+                }
+                mCartAdapter.setCheckedPositionList(mSelectedList);
+                mCartAdapter.notifyDataSetChanged();
+            }
+        });
+
+        mCartBeanList = new ArrayList<>();
+        mCartAdapter = new CartAdapter(getActivity(), mCartBeanList);
+        mCartAdapter.setListener(new ShoppingCarOnItemClickListener() {
+            @Override
+            public void numAdd(int position, View view) {
+                CartBean cartBean = mCartBeanList.get(position);
+                int productCount = Integer.parseInt(cartBean.getProductCount());
+                updateProductCount(cartBean.getProductId(), ++productCount, position);
+            }
+
+            @Override
+            public void numReduce(int position, View view) {
+                CartBean cartBean = mCartBeanList.get(position);
+                int productCount = Integer.parseInt(cartBean.getProductCount());
+                if (productCount == 1) {
+                    deleteProduct(cartBean.getProductId());
+                } else {
+                    updateProductCount(cartBean.getProductId(), --productCount, position);
+                }
+            }
+
+            @Override
+            public void viewClick(int position, View view) {
+            }
+
+            @Override
+            public void onCheckedChanged(int position, CompoundButton buttonView) {
+            }
+        });
+        mListViewCarWines.setAdapter(mCartAdapter);
+    }
 }

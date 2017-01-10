@@ -21,6 +21,16 @@ public class CartBean {
     private String productId;
     private String productPicture;
 
+    public CartBean(String productCount, String productMoney, String productPrice,
+                    String productName, String productId, String productPicture) {
+        this.productCount = productCount;
+        this.productMoney = productMoney;
+        this.productPrice = productPrice;
+        this.productName = productName;
+        this.productId = productId;
+        this.productPicture = productPicture;
+    }
+
     public String getProductCount() {
         return productCount;
     }
