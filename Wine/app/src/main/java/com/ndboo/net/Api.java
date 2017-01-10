@@ -245,4 +245,12 @@ public interface Api {
      */
     @POST(Urls.URL_DELETE_ADDRESS)
     Observable<String> deleteAddress(@Query("addressId") String addressId);
+
+    /**
+     * 通过地址编号查看地址
+     * @param addressId 地址编号
+     * @return  地址信息
+     */
+    @POST(Urls.URL_QUERY_ADDRESS_BY_ID)
+    Observable<String> queryAddressById(@Query("addressId")String addressId);
 }

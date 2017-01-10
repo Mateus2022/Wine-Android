@@ -50,5 +50,7 @@ public class Urls {
     public static final String URL_UPDATE_ADDRESS="ws/updateAddress";
     //删除收货地址
     public static final String URL_DELETE_ADDRESS="ws/deleteAddress";
+    //通过地址编号查询地址信息
+    public static final String URL_QUERY_ADDRESS_BY_ID ="ws/selectAddressById";
 
 }

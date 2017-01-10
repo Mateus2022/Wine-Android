@@ -79,11 +79,6 @@ public class AddressActivity extends BaseActivity {
                 AddressBean addressBean = (AddressBean) parent.getItemAtPosition(position);
                 Intent intent = new Intent();
                 intent.putExtra("addressId", addressBean.getAddressId());
-                intent.putExtra("addressName", addressBean.getAddresseeName());
-                intent.putExtra("addressPhone", addressBean.getAddresseePhone());
-                intent.putExtra("addressArea", addressBean.getAddresseeArea() +
-                        addressBean.getDetailAddress());
-
                 setResult(14, intent);
                 finish();
             }

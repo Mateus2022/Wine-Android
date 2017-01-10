@@ -115,6 +115,7 @@ public class ShoppingCarFragment extends BaseFragment {
                         Log.e("ndb", "error:" + throwable.getMessage());
                     }
                 });
+        addSubscription(subscription);
     }
 
     @Override
@@ -171,6 +172,7 @@ public class ShoppingCarFragment extends BaseFragment {
                         Log.e("ndb", "error:" + throwable.getMessage());
                     }
                 });
+        addSubscription(subscription);
     }
 
     @OnClick({R.id.tv_edit_complete, R.id.cart_bottom_delete_delete,
@@ -207,7 +209,7 @@ public class ShoppingCarFragment extends BaseFragment {
                 double money = Double.parseDouble(mTotalMoney);
                 if (money < 100) {
                     ToastUtil.showToast(getActivity(), "满100起送");
-//                    return;
+                    return;
                 }
                 Intent intent = new Intent(getActivity(), EditOrderActivity.class);
                 //获取所有id
@@ -283,6 +285,7 @@ public class ShoppingCarFragment extends BaseFragment {
                         Log.e("ndb", "error:" + throwable.getMessage());
                     }
                 });
+        addSubscription(subscription);
     }
 
     private void changeEditMode() {
