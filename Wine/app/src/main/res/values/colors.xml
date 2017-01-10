@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorAccent">#FF4081</color>
-
+    <color name="border_color">#c6c6c6</color>
     <color name="mainRed">#de3031</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
@@ -10,7 +10,7 @@
     <color name="themeColor">#fe8a25</color>
     <color name="aidThemeColor">#300000ff</color>
 
-
+    <color name="darker_gray">#AAA</color>
     <color name="mainTabTextColorNm">#b8b8b8</color>
     <color name="mainTabTextColorOn">#027ac7</color>
 

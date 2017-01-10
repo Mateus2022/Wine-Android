@@ -2,7 +2,6 @@ package com.ndboo.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -110,10 +109,20 @@ public class WineFragment extends BaseFragment {
         boolean isFirst = getArguments().getBoolean(IS_FIRST_FRAGMENT);
         String wineType = getArguments().getString(WINE_TYPE);
         showWinesByType(wineType, SharedPreferencesUtil.getUserId(getContext()));
-        Log.e("tag", wineType);
+
 //        if (!isFirst) {
 //
 //        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getArguments() != null) {
+            String wineType = getArguments().getString(WINE_TYPE);
+            showWinesByType(wineType, SharedPreferencesUtil.getUserId(getContext()));
+        }
+
     }
 
     private void showWinesByType(String wineType, String userId) {

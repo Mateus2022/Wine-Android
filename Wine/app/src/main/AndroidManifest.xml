@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.ndboo.wine"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.ndboo.wine">
 
     <!-- &lt;!&ndash;用于进行网络定位&ndash;&gt; -->
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> -->
@@ -98,7 +98,11 @@
             android:exported="false"
             android:screenOrientation="behind">
         </activity>
-        <activity android:name=".EditOrderActivity"></activity>
+        <activity android:name=".EditOrderActivity"/>
+        <activity android:name=".AddressActivity">
+        </activity>
+        <activity android:name=".AddAddressActivity">
+        </activity>
     </application>
 
 </manifest>
