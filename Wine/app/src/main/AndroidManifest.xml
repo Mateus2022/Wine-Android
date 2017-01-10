@@ -49,11 +49,6 @@
             android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
             android:name=".OrderListActivity"
@@ -84,13 +79,19 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".WineDetailActivity">
+        <activity android:name=".WineDetailActivity"
+                  android:configChanges="keyboardHidden|orientation"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".LoginActivity"
+                  android:configChanges="keyboardHidden|orientation"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".RegisterActivity"
+                  android:configChanges="keyboardHidden|orientation"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".LoginActivity">
-        </activity>
-        <activity android:name=".RegisterActivity">
-        </activity>
-        <activity android:name=".OrderDetailActivity">
+        <activity android:name=".OrderDetailActivity"
+                  android:configChanges="keyboardHidden|orientation"
+                  android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
@@ -98,12 +99,30 @@
             android:exported="false"
             android:screenOrientation="behind">
         </activity>
-        <activity android:name=".EditOrderActivity"/>
-        <activity android:name=".AddressActivity">
+        <activity android:name=".EditOrderActivity"
+                  android:configChanges="keyboardHidden|orientation"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".AddressActivity"
+                  android:configChanges="keyboardHidden|orientation"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".AddAddressActivity">
+        <activity android:name=".AddAddressActivity"
+                  android:configChanges="keyboardHidden|orientation"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".PayActivity"/>
+        <activity android:name=".PayActivity"
+                  android:configChanges="keyboardHidden|orientation"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name=".WelcomeActivity"
+                  android:configChanges="keyboardHidden|orientation"
+                  android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
