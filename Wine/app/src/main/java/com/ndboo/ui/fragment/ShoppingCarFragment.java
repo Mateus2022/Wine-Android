@@ -50,7 +50,7 @@ public class ShoppingCarFragment extends BaseFragment {
     @BindView(R.id.tv_edit_complete)
     TextView mTvEditComplete;
 
-    private List<CartBean> mCartBeanList;
+    private List<CartBean> mCartBeanList = new ArrayList<>();
     private CartAdapter mCartAdapter;
 
     private String mEdit;
@@ -73,62 +73,12 @@ public class ShoppingCarFragment extends BaseFragment {
     @BindView(R.id.cart_bottom_delete_checkbox)
     CheckBox mCheckBox;
 
+    //总价
+    private String mTotalMoney = "0";
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_shopping_car;
-    }
-
-    @Override
-    public void firstVisibleDeal() {
-        super.firstVisibleDeal();
-        mEdit = getResources().getString(R.string.car_edit);
-        mComplete = getResources().getString(R.string.car_complete);
-
-        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if (checked) {
-                    for (int i = 0; i < mCartBeanList.size(); i++) {
-                        mSelectedList.add("" + i);
-                    }
-                } else {
-                    mSelectedList.clear();
-                }
-                mCartAdapter.setCheckedPositionList(mSelectedList);
-                mCartAdapter.notifyDataSetChanged();
-            }
-        });
-
-        mCartBeanList = new ArrayList<>();
-        mCartAdapter = new CartAdapter(getActivity(), mCartBeanList);
-        mCartAdapter.setListener(new ShoppingCarOnItemClickListener() {
-            @Override
-            public void numAdd(int position, View view) {
-                CartBean cartBean = mCartBeanList.get(position);
-                int productCount = Integer.parseInt(cartBean.getProductCount());
-                updateProductCount(cartBean.getProductId(), ++productCount, position);
-            }
-
-            @Override
-            public void numReduce(int position, View view) {
-                CartBean cartBean = mCartBeanList.get(position);
-                int productCount = Integer.parseInt(cartBean.getProductCount());
-                if (productCount == 1) {
-                    deleteProduct(cartBean.getProductId());
-                } else {
-                    updateProductCount(cartBean.getProductId(), --productCount, position);
-                }
-            }
-
-            @Override
-            public void viewClick(int position, View view) {
-            }
-
-            @Override
-            public void onCheckedChanged(int position, CompoundButton buttonView) {
-            }
-        });
-        mListViewCarWines.setAdapter(mCartAdapter);
     }
 
     /**
@@ -147,8 +97,7 @@ public class ShoppingCarFragment extends BaseFragment {
                             JSONObject jsonObject = new JSONObject(string);
                             String result = jsonObject.optString("result");
                             if (result.equals("true")) {
-                                mCartBeanList.get(position).setProductCount(productCount + "");
-                                mCartAdapter.notifyDataSetChanged();
+                                requestData();
                             } else {
                                 ToastUtil.showToast(getActivity(), "修改数量失败");
                             }
@@ -192,7 +141,8 @@ public class ShoppingCarFragment extends BaseFragment {
                         try {
                             JSONObject jsonObject = new JSONObject(string);
                             //总价
-                            String totalMoney = jsonObject.optString("totalMoney", "0.00");
+                            mTotalMoney = jsonObject.optString("totalMoney", "0.00");
+                            mTotalPriceTextView.setText("总价：" + mTotalMoney + "元");
                             //商品信息
                             JSONArray jsonArray = jsonObject.optJSONArray("productInfromation");
                             if (jsonArray == null) {
@@ -205,7 +155,6 @@ public class ShoppingCarFragment extends BaseFragment {
                                 JSONObject cartObject = jsonArray.getJSONObject(i);
                                 mCartBeanList.add(new Gson().fromJson(cartObject.toString(), CartBean.class));
                             }
-                            mTotalPriceTextView.setText("总价：" + totalMoney + "元");
                             mCartAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -238,6 +187,11 @@ public class ShoppingCarFragment extends BaseFragment {
                     ToastUtil.showToast(getActivity(), "暂无商品");
                     return;
                 }
+                double money = Double.parseDouble(mTotalMoney);
+                if (money < 100) {
+                    ToastUtil.showToast(getActivity(), "满100起送");
+                    return;
+                }
                 mSelectedList = mCartAdapter.getCheckedPositionList();
                 if (mSelectedList.size() == 0) {
                     ToastUtil.showToast(getActivity(), "请选择商品");
@@ -261,6 +215,7 @@ public class ShoppingCarFragment extends BaseFragment {
                     }
                 }
                 intent.putExtra("productIds", ids);
+                intent.putExtra("type", 1);
                 startActivity(intent);
                 break;
         }
@@ -338,5 +293,58 @@ public class ShoppingCarFragment extends BaseFragment {
         }
         mCartAdapter.setShowCheckBox(mCurrentType);
         mCurrentType = !mCurrentType;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mEdit = getResources().getString(R.string.car_edit);
+        mComplete = getResources().getString(R.string.car_complete);
+
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked) {
+                    for (int i = 0; i < mCartBeanList.size(); i++) {
+                        mSelectedList.add("" + i);
+                    }
+                } else {
+                    mSelectedList.clear();
+                }
+                mCartAdapter.setCheckedPositionList(mSelectedList);
+                mCartAdapter.notifyDataSetChanged();
+            }
+        });
+
+        mCartBeanList = new ArrayList<>();
+        mCartAdapter = new CartAdapter(getActivity(), mCartBeanList);
+        mCartAdapter.setListener(new ShoppingCarOnItemClickListener() {
+            @Override
+            public void numAdd(int position, View view) {
+                CartBean cartBean = mCartBeanList.get(position);
+                int productCount = Integer.parseInt(cartBean.getProductCount());
+                updateProductCount(cartBean.getProductId(), ++productCount, position);
+            }
+
+            @Override
+            public void numReduce(int position, View view) {
+                CartBean cartBean = mCartBeanList.get(position);
+                int productCount = Integer.parseInt(cartBean.getProductCount());
+                if (productCount == 1) {
+                    deleteProduct(cartBean.getProductId());
+                } else {
+                    updateProductCount(cartBean.getProductId(), --productCount, position);
+                }
+            }
+
+            @Override
+            public void viewClick(int position, View view) {
+            }
+
+            @Override
+            public void onCheckedChanged(int position, CompoundButton buttonView) {
+            }
+        });
+        mListViewCarWines.setAdapter(mCartAdapter);
     }
 }

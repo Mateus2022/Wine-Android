@@ -1,11 +1,13 @@
 package com.ndboo.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Li on 2017/1/9.
  * 商品详情
  */
 
-public class WineDetailBean {
+public class WineDetailBean implements Serializable{
 
     /**
      * imageText : 图文详情

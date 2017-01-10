@@ -2,6 +2,7 @@ package com.ndboo.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +44,7 @@ public class EditOrderAdapter extends RecyclerView.Adapter<EditOrderAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         CartBean bean = mBeanList.get(position);
         Glide.with(mContext).load(bean.getProductPicture()).into(holder.mImageView);
+        Log.e("my", "path=" + bean.getProductPicture());
         holder.mNameTextView.setText(bean.getProductName());
         holder.mNumPriceTextView.setText("¥" + bean.getProductMoney());
         holder.mPriceTextView.setText("¥" + bean.getProductPrice());

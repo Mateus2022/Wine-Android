@@ -66,6 +66,7 @@ public class WineDetailActivity extends BaseActivity {
     LinearLayout mLayoutImageText;
     private String productId;
     private int mLayoutTopHeight;
+    private WineDetailBean mWineDetailBean;
 
     @Override
     public int getLayoutId() {
@@ -82,7 +83,9 @@ public class WineDetailActivity extends BaseActivity {
                 .subscribe(new Action1<WineDetailBean>() {
                     @Override
                     public void call(WineDetailBean wineDetailBean) {
+                        mWineDetailBean = wineDetailBean;
                         final String[] wineImages = wineDetailBean.getPricturePath().split(",");
+                        mWineDetailBean.setPricturePath(wineImages[0]);
                         mGoodsDetailViewPager.setAdapter(new StaticPagerAdapter() {
                             @Override
                             public View getView(ViewGroup container, int position) {
@@ -161,7 +164,11 @@ public class WineDetailActivity extends BaseActivity {
                 addToCar();
                 break;
             case R.id.text_buy:
-
+                Intent payIntent = new Intent(this, EditOrderActivity.class);
+                //获取id
+                payIntent.putExtra("wine", mWineDetailBean);
+                payIntent.putExtra("type", 2);
+                startActivity(payIntent);
                 break;
             case R.id.iv_back:
                 finish();
@@ -171,9 +178,9 @@ public class WineDetailActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.layout_help:
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + "051266155111"));
-                startActivity(intent);
+                Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
+                phoneIntent.setData(Uri.parse("tel:" + "051266155111"));
+                startActivity(phoneIntent);
                 break;
         }
     }
