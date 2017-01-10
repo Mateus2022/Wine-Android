@@ -106,7 +106,7 @@ public class ShoppingCarFragment extends BaseFragment {
             public void numAdd(int position, View view) {
                 CartBean cartBean = mCartBeanList.get(position);
                 int productCount = Integer.parseInt(cartBean.getProductCount());
-                updateProductCount(cartBean.getProductId(), ++productCount);
+                updateProductCount(cartBean.getProductId(), ++productCount, position);
             }
 
             @Override
@@ -116,7 +116,7 @@ public class ShoppingCarFragment extends BaseFragment {
                 if (productCount == 1) {
                     deleteProduct(cartBean.getProductId());
                 } else {
-                    updateProductCount(cartBean.getProductId(), --productCount);
+                    updateProductCount(cartBean.getProductId(), --productCount, position);
                 }
             }
 
@@ -134,7 +134,7 @@ public class ShoppingCarFragment extends BaseFragment {
     /**
      * 修改商品数量
      */
-    private void updateProductCount(String productId, int productCount) {
+    private void updateProductCount(final String productId, final int productCount, final int position) {
         Subscription subscription = RetrofitHelper.getApi()
                 .modifyProductNum(SharedPreferencesUtil.getUserId(getActivity()), productId, "" + productCount)
                 .subscribeOn(Schedulers.io())
@@ -147,10 +147,8 @@ public class ShoppingCarFragment extends BaseFragment {
                             JSONObject jsonObject = new JSONObject(string);
                             String result = jsonObject.optString("result");
                             if (result.equals("true")) {
-                                requestData();
-                                if (mCartBeanList.size() == 0) {
-                                    changeEditMode();
-                                }
+                                mCartBeanList.get(position).setProductCount(productCount + "");
+                                mCartAdapter.notifyDataSetChanged();
                             } else {
                                 ToastUtil.showToast(getActivity(), "修改数量失败");
                             }
@@ -182,6 +180,7 @@ public class ShoppingCarFragment extends BaseFragment {
      */
     private void requestData() {
         mCartBeanList.clear();
+        mCheckBox.setChecked(false);
         Subscription subscription = RetrofitHelper.getApi()
                 .getCartProductsList(SharedPreferencesUtil.getUserId(getActivity()))
                 .subscribeOn(Schedulers.io())
@@ -192,13 +191,16 @@ public class ShoppingCarFragment extends BaseFragment {
                         Log.e("ndb", "result:" + string);
                         try {
                             JSONObject jsonObject = new JSONObject(string);
-                            if (jsonObject == null) {
-                                return;
-                            }
                             //总价
                             String totalMoney = jsonObject.optString("totalMoney", "0.00");
                             //商品信息
                             JSONArray jsonArray = jsonObject.optJSONArray("productInfromation");
+                            if (jsonArray == null) {
+                                mCurrentType = TYPE_EDIT;
+                                changeEditMode();
+//                                ToastUtil.showToast(getActivity(), "暂无商品");
+                                return;
+                            }
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject cartObject = jsonArray.getJSONObject(i);
                                 mCartBeanList.add(new Gson().fromJson(cartObject.toString(), CartBean.class));
@@ -228,6 +230,7 @@ public class ShoppingCarFragment extends BaseFragment {
                     return;
                 }
                 changeEditMode();
+                mCartAdapter.notifyDataSetChanged();
                 break;
             case R.id.cart_bottom_delete_delete:
                 //删除商品
@@ -335,6 +338,5 @@ public class ShoppingCarFragment extends BaseFragment {
         }
         mCartAdapter.setShowCheckBox(mCurrentType);
         mCurrentType = !mCurrentType;
-        mCartAdapter.notifyDataSetChanged();
     }
 }

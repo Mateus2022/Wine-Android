@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ndboo.wine">
+<manifest package="com.ndboo.wine"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- &lt;!&ndash;用于进行网络定位&ndash;&gt; -->
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> -->
@@ -92,15 +92,13 @@
         </activity>
         <activity android:name=".OrderDetailActivity">
         </activity>
-        <activity android:name=".PayActivity">
-        </activity>
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind">
         </activity>
-        <activity android:name=".EditOrderActivity"/>
+        <activity android:name=".EditOrderActivity"></activity>
     </application>
 
 </manifest>
