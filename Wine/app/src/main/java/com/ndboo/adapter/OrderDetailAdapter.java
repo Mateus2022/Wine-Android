@@ -45,10 +45,9 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
         OrderDetailBean bean = mBeanList.get(position);
         Glide.with(mContext).load(bean.getImagePath()).into(holder.mImageView);
         holder.mNameTextView.setText(bean.getName());
-        holder.mTextRightTextView.setLabelText("已选" + bean.getCount() + bean.getUnit());
+        holder.mTextRightTextView.setLabelText("已选" + bean.getCount());
         holder.mTextRightTextView.setDataText("¥" + bean.getTotal());
         holder.mPerPrice1TextView.setText("¥" + bean.getPerPrice());
-        holder.mUnitTextView.setText("/" + bean.getUnit());
         holder.mCountTextView.setText("x" + bean.getCount());
     }
 
@@ -59,7 +58,7 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView mImageView;
-        private TextView mNameTextView, mPerPrice1TextView, mUnitTextView, mCountTextView;
+        private TextView mNameTextView, mPerPrice1TextView, mCountTextView;
         private TextRightTextView mTextRightTextView;
 
         public ViewHolder(View itemView) {
@@ -69,7 +68,6 @@ public class OrderDetailAdapter extends RecyclerView.Adapter<OrderDetailAdapter.
             mNameTextView = (TextView) itemView.findViewById(R.id.item_orderdetail_name);
             mPerPrice1TextView = (TextView) itemView.findViewById(R.id.item_orderdetail_perprice);
             mTextRightTextView = (TextRightTextView) itemView.findViewById(R.id.item_orderdetail_item);
-            mUnitTextView = (TextView) itemView.findViewById(R.id.item_orderdetail_unit);
             mCountTextView = (TextView) itemView.findViewById(R.id.item_orderdetail_count);
         }
     }

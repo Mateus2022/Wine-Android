@@ -39,9 +39,6 @@ import rx.schedulers.Schedulers;
  * 订单详情页面
  */
 public class OrderDetailActivity extends BaseActivity {
-    private static final int WHAT_ORDER_DETAIL = 1;//获取订单信息
-    private static final int WHAT_CANCLE_ORDER = 2;//取消订单
-
     @BindView(R.id.orderdetail_header)
     TopBar mTopBar;
 
@@ -74,9 +71,6 @@ public class OrderDetailActivity extends BaseActivity {
     //下单时间
     @BindView(R.id.orderdetail_placetime)
     ImageTextTextView mPlaceTimeView;
-    //配送时间
-    @BindView(R.id.orderdetail_sendtime)
-    ImageTextTextView mSendTimeView;
     //订单金额
     @BindView(R.id.orderdetail_ordermoney)
     TextView mOrderMoneyTextView;
@@ -155,13 +149,12 @@ public class OrderDetailActivity extends BaseActivity {
 
                                 String productCount = object.optString("productCount", "");
                                 String productName = object.optString("productName", "");
-                                String bazaarPrice = object.optString("bazaarPrice", "");
+                                String productPrice = object.optString("productPrice", "");
                                 String productPicture = object.optString("productPicture", "");
-                                String specName = object.optString("specName", "");
-                                String money = object.optString("money", "");
+                                String productMoney = object.optString("productMoney", "");
 
                                 OrderDetailBean orderDetailBean = new OrderDetailBean(productPicture, productName,
-                                        productCount, specName, bazaarPrice, money);
+                                        productCount, productPrice, productMoney);
                                 mList.add(orderDetailBean);
                             }
                             String orderTotal = jsonObject.optString("orderTotal", "");
@@ -169,7 +162,6 @@ public class OrderDetailActivity extends BaseActivity {
                             String orderNum = jsonObject.optString("orderNum", "");
                             String orderStatus = jsonObject.optString("orderStatus", "");
                             String orderPayWay = jsonObject.optString("orderPayWay", "");
-                            String orderSendTime = jsonObject.optString("orderSendTime", "");
                             String consignee = jsonObject.optString("consignee", "");
                             String addressDetail = jsonObject.optString("addressDetail", "");
                             String area = jsonObject.optString("area", "");
@@ -184,7 +176,6 @@ public class OrderDetailActivity extends BaseActivity {
                             mAddressView.setDataString(area + addressDetail);
                             mPayentStatusTextView.setText(orderStatus);
                             mPlaceTimeView.setDataString(orderTime);
-                            mSendTimeView.setDataString(orderSendTime);
                             mPayWayView.setDataString(orderPayWay);
                             mAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {

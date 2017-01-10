@@ -4,20 +4,18 @@ package com.ndboo.bean;
  * Created by ZhangHang on 2016/9/9.
  */
 public class OrderDetailBean {
-    //商品图片，名称、数量、单价、单位、小计
+    //商品图片，名称、数量、单价、小计
     private String imagePath;
     private String name;
     private String count;
-    private String unit;
     private String perPrice;
     private String total;
 
     public OrderDetailBean(String imagePath, String name, String count,
-                           String unit, String perPrice, String total) {
+                           String perPrice, String total) {
         this.imagePath = imagePath;
         this.name = name;
         this.count = count;
-        this.unit = unit;
         this.perPrice = perPrice;
         this.total = total;
     }
@@ -44,14 +42,6 @@ public class OrderDetailBean {
 
     public void setCount(String count) {
         this.count = count;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
     }
 
     public String getPerPrice() {

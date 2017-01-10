@@ -147,14 +147,6 @@
                 app:detailData=""
                 app:detailImage="@drawable/ic_orderdetail_time_place"/>
 
-            <com.ndboo.widget.ImageTextTextView
-                android:id="@+id/orderdetail_sendtime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:detaiLabel="配送时间:"
-                app:detailData=""
-                app:detailImage="@drawable/ic_orderdetail_time_delivery"/>
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
