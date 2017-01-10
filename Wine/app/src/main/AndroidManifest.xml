@@ -100,8 +100,7 @@
             android:exported="false"
             android:screenOrientation="behind">
         </activity>
-        <activity android:name=".GoodsDetailActivity">
-        </activity>
+        <activity android:name=".EditOrderActivity"/>
     </application>
 
 </manifest>
