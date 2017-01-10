@@ -164,18 +164,28 @@ public class WineDetailActivity extends BaseActivity {
                 addToCar();
                 break;
             case R.id.text_buy:
-                Intent payIntent = new Intent(this, EditOrderActivity.class);
-                //获取id
-                payIntent.putExtra("wine", mWineDetailBean);
-                payIntent.putExtra("type", 2);
-                startActivity(payIntent);
+                if (!SharedPreferencesUtil.isUserLoginIn(getApplicationContext())) {
+                    startActivity(new Intent(WineDetailActivity.this,LoginActivity.class));
+                }else {
+                    Intent payIntent = new Intent(this, EditOrderActivity.class);
+                    //获取id
+                    payIntent.putExtra("wine", mWineDetailBean);
+                    payIntent.putExtra("type", 2);
+                    startActivity(payIntent);
+                }
+
                 break;
             case R.id.iv_back:
                 finish();
                 break;
             case R.id.iv_car:
-                setResult(2);
-                finish();
+                if (!SharedPreferencesUtil.isUserLoginIn(getApplicationContext())) {
+                    startActivity(new Intent(WineDetailActivity.this,LoginActivity.class));
+                }else {
+                    setResult(2);
+                    finish();
+                }
+
                 break;
             case R.id.layout_help:
                 Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
