@@ -103,7 +103,7 @@ public class PayActivity extends BaseActivity {
      */
     private void doAlipay() {
         Subscription subscription = RetrofitHelper.getApi()
-                .getOrderDetail(SharedPreferencesUtil.getUserId(this), mOrderId)
+                .doAlipay(SharedPreferencesUtil.getUserId(this), mOrderId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<String>() {

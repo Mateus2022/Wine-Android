@@ -45,6 +45,7 @@ import rx.schedulers.Schedulers;
 public class OrderFragment extends Fragment {
     protected static final int TYPE_LOAD = 0;//加载
     protected static final int TYPE_REFRESH = 1;//刷新
+    protected static final int NUM_PERPAGE = 10;
 
     private View mView;
 
@@ -150,17 +151,19 @@ public class OrderFragment extends Fragment {
 
     private void requestData() {
         Subscription subscription = RetrofitHelper.getApi()
-                .getOrderByStatus(SharedPreferencesUtil.getUserId(getActivity()), "" + mCurrentSort)
+                .getOrderByStatus(SharedPreferencesUtil.getUserId(getActivity()),
+                        "" + mCurrentSort, mCurrentPage, NUM_PERPAGE)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String string) {
+                        if (mPtrClassicFrameLayout.isRefreshing()) {
+                            mPtrClassicFrameLayout.refreshComplete();
+                        }
                         Log.e("ndb", "result:" + string);
                         try {
-                            JSONObject jsonObject = new JSONObject(string);
-                            //总价
-                            JSONArray jsonArray = jsonObject.optJSONArray("productInformation");
+                            JSONArray jsonArray = new JSONArray(string);
                             int length = jsonArray.length();
 
                             if (mLoadingType == TYPE_LOAD) {
@@ -180,7 +183,7 @@ public class OrderFragment extends Fragment {
                                 String orderTime = object1.optString("orderTime", "");
                                 String orderStatus = object1.optString("orderStatus", "");
                                 String orderId = object1.optString("orderId", "");
-                                String productTypeCount = object1.optString("productTypeCount", "");
+                                String productTypeCount = object1.optString("productCountSum", "");
                                 JSONArray jsonArray1 = object1.optJSONArray("productInformation");
 
                                 List<OrderSecondBean> secondBeenList = new ArrayList<>();
@@ -188,10 +191,10 @@ public class OrderFragment extends Fragment {
                                     JSONObject object = jsonArray1.optJSONObject(k);
                                     String productCount = object.optString("productCount", "");
                                     String productName = object.optString("productName", "");
-                                    String bazaarPrice = object.optString("bazaarPrice", "");
+                                    String bazaarPrice = object.optString("productPrice", "");
                                     String productPicture = object.optString("productPicture", "");
                                     String specName = object.optString("specName", "");
-                                    String money = object.optString("money", "");
+                                    String money = object.optString("productMoney", "");
 
                                     secondBeenList.add(new OrderSecondBean(productPicture, productName,
                                             productCount, bazaarPrice, specName, money));
@@ -217,6 +220,9 @@ public class OrderFragment extends Fragment {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
+                        if (mPtrClassicFrameLayout.isRefreshing()) {
+                            mPtrClassicFrameLayout.refreshComplete();
+                        }
                         ToastUtil.showToast(getActivity(), "error:" + throwable.getMessage());
                         Log.e("ndb", "error:" + throwable.getMessage());
                     }

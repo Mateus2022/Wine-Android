@@ -95,6 +95,7 @@ public class OrderDetailActivity extends BaseActivity {
                     payIntent.putExtra("orderId", mOrderId);
                     payIntent.putExtra("orderPrice", mOrderPrice);
                     startActivity(payIntent);
+                    finish();
                 }
                 break;
             case R.id.orderdetail_service_phone:

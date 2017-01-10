@@ -105,7 +105,7 @@ public class OrderListAdapter extends BaseAdapter {
                 item2.setImage(secondBean.getImageUrl());
                 item2.setNameText(secondBean.getName());
                 item2.setCountText("x" + secondBean.getCount());
-                item2.setPerPriceText("¥" + secondBean.getPerPrice() + "/" + secondBean.getUnit());
+                item2.setPerPriceText("¥" + secondBean.getPerPrice() + secondBean.getUnit());
                 item2.setTotalText("小计：" + secondBean.getTotalPrice() + "元");
                 holder.mLinearLayout.addView(item2);
             }

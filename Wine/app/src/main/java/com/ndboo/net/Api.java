@@ -81,25 +81,27 @@ public interface Api {
 
     /**
      * 添加商品至购物车
-     * @param userId    用户编号
-     * @param productId 商品编号
-     * @param productCount  商品数量
-     * @return  添加结果
+     *
+     * @param userId       用户编号
+     * @param productId    商品编号
+     * @param productCount 商品数量
+     * @return 添加结果
      */
     @POST(Urls.URL_ADD_TO_CAR)
-    Observable<String> addWineToCar(@Query("memberId")String userId,
-                                    @Query("productId")String productId,
-                                    @Query("productCount")String productCount);
+    Observable<String> addWineToCar(@Query("memberId") String userId,
+                                    @Query("productId") String productId,
+                                    @Query("productCount") String productCount);
 
     /**
      * 删除购物车商品数量
-     * @param memberId  用户编号
-     * @param productIds    商品编号，用逗号隔开
-     * @return  删除结果
+     *
+     * @param memberId   用户编号
+     * @param productIds 商品编号，用逗号隔开
+     * @return 删除结果
      */
     @POST(Urls.URL_CART_DELETE_PRODUCT)
-    Observable<String> deleteFromCart(@Query("memberId")String memberId,
-                                      @Query("productIds")String productIds);
+    Observable<String> deleteFromCart(@Query("memberId") String memberId,
+                                      @Query("productIds") String productIds);
 
     /**
      * 修改商品数量
@@ -116,8 +118,9 @@ public interface Api {
 
     /**
      * 商品详情
+     *
      * @param productId 商品编号
-     * @return  详情信息
+     * @return 详情信息
      */
     @POST(Urls.URL_WINE_DETAIL)
     Observable<WineDetailBean> showWineDetail(@Query("productId") String productId);
@@ -130,6 +133,7 @@ public interface Api {
      */
     @POST(Urls.URL_CART_GET_PRODUCT_LIST)
     Observable<String> getCartProductsList(@Query("memberId") String memberId);
+
     /**
      * 购物车内商品去结算
      *
@@ -172,11 +176,15 @@ public interface Api {
      *
      * @param memberId    用户id
      * @param orderStatus 订单状态
-     * @return
+     * @param pageNum     页码，第几页
+     * @param numPerPage  每页显示的数量
+     * @return 订单列表
      */
     @POST(Urls.URL_GET_ORDER_BY_STATUS)
     Observable<String> getOrderByStatus(@Query("memberId") String memberId,
-                                        @Query("orderStatus") String orderStatus);
+                                        @Query("orderStatus") String orderStatus,
+                                        @Query("pageNum") int pageNum,
+                                        @Query("numPerPage ") int numPerPage);
 
     /**
      * 支付宝支付

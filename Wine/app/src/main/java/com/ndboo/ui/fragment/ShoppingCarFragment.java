@@ -76,6 +76,9 @@ public class ShoppingCarFragment extends BaseFragment {
     //总价
     private String mTotalMoney = "0";
 
+    //是否是第一次进入
+    private boolean mIsFirstIn = true;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_shopping_car;
@@ -137,6 +140,7 @@ public class ShoppingCarFragment extends BaseFragment {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String string) {
+                        mIsFirstIn = false;
                         Log.e("ndb", "result:" + string);
                         try {
                             JSONObject jsonObject = new JSONObject(string);
@@ -187,11 +191,6 @@ public class ShoppingCarFragment extends BaseFragment {
                     ToastUtil.showToast(getActivity(), "暂无商品");
                     return;
                 }
-                double money = Double.parseDouble(mTotalMoney);
-                if (money < 100) {
-                    ToastUtil.showToast(getActivity(), "满100起送");
-                    return;
-                }
                 mSelectedList = mCartAdapter.getCheckedPositionList();
                 if (mSelectedList.size() == 0) {
                     ToastUtil.showToast(getActivity(), "请选择商品");
@@ -204,6 +203,11 @@ public class ShoppingCarFragment extends BaseFragment {
                 if (mCartBeanList.size() == 0) {
                     ToastUtil.showToast(getActivity(), "暂无商品");
                     return;
+                }
+                double money = Double.parseDouble(mTotalMoney);
+                if (money < 100) {
+                    ToastUtil.showToast(getActivity(), "满100起送");
+//                    return;
                 }
                 Intent intent = new Intent(getActivity(), EditOrderActivity.class);
                 //获取所有id
@@ -296,8 +300,8 @@ public class ShoppingCarFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void firstVisibleDeal() {
+        super.firstVisibleDeal();
         mEdit = getResources().getString(R.string.car_edit);
         mComplete = getResources().getString(R.string.car_complete);
 
@@ -346,5 +350,13 @@ public class ShoppingCarFragment extends BaseFragment {
             }
         });
         mListViewCarWines.setAdapter(mCartAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!mIsFirstIn) {
+            requestData();
+        }
     }
 }
