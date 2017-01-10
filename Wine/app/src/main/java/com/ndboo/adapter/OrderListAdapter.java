@@ -82,7 +82,7 @@ public class OrderListAdapter extends BaseAdapter {
             //设置样式
             ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.RED);
             //数量
-            String text1 = "共" + firstBean.getCount() + "件商品";
+            String text1 = "共" + firstBean.getCount() + "种商品";
             SpannableString spannableString1 = new SpannableString(text1);
             spannableString1.setSpan(colorSpan, 1, text1.length() - 3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             holder.mTotalCountTextView.setText(spannableString1);

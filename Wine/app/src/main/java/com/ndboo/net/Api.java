@@ -260,7 +260,7 @@ public interface Api {
      * 确认订单(立即购买)
      *
      * @param memberId     用户id
-     * @param productId   商品id集合
+     * @param productId    商品id集合
      * @param addressId    地址id
      * @param payId        支付方式id
      * @param productCount 商品数量
