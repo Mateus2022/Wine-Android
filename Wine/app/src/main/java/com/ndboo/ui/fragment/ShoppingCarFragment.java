@@ -148,6 +148,10 @@ public class ShoppingCarFragment extends BaseFragment {
      */
     private void requestData() {
         if (!SharedPreferencesUtil.isUserLoginIn(getActivity())) {
+            if (mCartBeanList.size() != 0) {
+                mCartBeanList.clear();
+                mCartAdapter.notifyDataSetChanged();
+            }
             mNoProductLayout.setVisibility(View.VISIBLE);
             return;
         }
@@ -305,7 +309,7 @@ public class ShoppingCarFragment extends BaseFragment {
                             String result = jsonObject.optString("result");
                             if (result.equals("true")) {
                                 ToastUtil.showToast(getActivity(), "删除成功");
-                                ((MainActivity)getActivity()).queryWineNum();
+                                ((MainActivity) getActivity()).queryWineNum();
                                 requestData();
                             } else {
                                 ToastUtil.showToast(getActivity(), "删除失败");
