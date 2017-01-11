@@ -27,7 +27,6 @@ import com.ndboo.wine.OrderListActivity;
 import com.ndboo.wine.R;
 import com.ndboo.wine.RegisterActivity;
 import com.ndboo.wine.SettingActivity;
-import com.ndboo.wine.SuggestionActivity;
 import com.ndboo.wine.UserInfoActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -67,8 +66,8 @@ public class MineFragment extends BaseFragment {
     ImgTextView mServiceImgTextView;//联系客服
     @BindView(R.id.mine_aboutus)
     ImgTextView mAboutUsImgTextView;//关于我们
-    @BindView(R.id.mine_suggestion)
-    ImgTextView mSuggestionImgTextView;//意见反馈
+//    @BindView(R.id.mine_suggestion)
+//    ImgTextView mSuggestionImgTextView;//意见反馈
     @BindView(R.id.mine_setting)
     ImgTextView mSettingImgTextView;//设置
     @BindView(R.id.layout_user_not_exist)
@@ -244,7 +243,7 @@ public class MineFragment extends BaseFragment {
 
 
     @OnClick({R.id.btn_login, R.id.btn_register, R.id.mine_portrait, R.id.mine_nickname, R.id.mine_order,
-            R.id.mine_service, R.id.mine_aboutus, R.id.mine_suggestion, R.id.mine_setting,
+            R.id.mine_service, R.id.mine_aboutus, R.id.mine_setting,
     R.id.mine_address})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -278,9 +277,9 @@ public class MineFragment extends BaseFragment {
             case R.id.mine_aboutus:
                 startActivity(new Intent(getActivity(), AboutUsActivity.class));
                 break;
-            case R.id.mine_suggestion:
-                startActivity(new Intent(getActivity(), SuggestionActivity.class));
-                break;
+//            case R.id.mine_suggestion:
+//                startActivity(new Intent(getActivity(), SuggestionActivity.class));
+//                break;
             case R.id.mine_address:
                 startActivity(new Intent(getActivity(), AddressActivity.class));
                 break;

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.ndboo.adapter.WineAdapter;
 import com.ndboo.base.BaseFragment;
@@ -19,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -33,11 +33,10 @@ import rx.schedulers.Schedulers;
 public class WineFragment extends BaseFragment {
     private static final String IS_FIRST_FRAGMENT = "isFirstFragment";
     private static final String WINE_TYPE = "wineType";
-    @BindView(R.id.refresh_listview)
-    ListView mRefreshListView;
-    @BindView(R.id.refresh_listview_frame)
-    PtrClassicFrameLayout mRefreshListViewFrame;
-
+    @BindView(R.id.list_view_wine)
+    ListView mListViewWine;
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
 
     private WineAdapter mWineAdapter;
     private List<WineBean> mWineBeen;
@@ -54,7 +53,7 @@ public class WineFragment extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.layout_refresh_listview;
+        return R.layout.fragment_wine;
     }
 
     @Override
@@ -62,8 +61,8 @@ public class WineFragment extends BaseFragment {
         super.showContent();
         mWineBeen = new ArrayList<>();
         mWineAdapter = new WineAdapter(getContext(), this);
-        mRefreshListView.setAdapter(mWineAdapter);
-        mRefreshListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListViewWine.setAdapter(mWineAdapter);
+        mListViewWine.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), WineDetailActivity.class);
@@ -116,6 +115,10 @@ public class WineFragment extends BaseFragment {
 
     private void showWinesByType(String wineType, String userId) {
         unSubscribe();
+        if (mProgressBar != null) {
+            mProgressBar.setVisibility(View.VISIBLE);
+
+        }
         Subscription subscription = RetrofitHelper.getApi()
                 .showWinesByType(wineType, userId)
                 .subscribeOn(Schedulers.io())
@@ -125,11 +128,12 @@ public class WineFragment extends BaseFragment {
                     public void call(List<WineBean> wineBeen) {
                         mWineBeen = wineBeen;
                         mWineAdapter.setWines(wineBeen);
+                        mProgressBar.setVisibility(View.GONE);
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-
+                        mProgressBar.setVisibility(View.GONE);
                     }
                 });
         addSubscription(subscription);
