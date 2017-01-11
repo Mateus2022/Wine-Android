@@ -167,7 +167,7 @@
                 android:layout_marginTop="15dp"
                 android:drawablePadding="5dp"
                 android:gravity="center_vertical"
-                android:text="主银，采购单为空！快去挑选吧！"
+                android:text="主银，购物车为空！快去挑选吧！"
                 android:textSize="18sp"/>
 
             <Button
