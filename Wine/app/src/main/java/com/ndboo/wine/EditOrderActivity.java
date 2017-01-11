@@ -86,13 +86,13 @@ public class EditOrderActivity extends BaseActivity {
     void doClick(View view) {
         switch (view.getId()) {
             case R.id.editorder_footer_submit:
-                if (mType == 2) {
+                /*if (mType == 2) {
                     double money = Double.parseDouble(mWineDetailBean.getProductPrice());
                     if (money < 100) {
                         ToastUtil.showToast(this, "满100起送");
                         return;
                     }
-                }
+                }*/
                 submitOrder();
                 break;
             case R.id.editorder_delivery:

@@ -23,6 +23,7 @@ import com.ndboo.utils.SharedPreferencesUtil;
 import com.ndboo.utils.ToastUtil;
 import com.ndboo.wine.EditOrderActivity;
 import com.ndboo.wine.LoginActivity;
+import com.ndboo.wine.MainActivity;
 import com.ndboo.wine.R;
 import com.ndboo.wine.WineDetailActivity;
 
@@ -235,7 +236,7 @@ public class ShoppingCarFragment extends BaseFragment {
                         ToastUtil.showToast(getActivity(), "暂无商品");
                         return;
                     }
-                    double money = Double.parseDouble(mTotalMoney);
+                    /*double money = Double.parseDouble(mTotalMoney);
                     if (money < 100) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                                 .setTitle("温馨提示")
@@ -243,7 +244,7 @@ public class ShoppingCarFragment extends BaseFragment {
                                 .setPositiveButton("确定", null);
                         builder.create().show();
                         return;
-                    }
+                    }*/
                     Intent intent = new Intent(getActivity(), EditOrderActivity.class);
                     //获取所有id
                     String ids = "";
@@ -304,6 +305,7 @@ public class ShoppingCarFragment extends BaseFragment {
                             String result = jsonObject.optString("result");
                             if (result.equals("true")) {
                                 ToastUtil.showToast(getActivity(), "删除成功");
+                                ((MainActivity)getActivity()).queryWineNum();
                                 requestData();
                             } else {
                                 ToastUtil.showToast(getActivity(), "删除失败");
