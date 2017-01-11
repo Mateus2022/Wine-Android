@@ -2,6 +2,7 @@ package com.ndboo.wine;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -62,7 +63,7 @@ public class UserInfoActivity extends BaseActivity {
                         sex = radioButton.getText().toString();
                     }
                 }
-                modifyUserInfo(mNickNameEditText.getText().toString(), mBirthday
+                modifyUserInfo(mNickNameEditText.getText().toString(), mBirthdayTextView.getText().toString()
                         , sex);
                 break;
         }

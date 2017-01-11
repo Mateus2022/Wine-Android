@@ -24,28 +24,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="160dp"/>
 
-            <ImageView
-                android:id="@+id/iv_red_wine"
-                style="@style/IndexBannerStyle"
-                android:src="@drawable/ic_banner_red_wine"
-                android:tag="0"/>
 
-            <ImageView
-                android:id="@+id/iv_rice_wine"
-                style="@style/IndexBannerStyle"
-                android:src="@drawable/ic_banner_rice_wine"
-                android:tag="1"/>
 
             <ImageView
                 android:id="@+id/iv_liquor"
                 style="@style/IndexBannerStyle"
                 android:src="@drawable/ic_banner_liquor"
-                android:tag="2"/>
+                android:tag="0"/>
 
             <ImageView
                 android:id="@+id/iv_beer"
                 style="@style/IndexBannerStyle"
                 android:src="@drawable/ic_banner_beer"
+                android:tag="1"/>
+            <ImageView
+                android:id="@+id/iv_red_wine"
+                style="@style/IndexBannerStyle"
+                android:src="@drawable/ic_banner_red_wine"
+                android:tag="2"/>
+
+            <ImageView
+                android:id="@+id/iv_rice_wine"
+                style="@style/IndexBannerStyle"
+                android:src="@drawable/ic_banner_rice_wine"
                 android:tag="3"/>
         </LinearLayout>
 

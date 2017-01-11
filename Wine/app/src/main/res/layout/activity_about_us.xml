@@ -15,13 +15,16 @@
         android:background="#fe5001"
         app:topbar_title="关于我们"/>
 
+
     <LinearLayout
         android:id="@+id/aboutus_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:background="@color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -66,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="0512-66155111"
+                android:text="0512-66155011"
                 android:textColor="#646464"
                 android:textSize="13sp"/>
         </RelativeLayout>
@@ -119,7 +122,6 @@
                 android:textSize="13sp"/>
         </RelativeLayout>
     </LinearLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -151,4 +153,5 @@
                 android:textSize="13sp"/>
         </LinearLayout>
     </ScrollView>
+
 </RelativeLayout>
