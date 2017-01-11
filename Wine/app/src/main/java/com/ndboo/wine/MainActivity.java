@@ -2,20 +2,33 @@ package com.ndboo.wine;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
+import com.jauker.widget.BadgeView;
 import com.ndboo.base.BaseActivity;
+import com.ndboo.net.RetrofitHelper;
 import com.ndboo.ui.fragment.IndexFragment;
 import com.ndboo.ui.fragment.MallFragment;
 import com.ndboo.ui.fragment.MineFragment;
 import com.ndboo.ui.fragment.ShoppingCarFragment;
+import com.ndboo.utils.SharedPreferencesUtil;
+import com.ndboo.utils.SizeUtil;
 import com.ndboo.widget.FixedViewPager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
 
@@ -30,6 +43,8 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
     RadioButton mRbShoppingCar;
     @BindView(R.id.rb_mine)
     RadioButton mRbMine;
+    @BindView(R.id.car_flow)
+    Button mCarFlow;
     /**
      * fragment集合
      * 包含首页、商城、商家、我的四个界面
@@ -38,6 +53,9 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
     private MallFragment mMallFragment;
     private IndexFragment mIndexFragment;
     private MineFragment mMineFragment;
+    private long exitTime = 0;
+    private String mProductCount;
+    private BadgeView mBadgeView;
 
     public IndexFragment getIndexFragment() {
         return mIndexFragment;
@@ -78,6 +96,10 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         mRbType.setOnCheckedChangeListener(this);
         mRbShoppingCar.setOnCheckedChangeListener(this);
         mRbMine.setOnCheckedChangeListener(this);
+        mBadgeView = new BadgeView(this);
+        int simpleWidth=getResources().getDisplayMetrics().widthPixels/4;
+        mBadgeView.setTargetView(mCarFlow);
+        mBadgeView.setBadgeMargin(0,3, (int) SizeUtil.px2dp(simpleWidth*1.0f*0.1f,getApplicationContext()),0);
     }
 
     @Override
@@ -99,7 +121,7 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
             if (mMineFragment.isShow()) {
                 mMineFragment.closePop();
             } else {
-                super.onBackPressed();
+                exit();
             }
         }
 //        else if (currentPage == 1) {
@@ -110,7 +132,21 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
 //            }
 //        }
         else {
-            super.onBackPressed();
+            exit();
+        }
+    }
+
+    private void exit() {
+        if (System.currentTimeMillis() - exitTime > 2000) {
+
+            if (!mRbIndex.isChecked()) {
+                mRbIndex.setChecked(true);
+            }
+            exitTime = System.currentTimeMillis();
+            Toast.makeText(getApplicationContext(), "再按一次退出", Toast.LENGTH_SHORT).show();
+        } else {
+            finish();
+            System.exit(0);
         }
     }
 
@@ -123,5 +159,40 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
 
     public void turnToShoppingCar() {
         mRbShoppingCar.setChecked(true);
+    }
+
+    public void queryWineNum() {
+        Subscription subscription = RetrofitHelper.getApi()
+                .queryCarNum(SharedPreferencesUtil.getUserId(getApplicationContext()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            mProductCount = object.getString("productCount");
+                            if (mBadgeView != null) {
+                                mBadgeView.setText(mProductCount);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+
+                    }
+                });
+
+        addSubscription(subscription);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        queryWineNum();
     }
 }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.jauker.widget.BadgeView;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.ndboo.base.BaseActivity;
@@ -70,7 +71,9 @@ public class WineDetailActivity extends BaseActivity {
     private int mLayoutTopHeight;
     private WineDetailBean mWineDetailBean;
 
-    private double mPrice=0;
+    private double mPrice = 0;
+    private String mProductCount;
+    private BadgeView mBadgeView;
 
     @Override
     public int getLayoutId() {
@@ -80,6 +83,10 @@ public class WineDetailActivity extends BaseActivity {
     @Override
     public void init() {
         productId = getIntent().getStringExtra("wineId");
+        mBadgeView = new BadgeView(WineDetailActivity.this);
+        mBadgeView.setBadgeMargin(5);
+        mBadgeView.setTargetView(mIvCar);
+        queryWineNum();
         Subscription subscription = RetrofitHelper.getApi()
                 .showWineDetail(productId)
                 .subscribeOn(Schedulers.io())
@@ -171,14 +178,14 @@ public class WineDetailActivity extends BaseActivity {
                 if (!SharedPreferencesUtil.isUserLoginIn(getApplicationContext())) {
                     startActivity(new Intent(WineDetailActivity.this, LoginActivity.class));
                 } else {
-                    if (mPrice==0) {
+                    if (mPrice == 0) {
                         return;
-                    }else {
+                    } else {
                         if (mPrice < 100) {
-                            AlertDialog.Builder builder=new AlertDialog.Builder(WineDetailActivity.this)
+                            AlertDialog.Builder builder = new AlertDialog.Builder(WineDetailActivity.this)
                                     .setTitle("温馨提示")
                                     .setMessage("商品价格不满100,是否添加至购物车")
-                                    .setNegativeButton("取消",null)
+                                    .setNegativeButton("取消", null)
                                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -186,7 +193,7 @@ public class WineDetailActivity extends BaseActivity {
                                         }
                                     });
                             builder.create().show();
-                        }else {
+                        } else {
                             Intent payIntent = new Intent(this, EditOrderActivity.class);
                             //获取id
                             payIntent.putExtra("wine", mWineDetailBean);
@@ -236,6 +243,7 @@ public class WineDetailActivity extends BaseActivity {
                                 String result = object.getString("result");
                                 if (result.equals("true")) {
                                     setResult(3);
+                                    queryWineNum();
                                     ToastUtil.showToast(WineDetailActivity.this, "添加成功");
                                 } else {
                                     ToastUtil.showToast(WineDetailActivity.this, "添加失败");
@@ -253,8 +261,32 @@ public class WineDetailActivity extends BaseActivity {
                     });
             addSubscription(subscription);
         }
+    }
 
+    private void queryWineNum() {
+        Subscription subscription = RetrofitHelper.getApi()
+                .queryCarNum(SharedPreferencesUtil.getUserId(getApplicationContext()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            mProductCount = object.getString("productCount");
+                            mBadgeView.setText(mProductCount);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
 
+                    }
+                });
+
+        addSubscription(subscription);
     }
 
 }

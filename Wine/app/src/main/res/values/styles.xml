@@ -15,6 +15,7 @@
     <style name="MainTabStyle">
         <item name="android:width">0dp</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">center</item>
         <item name="android:button">@null</item>
         <item name="android:drawablePadding">1dp</item>
         <item name="android:gravity">center</item>
