@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ndboo.wine">
+<manifest package="com.ndboo.wine"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- &lt;!&ndash;用于进行网络定位&ndash;&gt; -->
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> -->
@@ -79,19 +79,23 @@
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".WineDetailActivity"
-                  android:configChanges="keyboardHidden|orientation"
-                  android:screenOrientation="portrait"/>
-        <activity android:name=".LoginActivity"
-                  android:configChanges="keyboardHidden|orientation"
-                  android:screenOrientation="portrait"/>
-        <activity android:name=".RegisterActivity"
-                  android:configChanges="keyboardHidden|orientation"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".WineDetailActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".LoginActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".RegisterActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".OrderDetailActivity"
-                  android:configChanges="keyboardHidden|orientation"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".OrderDetailActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
@@ -99,29 +103,37 @@
             android:exported="false"
             android:screenOrientation="behind">
         </activity>
-        <activity android:name=".EditOrderActivity"
-                  android:configChanges="keyboardHidden|orientation"
-                  android:screenOrientation="portrait"/>
-        <activity android:name=".AddressActivity"
-                  android:configChanges="keyboardHidden|orientation"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".EditOrderActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".AddressActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".AddAddressActivity"
-                  android:configChanges="keyboardHidden|orientation"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".AddAddressActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".PayActivity"
-                  android:configChanges="keyboardHidden|orientation"
-                  android:screenOrientation="portrait"/>
-
-        <activity android:name=".WelcomeActivity"
-                  android:configChanges="keyboardHidden|orientation"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".PayActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".WelcomeActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".Login2Activity"
+            android:windowSoftInputMode="adjustPan">
         </activity>
     </application>
 

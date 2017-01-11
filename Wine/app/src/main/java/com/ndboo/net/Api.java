@@ -22,7 +22,7 @@ public interface Api {
     /**
      * 通过密码登录
      *
-     * @param userAccount  账号
+     * @param userAccount  ic_login_account
      * @param userPassword 密码
      * @return 结果
      */
