@@ -18,46 +18,84 @@
         android:layout_height="1px"
         android:background="@color/colorAccent"/>
 
-    <RadioGroup
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:paddingBottom="5dp"
-        android:paddingTop="5dp">
+        android:layout_height="45dp">
 
-        <RadioButton
-            android:id="@+id/rb_index"
-            style="@style/MainTabStyle"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:drawableTop="@drawable/selector_main_tab_index"
-            android:text="@string/main_tab_index"
-            android:tag="0"/>
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp">
 
-        <RadioButton
-            android:id="@+id/rb_type"
-            style="@style/MainTabStyle"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/selector_main_tab_mall"
-            android:text="@string/main_tab_mall"
-            android:tag="1"/>
+            <RadioButton
+                android:id="@+id/rb_index"
+                style="@style/MainTabStyle"
+                android:layout_height="match_parent"
+                android:checked="true"
+                android:drawableTop="@drawable/selector_main_tab_index"
+                android:tag="0"
+                android:text="@string/main_tab_index"/>
 
-        <RadioButton
-            android:id="@+id/rb_shopping_car"
-            style="@style/MainTabStyle"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/selector_main_tab_shopping_car"
-            android:text="@string/main_tab_shopping_car"
-            android:tag="2"/>
+            <RadioButton
+                android:id="@+id/rb_type"
+                style="@style/MainTabStyle"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/selector_main_tab_mall"
+                android:tag="1"
+                android:text="@string/main_tab_mall"/>
 
-        <RadioButton
-            android:id="@+id/rb_mine"
-            style="@style/MainTabStyle"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/selector_main_tab_mine"
-            android:text="@string/main_tab_mine"
-            android:tag="3"/>
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/rb_shopping_car"
+                style="@style/MainTabStyle"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/selector_main_tab_shopping_car"
+                android:tag="2"
+                android:text="@string/main_tab_shopping_car"/>
+
+            <RadioButton
+                android:id="@+id/rb_mine"
+                style="@style/MainTabStyle"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/selector_main_tab_mine"
+                android:tag="3"
+                android:text="@string/main_tab_mine"/>
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:visibility="invisible"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:visibility="invisible"/>
+            <Button
+                android:id="@+id/car_flow"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:visibility="invisible"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="1px"
+                android:layout_weight="1"
+                android:background="#00000000"
+                android:visibility="invisible"/>
+        </LinearLayout>
+    </RelativeLayout>
+
 
 </LinearLayout>

@@ -272,4 +272,12 @@ public interface Api {
                                          @Query("addressId") String addressId,
                                          @Query("payId") String payId,
                                          @Query("productCount") String productCount);
+
+    /**
+     * 透过用户编号查询购物车商品数量
+     * @param memberId  用户编号
+     * @return  数量
+     */
+    @POST(Urls.URL_QUERY_CAR_NUM)
+    Observable<String> queryCarNum(@Query("memberId")String memberId);
 }

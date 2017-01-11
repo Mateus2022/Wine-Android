@@ -19,5 +19,10 @@ public class SizeUtil {
                 context.getApplicationContext().getResources().getDisplayMetrics());
     }
 
+    public static float px2dp(float value,Context context){
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX,value,
+                context.getApplicationContext().getResources().getDisplayMetrics());
+    }
+
 
 }

@@ -54,5 +54,7 @@ public class Urls {
     public static final String URL_QUERY_ADDRESS_BY_ID = "ws/selectAddressById";
     //立即支付
     public static final String URL_PAY_RIGHTAWAY = "ws/addIndentFromProductDetail";
+    //通过用户编号查询购物车数量
+    public static final String URL_QUERY_CAR_NUM="ws/selectProCountFromCart";
 
 }

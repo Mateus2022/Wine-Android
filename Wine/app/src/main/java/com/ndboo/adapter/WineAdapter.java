@@ -19,6 +19,7 @@ import com.ndboo.utils.SharedPreferencesUtil;
 import com.ndboo.utils.ToastUtil;
 import com.ndboo.widget.NumOperationView;
 import com.ndboo.wine.LoginActivity;
+import com.ndboo.wine.MainActivity;
 import com.ndboo.wine.R;
 
 import java.util.ArrayList;
@@ -43,11 +44,13 @@ public class WineAdapter extends BaseAdapter {
 
     public WineAdapter(Context context, BaseFragment baseFragment) {
         mContext = context;
+        mMainActivity= (MainActivity) mContext;
         mBaseFragment = baseFragment;
         if (mWines != null) {
             mWines = new ArrayList<>();
         }
     }
+    private MainActivity mMainActivity;
 
     public void setWines(List<WineBean> wines) {
         mWines = wines;
@@ -100,6 +103,7 @@ public class WineAdapter extends BaseAdapter {
                                 .subscribe(new Action1<String>() {
                                     @Override
                                     public void call(String s) {
+                                        mMainActivity.queryWineNum();
                                         view.setEnabled(true);
                                         wineViewHolder.mViewNumOperation.numAdd();
                                         mWines.get(position).setCartProductCount(wineViewHolder.mViewNumOperation.getNumber());
@@ -123,6 +127,7 @@ public class WineAdapter extends BaseAdapter {
                                     @Override
                                     public void call(String s) {
                                         view.setEnabled(true);
+                                        mMainActivity.queryWineNum();
                                         wineViewHolder.mViewNumOperation.numAdd();
                                         mWines.get(position).setCartProductCount(wineViewHolder.mViewNumOperation.getNumber());
                                         notifyDataSetChanged();
