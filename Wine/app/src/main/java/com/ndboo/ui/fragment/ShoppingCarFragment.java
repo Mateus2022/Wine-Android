@@ -235,7 +235,7 @@ public class ShoppingCarFragment extends BaseFragment {
                         ToastUtil.showToast(getActivity(), "暂无商品");
                         return;
                     }
-                    double money = Double.parseDouble(mTotalMoney);
+                    /*double money = Double.parseDouble(mTotalMoney);
                     if (money < 100) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                                 .setTitle("温馨提示")
@@ -243,7 +243,7 @@ public class ShoppingCarFragment extends BaseFragment {
                                 .setPositiveButton("确定", null);
                         builder.create().show();
                         return;
-                    }
+                    }*/
                     Intent intent = new Intent(getActivity(), EditOrderActivity.class);
                     //获取所有id
                     String ids = "";

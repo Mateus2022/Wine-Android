@@ -95,6 +95,13 @@ public class PayActivity extends BaseActivity {
         mOrderId = intent.getStringExtra("orderId");
         mOrderPrice = intent.getStringExtra("orderPrice");
         mMoneyTextView.setText("¥" + mOrderPrice + "元");
+
+        mTopBar.setOnTopBarClickListener(new TopBar.OnTopBarClickListener() {
+            @Override
+            public void onBackClicked() {
+                finish();
+            }
+        });
     }
 
     /**
