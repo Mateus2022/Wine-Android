@@ -108,8 +108,8 @@
                 app:itv_text_content="我的订单"
                 app:itv_text_size="14sp"/>
 
-            <!--<com.ndboo.widget.ImgTextView
-                android:id="@+id/mine_collection"
+            <com.ndboo.widget.ImgTextView
+                android:id="@+id/mine_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -121,8 +121,8 @@
                 app:itv_left_image="@drawable/ic_mine_collection"
                 app:itv_right_image="@mipmap/ic_arrow_right"
                 app:itv_text_color="@color/themeColor"
-                app:itv_text_content="我的收藏"
-                app:itv_text_size="14sp"/>-->
+                app:itv_text_content="收货地址"
+                app:itv_text_size="14sp"/>
 
             <com.ndboo.widget.ImgTextView
                 android:id="@+id/mine_service"
@@ -137,7 +137,7 @@
                 app:itv_left_image="@drawable/ic_mine_service"
                 app:itv_right_image="@mipmap/ic_arrow_right"
                 app:itv_text_color="@color/themeColor"
-                app:itv_text_content="联系客服"
+                app:itv_text_content="400电话"
                 app:itv_text_size="14sp"/>
 
             <com.ndboo.widget.ImgTextView

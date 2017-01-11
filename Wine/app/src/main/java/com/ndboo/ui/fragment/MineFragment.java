@@ -21,6 +21,7 @@ import com.ndboo.widget.CircleImageView;
 import com.ndboo.widget.ImgTextView;
 import com.ndboo.widget.PortraitPopupWindow;
 import com.ndboo.wine.AboutUsActivity;
+import com.ndboo.wine.AddressActivity;
 import com.ndboo.wine.LoginActivity;
 import com.ndboo.wine.OrderListActivity;
 import com.ndboo.wine.R;
@@ -60,8 +61,8 @@ public class MineFragment extends BaseFragment {
 
     @BindView(R.id.mine_order)
     ImgTextView mOrderImgTextView;//我的订单
-    //    @BindView(R.id.mine_collection)
-//    ImgTextView mCollectionImgTextView;//我的收藏
+    @BindView(R.id.mine_address)
+    ImgTextView mMineAddress;//收货地址
     @BindView(R.id.mine_service)
     ImgTextView mServiceImgTextView;//联系客服
     @BindView(R.id.mine_aboutus)
@@ -126,7 +127,7 @@ public class MineFragment extends BaseFragment {
         if (resultCode == RESULT_OK) { // 如果返回码是可以用的
             switch (requestCode) {
                 case TAKE_PICTURE:
-                    File tmpFile=new File(getActivity().getExternalCacheDir(),"image.jpg");
+                    File tmpFile = new File(getActivity().getExternalCacheDir(), "image.jpg");
                     // 开始对图片进行裁剪处理
                     startPhotoZoom(Uri.fromFile(tmpFile));
                     break;
@@ -243,7 +244,8 @@ public class MineFragment extends BaseFragment {
 
 
     @OnClick({R.id.btn_login, R.id.btn_register, R.id.mine_portrait, R.id.mine_nickname, R.id.mine_order,
-            R.id.mine_service, R.id.mine_aboutus, R.id.mine_suggestion, R.id.mine_setting})
+            R.id.mine_service, R.id.mine_aboutus, R.id.mine_suggestion, R.id.mine_setting,
+    R.id.mine_address})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
@@ -261,8 +263,8 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.mine_order:
                 if (!SharedPreferencesUtil.isUserLoginIn(getContext())) {
-                    startActivity(new Intent(getActivity(),LoginActivity.class));
-                }else {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                } else {
                     startActivity(new Intent(getActivity(), OrderListActivity.class));
                 }
 
@@ -278,6 +280,9 @@ public class MineFragment extends BaseFragment {
                 break;
             case R.id.mine_suggestion:
                 startActivity(new Intent(getActivity(), SuggestionActivity.class));
+                break;
+            case R.id.mine_address:
+                startActivity(new Intent(getActivity(), AddressActivity.class));
                 break;
             case R.id.mine_setting:
                 startActivity(new Intent(getActivity(), SettingActivity.class));

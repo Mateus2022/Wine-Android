@@ -29,5 +29,6 @@
         android:layout_height="match_parent"
         android:layout_above="@id/tv_add_address"
         android:layout_below="@id/top_bar"
-        android:dividerHeight="10dp"/>
+        android:dividerHeight="10dp"
+        android:divider="@android:color/transparent"/>
 </RelativeLayout>

@@ -10,10 +10,10 @@
     <string name="car_complete">完成</string>
 
     <string-array name="wine_type">
-        <item>红酒</item>
-        <item>黄酒</item>
         <item>白酒</item>
         <item>啤酒</item>
+        <item>红酒</item>
+        <item>黄酒</item>
     </string-array>
 
     <string-array name="roll_view_pager">
