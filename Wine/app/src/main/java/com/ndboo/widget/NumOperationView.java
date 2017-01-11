@@ -73,7 +73,7 @@ public class NumOperationView extends LinearLayout {
     }
 
     public void hide() {
-        mLayout.setBackgroundColor(Color.WHITE);
+        mLayout.setBackgroundColor(Color.TRANSPARENT);
         mImageViewReduce.setVisibility(View.GONE);
         mTextViewNumber.setVisibility(View.GONE);
     }
