@@ -152,7 +152,7 @@ public class ShoppingCarFragment extends BaseFragment {
                 mCartBeanList.clear();
                 mCartAdapter.notifyDataSetChanged();
             }
-            mNoProductLayout.setVisibility(View.VISIBLE);
+            mBottomLinearLayout.setVisibility(View.GONE);
             return;
         }
         mCheckBox.setChecked(false);

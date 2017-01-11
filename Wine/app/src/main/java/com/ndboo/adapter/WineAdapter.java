@@ -44,12 +44,13 @@ public class WineAdapter extends BaseAdapter {
 
     public WineAdapter(Context context, BaseFragment baseFragment) {
         mContext = context;
-        mMainActivity= (MainActivity) mContext;
+        mMainActivity = (MainActivity) mContext;
         mBaseFragment = baseFragment;
         if (mWines != null) {
             mWines = new ArrayList<>();
         }
     }
+
     private MainActivity mMainActivity;
 
     public void setWines(List<WineBean> wines) {
