@@ -126,7 +126,6 @@ public class ShoppingCarFragment extends BaseFragment {
     protected void visibleDeal() {
         super.visibleDeal();
         if (SharedPreferencesUtil.isUserLoginIn(getActivity())) {
-            mCartBeanList.clear();
             mSelectedList.clear();
             requestData();
         }
@@ -136,7 +135,6 @@ public class ShoppingCarFragment extends BaseFragment {
      * 获取购物车列表
      */
     private void requestData() {
-        mCartBeanList.clear();
         mCheckBox.setChecked(false);
         Subscription subscription = RetrofitHelper.getApi()
                 .getCartProductsList(SharedPreferencesUtil.getUserId(getActivity()))
@@ -160,6 +158,7 @@ public class ShoppingCarFragment extends BaseFragment {
 //                                ToastUtil.showToast(getActivity(), "暂无商品");
                                 return;
                             }
+                            mCartBeanList.clear();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject cartObject = jsonArray.getJSONObject(i);
                                 mCartBeanList.add(new Gson().fromJson(cartObject.toString(), CartBean.class));
@@ -185,7 +184,7 @@ public class ShoppingCarFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.tv_edit_complete:
                 if (!SharedPreferencesUtil.isUserLoginIn(getActivity())) {
-                    startActivity(new Intent(getActivity(),LoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
                 if (mCartBeanList.size() == 0) {
@@ -211,7 +210,7 @@ public class ShoppingCarFragment extends BaseFragment {
             case R.id.cart_bottom_pay_topay:
                 if (!SharedPreferencesUtil.isUserLoginIn(getActivity())) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
-                }else {
+                } else {
                     //去结算
                     if (mCartBeanList.size() == 0) {
                         ToastUtil.showToast(getActivity(), "暂无商品");
@@ -380,8 +379,7 @@ public class ShoppingCarFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (!mIsFirstIn) {
+        if (!mIsFirstIn)
             requestData();
-        }
     }
 }
