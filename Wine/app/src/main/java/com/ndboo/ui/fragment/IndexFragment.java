@@ -1,5 +1,9 @@
 package com.ndboo.ui.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -90,6 +94,15 @@ public class IndexFragment extends BaseFragment {
             mGetWinTypeId.showById(position);
 
         }
+    }
+
+
+
+    @OnClick(R.id.iv_index_phone)
+    public void onClick() {
+        Intent intent=new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:"+"051266155111"));
+        startActivity(intent);
     }
 
     public interface getWinTypeId {
