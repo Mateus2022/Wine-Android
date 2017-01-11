@@ -233,7 +233,11 @@ public class ShoppingCarFragment extends BaseFragment {
                     }
                     double money = Double.parseDouble(mTotalMoney);
                     if (money < 100) {
-                        ToastUtil.showToast(getActivity(), "满100起送");
+                        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity())
+                                .setTitle("温馨提示")
+                                .setMessage("商品满100起送,请再添加一些商品")
+                                .setPositiveButton("确定",null);
+                        builder.create().show();
                         return;
                     }
                     Intent intent = new Intent(getActivity(), EditOrderActivity.class);

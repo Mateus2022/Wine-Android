@@ -1,8 +1,10 @@
 package com.ndboo.wine;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -68,6 +70,8 @@ public class WineDetailActivity extends BaseActivity {
     private int mLayoutTopHeight;
     private WineDetailBean mWineDetailBean;
 
+    private double mPrice=0;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_wine_detail;
@@ -106,7 +110,7 @@ public class WineDetailActivity extends BaseActivity {
                         mGoodsDetailName.setText(wineDetailBean.getProductName());
                         mGoodsDetailPrice.setText("¥：" + wineDetailBean.getProductPrice());
                         mGoodsDetailDescription.setText(wineDetailBean.getProductRemark());
-
+                        mPrice = Double.parseDouble(wineDetailBean.getProductPrice());
                         String[] imgTexts = wineDetailBean.getImageText().split(",");
                         for (final String imgText : imgTexts) {
                             final ImageView imageView = new ImageView(getApplicationContext());
@@ -165,13 +169,32 @@ public class WineDetailActivity extends BaseActivity {
                 break;
             case R.id.text_buy:
                 if (!SharedPreferencesUtil.isUserLoginIn(getApplicationContext())) {
-                    startActivity(new Intent(WineDetailActivity.this,LoginActivity.class));
-                }else {
-                    Intent payIntent = new Intent(this, EditOrderActivity.class);
-                    //获取id
-                    payIntent.putExtra("wine", mWineDetailBean);
-                    payIntent.putExtra("type", 2);
-                    startActivity(payIntent);
+                    startActivity(new Intent(WineDetailActivity.this, LoginActivity.class));
+                } else {
+                    if (mPrice==0) {
+                        return;
+                    }else {
+                        if (mPrice < 100) {
+                            AlertDialog.Builder builder=new AlertDialog.Builder(WineDetailActivity.this)
+                                    .setTitle("温馨提示")
+                                    .setMessage("商品价格不满100,是否添加至购物车")
+                                    .setNegativeButton("取消",null)
+                                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            addToCar();
+                                        }
+                                    });
+                            builder.create().show();
+                        }else {
+                            Intent payIntent = new Intent(this, EditOrderActivity.class);
+                            //获取id
+                            payIntent.putExtra("wine", mWineDetailBean);
+                            payIntent.putExtra("type", 2);
+                            startActivity(payIntent);
+                        }
+                    }
+
                 }
 
                 break;
@@ -180,8 +203,8 @@ public class WineDetailActivity extends BaseActivity {
                 break;
             case R.id.iv_car:
                 if (!SharedPreferencesUtil.isUserLoginIn(getApplicationContext())) {
-                    startActivity(new Intent(WineDetailActivity.this,LoginActivity.class));
-                }else {
+                    startActivity(new Intent(WineDetailActivity.this, LoginActivity.class));
+                } else {
                     setResult(2);
                     finish();
                 }
