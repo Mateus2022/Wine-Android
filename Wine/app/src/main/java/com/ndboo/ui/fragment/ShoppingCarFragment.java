@@ -2,7 +2,6 @@ package com.ndboo.ui.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +23,6 @@ import com.ndboo.utils.SharedPreferencesUtil;
 import com.ndboo.utils.ToastUtil;
 import com.ndboo.wine.EditOrderActivity;
 import com.ndboo.wine.LoginActivity;
-import com.ndboo.wine.MainActivity;
 import com.ndboo.wine.R;
 import com.ndboo.wine.WineDetailActivity;
 
@@ -66,6 +64,10 @@ public class ShoppingCarFragment extends BaseFragment {
     private boolean mCurrentType = TYPE_COMPLETE;
     //选中的复选框集合
     private List<String> mSelectedList = new ArrayList<>();
+
+    //底部
+    @BindView(R.id.layout_cart_bottom)
+    LinearLayout mBottomLinearLayout;
 
     //底部-结算
     @BindView(R.id.cart_bottom_pay)
@@ -171,8 +173,10 @@ public class ShoppingCarFragment extends BaseFragment {
                                 changeEditMode();
                                 mCartAdapter.notifyDataSetChanged();
                                 mNoProductLayout.setVisibility(View.VISIBLE);
+                                mBottomLinearLayout.setVisibility(View.GONE);
                                 return;
                             }
+                            mBottomLinearLayout.setVisibility(View.VISIBLE);
                             mNoProductLayout.setVisibility(View.GONE);
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject cartObject = jsonArray.getJSONObject(i);
@@ -194,7 +198,7 @@ public class ShoppingCarFragment extends BaseFragment {
     }
 
     @OnClick({R.id.tv_edit_complete, R.id.cart_bottom_delete_delete,
-            R.id.cart_bottom_pay_topay, R.id.layout_cart_null_button})
+            R.id.cart_bottom_pay_topay})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_edit_complete:
@@ -233,10 +237,10 @@ public class ShoppingCarFragment extends BaseFragment {
                     }
                     double money = Double.parseDouble(mTotalMoney);
                     if (money < 100) {
-                        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity())
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                                 .setTitle("温馨提示")
                                 .setMessage("商品满100起送,请再添加一些商品")
-                                .setPositiveButton("确定",null);
+                                .setPositiveButton("确定", null);
                         builder.create().show();
                         return;
                     }
@@ -253,9 +257,6 @@ public class ShoppingCarFragment extends BaseFragment {
                     intent.putExtra("type", 1);
                     startActivity(intent);
                 }
-                break;
-            case R.id.layout_cart_null_button:
-                ((MainActivity) getActivity()).turnToMall();
                 break;
         }
     }
@@ -340,12 +341,6 @@ public class ShoppingCarFragment extends BaseFragment {
         super.firstVisibleDeal();
         mEdit = getResources().getString(R.string.car_edit);
         mComplete = getResources().getString(R.string.car_complete);
-
-        /**
-         * 没有商品的字体
-         */
-        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/HYLeMiaoTiW.ttf");
-        mNoProductText.setTypeface(typeface);
 
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

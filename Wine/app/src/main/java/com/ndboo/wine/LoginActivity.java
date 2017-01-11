@@ -56,7 +56,7 @@ public class LoginActivity extends BaseActivity {
     /**
      * 登录
      *
-     * @param phone    账号
+     * @param phone    ic_login_account
      * @param password 密码
      */
     private void login(final String phone, String password) {
