@@ -152,13 +152,14 @@ public class ShoppingCarFragment extends BaseFragment {
                             mTotalPriceTextView.setText("总价：" + mTotalMoney + "元");
                             //商品信息
                             JSONArray jsonArray = jsonObject.optJSONArray("productInfromation");
+                            mCartBeanList.clear();
                             if (jsonArray == null) {
                                 mCurrentType = TYPE_EDIT;
                                 changeEditMode();
+                                mCartAdapter.notifyDataSetChanged();
 //                                ToastUtil.showToast(getActivity(), "暂无商品");
                                 return;
                             }
-                            mCartBeanList.clear();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject cartObject = jsonArray.getJSONObject(i);
                                 mCartBeanList.add(new Gson().fromJson(cartObject.toString(), CartBean.class));
