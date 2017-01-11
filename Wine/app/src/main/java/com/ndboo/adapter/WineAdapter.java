@@ -127,7 +127,7 @@ public class WineAdapter extends BaseAdapter {
                                     @Override
                                     public void call(String s) {
                                         view.setEnabled(true);
-                                        mMainActivity.queryWineNum();
+
                                         wineViewHolder.mViewNumOperation.numAdd();
                                         mWines.get(position).setCartProductCount(wineViewHolder.mViewNumOperation.getNumber());
                                         notifyDataSetChanged();
@@ -165,6 +165,7 @@ public class WineAdapter extends BaseAdapter {
                                     @Override
                                     public void call(String s) {
                                         view.setEnabled(true);
+                                        mMainActivity.queryWineNum();
                                         wineViewHolder.mViewNumOperation.numReduce();
                                         mWines.get(position).setCartProductCount(wineViewHolder.mViewNumOperation.getNumber());
                                         notifyDataSetChanged();

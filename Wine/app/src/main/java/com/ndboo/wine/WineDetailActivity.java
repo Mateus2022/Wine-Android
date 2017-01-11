@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.jauker.widget.BadgeView;
 import com.jude.rollviewpager.RollPagerView;
 import com.jude.rollviewpager.adapter.StaticPagerAdapter;
 import com.ndboo.base.BaseActivity;
@@ -69,6 +70,7 @@ public class WineDetailActivity extends BaseActivity {
     private WineDetailBean mWineDetailBean;
 
     private double mPrice = 0;
+    private String mProductCount;
 
     @Override
     public int getLayoutId() {
@@ -78,6 +80,9 @@ public class WineDetailActivity extends BaseActivity {
     @Override
     public void init() {
         productId = getIntent().getStringExtra("wineId");
+        mBadgeView=new BadgeView(WineDetailActivity.this);
+        mBadgeView.setBadgeMargin(5);
+        mBadgeView.setTargetView(mIvCar);
         Subscription subscription = RetrofitHelper.getApi()
                 .showWineDetail(productId)
                 .subscribeOn(Schedulers.io())
@@ -91,6 +96,7 @@ public class WineDetailActivity extends BaseActivity {
                         mGoodsDetailViewPager.setAdapter(new StaticPagerAdapter() {
                             @Override
                             public View getView(ViewGroup container, int position) {
+                                queryWineNum();
                                 ImageView imageView = new ImageView(getApplicationContext());
                                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                                 Glide.with(getApplicationContext())
@@ -230,6 +236,7 @@ public class WineDetailActivity extends BaseActivity {
                         public void call(String s) {
                             mTvCar.setEnabled(true);
                             try {
+                                queryWineNum();
                                 JSONObject object = new JSONObject(s);
                                 String result = object.getString("result");
                                 if (result.equals("true")) {
@@ -251,8 +258,35 @@ public class WineDetailActivity extends BaseActivity {
                     });
             addSubscription(subscription);
         }
+    }
+    private BadgeView mBadgeView;
+    private void queryWineNum() {
+        Subscription subscription = RetrofitHelper.getApi()
+                .queryCarNum(SharedPreferencesUtil.getUserId(getApplicationContext()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            mProductCount = object.getString("productCount");
+                            if (mBadgeView != null) {
+                                mBadgeView.setText(mProductCount);
+                            }
 
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
 
+                    }
+                });
+
+        addSubscription(subscription);
     }
 
 }

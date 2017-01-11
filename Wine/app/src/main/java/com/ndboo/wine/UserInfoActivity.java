@@ -2,7 +2,6 @@ package com.ndboo.wine;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -165,6 +164,7 @@ public class UserInfoActivity extends BaseActivity {
                     public void call(UserInfoBean userInfoBean) {
                         mNickNameEditText.setText(userInfoBean.getMemberNickname());
                         mBirthdayTextView.setText(userInfoBean.getMemberBirthday());
+                        mBirthday=userInfoBean.getMemberBirthday();
                         if (userInfoBean.getMemberSex().equals("男")) {
                             RadioButton radioButton = (RadioButton) mSexRadioGroup.getChildAt(0);
                             radioButton.setChecked(true);
