@@ -2,12 +2,14 @@ package com.ndboo.ui.fragment;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import com.ndboo.utils.SharedPreferencesUtil;
 import com.ndboo.utils.ToastUtil;
 import com.ndboo.wine.EditOrderActivity;
 import com.ndboo.wine.LoginActivity;
+import com.ndboo.wine.MainActivity;
 import com.ndboo.wine.R;
 import com.ndboo.wine.WineDetailActivity;
 
@@ -76,8 +79,14 @@ public class ShoppingCarFragment extends BaseFragment {
     @BindView(R.id.cart_bottom_delete_checkbox)
     CheckBox mCheckBox;
 
+    //没有商品
+    @BindView(R.id.layout_cart_null)
+    LinearLayout mNoProductLayout;
+    @BindView(R.id.layout_cart_null_text)
+    TextView mNoProductText;
+
     //总价
-    private String mTotalMoney = "0";
+    private String mTotalMoney = "0.00";
 
     //是否是第一次进入
     private boolean mIsFirstIn = true;
@@ -135,6 +144,10 @@ public class ShoppingCarFragment extends BaseFragment {
      * 获取购物车列表
      */
     private void requestData() {
+        if (!SharedPreferencesUtil.isUserLoginIn(getActivity())) {
+            mNoProductLayout.setVisibility(View.VISIBLE);
+            return;
+        }
         mCheckBox.setChecked(false);
         Subscription subscription = RetrofitHelper.getApi()
                 .getCartProductsList(SharedPreferencesUtil.getUserId(getActivity()))
@@ -157,9 +170,10 @@ public class ShoppingCarFragment extends BaseFragment {
                                 mCurrentType = TYPE_EDIT;
                                 changeEditMode();
                                 mCartAdapter.notifyDataSetChanged();
-//                                ToastUtil.showToast(getActivity(), "暂无商品");
+                                mNoProductLayout.setVisibility(View.VISIBLE);
                                 return;
                             }
+                            mNoProductLayout.setVisibility(View.GONE);
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject cartObject = jsonArray.getJSONObject(i);
                                 mCartBeanList.add(new Gson().fromJson(cartObject.toString(), CartBean.class));
@@ -180,7 +194,7 @@ public class ShoppingCarFragment extends BaseFragment {
     }
 
     @OnClick({R.id.tv_edit_complete, R.id.cart_bottom_delete_delete,
-            R.id.cart_bottom_pay_topay})
+            R.id.cart_bottom_pay_topay, R.id.layout_cart_null_button})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_edit_complete:
@@ -235,7 +249,9 @@ public class ShoppingCarFragment extends BaseFragment {
                     intent.putExtra("type", 1);
                     startActivity(intent);
                 }
-
+                break;
+            case R.id.layout_cart_null_button:
+                ((MainActivity) getActivity()).turnToMall();
                 break;
         }
     }
@@ -320,6 +336,12 @@ public class ShoppingCarFragment extends BaseFragment {
         super.firstVisibleDeal();
         mEdit = getResources().getString(R.string.car_edit);
         mComplete = getResources().getString(R.string.car_complete);
+
+        /**
+         * 没有商品的字体
+         */
+        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), "fonts/HYLeMiaoTiW.ttf");
+        mNoProductText.setTypeface(typeface);
 
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

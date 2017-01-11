@@ -81,9 +81,9 @@
                 android:id="@+id/cart_bottom_pay_totalprice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:text="总价：0.00元"
-                android:layout_centerVertical="true"
                 android:textColor="#6c6c6c"
                 android:textSize="16sp"/>
 
@@ -133,10 +133,54 @@
             android:background="#d0d0d0"/>
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/list_view_car_wines"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/layout_cart_bottom"
-        android:layout_below="@id/top_bar"/>
+        android:layout_below="@id/top_bar">
+
+        <ListView
+            android:id="@+id/list_view_car_wines"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:id="@+id/layout_cart_null"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="invisible"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="100dp"
+                android:src="@drawable/ic_cart_null"/>
+
+            <TextView
+                android:id="@+id/layout_cart_null_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="主银，采购单为空！快去挑选吧！"
+                android:textSize="18sp"/>
+
+            <Button
+                android:id="@+id/layout_cart_null_button"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="90dp"
+                android:background="@drawable/shape_bg_orange_corner"
+                android:text="去挑选商品"
+                android:textColor="#fff"
+                android:textSize="15sp"/>
+        </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>
