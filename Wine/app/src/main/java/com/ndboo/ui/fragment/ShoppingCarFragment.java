@@ -137,10 +137,9 @@ public class ShoppingCarFragment extends BaseFragment {
     @Override
     protected void visibleDeal() {
         super.visibleDeal();
-        if (SharedPreferencesUtil.isUserLoginIn(getActivity())) {
-            mSelectedList.clear();
-            requestData();
-        }
+        mCartBeanList.clear();
+        mSelectedList.clear();
+        requestData();
     }
 
     /**
@@ -152,6 +151,7 @@ public class ShoppingCarFragment extends BaseFragment {
                 mCartBeanList.clear();
                 mCartAdapter.notifyDataSetChanged();
             }
+            mNoProductLayout.setVisibility(View.VISIBLE);
             mBottomLinearLayout.setVisibility(View.GONE);
             return;
         }
