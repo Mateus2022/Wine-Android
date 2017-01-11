@@ -135,6 +135,12 @@
             android:name=".Login2Activity"
             android:windowSoftInputMode="adjustPan">
         </activity>
+        <!--微信支付回调-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+        </activity>
     </application>
 
 </manifest>
