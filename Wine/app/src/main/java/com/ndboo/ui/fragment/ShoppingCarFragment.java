@@ -1,6 +1,7 @@
 package com.ndboo.ui.fragment;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -104,6 +105,8 @@ public class ShoppingCarFragment extends BaseFragment {
      * 删除商品弹框
      */
     private DeletePopupWindow mDeletePopupWindow;
+    //要删除的商品id
+    private String mDeleteIds;
 
     @Override
     protected int getLayoutId() {
@@ -240,16 +243,16 @@ public class ShoppingCarFragment extends BaseFragment {
                     ToastUtil.showToast(getActivity(), "请选择商品");
                     return;
                 }
-                String ids = "";
                 for (int i = 0; i < mSelectedList.size(); i++) {
                     String position = mSelectedList.get(i);
                     CartBean cartBean = mCartBeanList.get(Integer.parseInt(position));
-                    ids += cartBean.getProductId();
+                    mDeleteIds = "";
+                    mDeleteIds += cartBean.getProductId();
                     if (i != mSelectedList.size() - 1) {
-                        ids += ",";
+                        mDeleteIds += ",";
                     }
                 }
-                deleteDialog(ids);
+                deleteDialog();
                 break;
             case R.id.cart_bottom_pay_topay:
                 if (!SharedPreferencesUtil.isUserLoginIn(getActivity())) {
@@ -286,7 +289,7 @@ public class ShoppingCarFragment extends BaseFragment {
         }
     }
 
-    private void deleteDialog(final String ids) {
+    private void deleteDialog() {
         if (mDeletePopupWindow == null) {
             mDeletePopupWindow = new DeletePopupWindow(getActivity());
             mDeletePopupWindow.setOnPopupWindowClickListener(new DeletePopupWindow.OnPopupWindowClickListener() {
@@ -296,7 +299,7 @@ public class ShoppingCarFragment extends BaseFragment {
 
                 @Override
                 public void ensureClicked(View view) {
-                    deleteProduct(ids);
+                    deleteProduct();
                 }
             });
         }
@@ -305,18 +308,16 @@ public class ShoppingCarFragment extends BaseFragment {
 
     /**
      * 删除购物车商品
-     *
-     * @param ids 要删除的商品id
      */
-    private void deleteProduct(final String ids) {
+    private void deleteProduct() {
         Subscription subscription = RetrofitHelper.getApi()
-                .deleteFromCart(SharedPreferencesUtil.getUserId(getActivity()), ids)
+                .deleteFromCart(SharedPreferencesUtil.getUserId(getActivity()), mDeleteIds)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String string) {
-//                        Log.e("ndb", "result:" + string);
+                        Log.e("ndb", "result:" + string);
                         try {
                             JSONObject jsonObject = new JSONObject(string);
                             String result = jsonObject.optString("result");
@@ -393,7 +394,8 @@ public class ShoppingCarFragment extends BaseFragment {
                 CartBean cartBean = mCartBeanList.get(position);
                 int productCount = Integer.parseInt(cartBean.getProductCount());
                 if (productCount == 1) {
-                    deleteDialog(cartBean.getProductId());
+                    mDeleteIds = cartBean.getProductId();
+                    deleteDialog();
                 } else {
                     updateProductCount(cartBean.getProductId(), --productCount, position);
                 }
