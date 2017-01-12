@@ -18,8 +18,8 @@
             android:id="@+id/iv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/back_login"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:src="@mipmap/back_login"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,8 +44,8 @@
         android:id="@+id/layout_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
         android:layout_below="@id/layout_head"
+        android:layout_margin="20dp"
         android:background="@drawable/layer_list_login"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -75,9 +75,9 @@
 
     <LinearLayout
         android:id="@+id/layout_pwd"
-        android:layout_below="@id/layout_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/layout_phone"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/layer_list_login"
@@ -105,13 +105,23 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_reset_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="重置密码"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@id/layout_pwd"
+        android:textColor="@color/darker_gray"/>
+
+    <TextView
         android:id="@+id/tv_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tv_reset_pwd"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/selector_tv_login"
         android:clickable="true"
         android:gravity="center"
