@@ -1,8 +1,7 @@
 package com.ndboo.ui.fragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -20,6 +19,8 @@ import com.ndboo.interfaces.ShoppingCarOnItemClickListener;
 import com.ndboo.net.RetrofitHelper;
 import com.ndboo.utils.SharedPreferencesUtil;
 import com.ndboo.utils.ToastUtil;
+import com.ndboo.widget.DeletePopupWindow;
+import com.ndboo.widget.TopBar;
 import com.ndboo.wine.EditOrderActivity;
 import com.ndboo.wine.LoginActivity;
 import com.ndboo.wine.MainActivity;
@@ -49,10 +50,16 @@ public class ShoppingCarFragment extends BaseFragment {
     private static final boolean TYPE_EDIT = false;
     private static final boolean TYPE_COMPLETE = true;
 
+    private static final int TYPE_DELETE_SINGLE = 1;//删除单个商品
+    private static final int TYPE_DELETE_MULTIPLE = 1;//删除多个商品
+
+
     @BindView(R.id.list_view_car_wines)
     ListView mListViewCarWines;
     @BindView(R.id.tv_edit_complete)
     TextView mTvEditComplete;
+    @BindView(R.id.top_bar)
+    TopBar mTopBar;
 
     private List<CartBean> mCartBeanList = new ArrayList<>();
     private CartAdapter mCartAdapter;
@@ -92,6 +99,11 @@ public class ShoppingCarFragment extends BaseFragment {
 
     //是否是第一次进入
     private boolean mIsFirstIn = true;
+
+    /**
+     * 删除商品弹框
+     */
+    private DeletePopupWindow mDeletePopupWindow;
 
     @Override
     protected int getLayoutId() {
@@ -228,7 +240,16 @@ public class ShoppingCarFragment extends BaseFragment {
                     ToastUtil.showToast(getActivity(), "请选择商品");
                     return;
                 }
-                deleteDialog();
+                String ids = "";
+                for (int i = 0; i < mSelectedList.size(); i++) {
+                    String position = mSelectedList.get(i);
+                    CartBean cartBean = mCartBeanList.get(Integer.parseInt(position));
+                    ids += cartBean.getProductId();
+                    if (i != mSelectedList.size() - 1) {
+                        ids += ",";
+                    }
+                }
+                deleteDialog(ids);
                 break;
             case R.id.cart_bottom_pay_topay:
                 if (!SharedPreferencesUtil.isUserLoginIn(getActivity())) {
@@ -250,14 +271,14 @@ public class ShoppingCarFragment extends BaseFragment {
                     }*/
                     Intent intent = new Intent(getActivity(), EditOrderActivity.class);
                     //获取所有id
-                    String ids = "";
+                    String goodsIds = "";
                     for (int i = 0; i < mCartBeanList.size(); i++) {
-                        ids += mCartBeanList.get(i).getProductId();
+                        goodsIds += mCartBeanList.get(i).getProductId();
                         if (i != mCartBeanList.size() - 1) {
-                            ids += ",";
+                            goodsIds += ",";
                         }
                     }
-                    intent.putExtra("productIds", ids);
+                    intent.putExtra("productIds", goodsIds);
                     intent.putExtra("type", 1);
                     startActivity(intent);
                 }
@@ -265,28 +286,21 @@ public class ShoppingCarFragment extends BaseFragment {
         }
     }
 
-    private void deleteDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(getActivity())
-                .setTitle("温馨提示")
-                .setMessage("确认删除选中的商品吗？")
-                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int id) {
-                        //表示删除选中的
-                        String ids = "";
-                        for (int i = 0; i < mSelectedList.size(); i++) {
-                            String position = mSelectedList.get(i);
-                            CartBean cartBean = mCartBeanList.get(Integer.parseInt(position));
-                            ids += cartBean.getProductId();
-                            if (i != mSelectedList.size() - 1) {
-                                ids += ",";
-                            }
-                        }
-                        deleteProduct(ids);
-                    }
-                })
-                .create();
-        dialog.show();
+    private void deleteDialog(final String ids) {
+        if (mDeletePopupWindow == null) {
+            mDeletePopupWindow = new DeletePopupWindow(getActivity());
+            mDeletePopupWindow.setOnPopupWindowClickListener(new DeletePopupWindow.OnPopupWindowClickListener() {
+                @Override
+                public void cancleClicked(View view) {
+                }
+
+                @Override
+                public void ensureClicked(View view) {
+                    deleteProduct(ids);
+                }
+            });
+        }
+        mDeletePopupWindow.showAtLocation(mTopBar, Gravity.CENTER, 0, 0);
     }
 
     /**
@@ -379,7 +393,7 @@ public class ShoppingCarFragment extends BaseFragment {
                 CartBean cartBean = mCartBeanList.get(position);
                 int productCount = Integer.parseInt(cartBean.getProductCount());
                 if (productCount == 1) {
-                    deleteProduct(cartBean.getProductId());
+                    deleteDialog(cartBean.getProductId());
                 } else {
                     updateProductCount(cartBean.getProductId(), --productCount, position);
                 }
@@ -410,5 +424,23 @@ public class ShoppingCarFragment extends BaseFragment {
         super.onResume();
         if (!mIsFirstIn)
             requestData();
+    }
+
+    /**
+     * 弹框是否已经弹出
+     */
+    public boolean isShow() {
+        if (mDeletePopupWindow == null) {
+            return false;
+        } else {
+            return mDeletePopupWindow.isShowing();
+        }
+    }
+
+    /**
+     * 关闭PopupWindow
+     */
+    public void closePop() {
+        mDeletePopupWindow.dismiss();
     }
 }

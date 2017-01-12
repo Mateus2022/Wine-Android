@@ -53,6 +53,7 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
     private MallFragment mMallFragment;
     private IndexFragment mIndexFragment;
     private MineFragment mMineFragment;
+    private ShoppingCarFragment mShoppingCarFragment;
     private long exitTime = 0;
     private String mProductCount;
     private BadgeView mBadgeView;
@@ -73,11 +74,11 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
 
         mIndexFragment = new IndexFragment();
         mMallFragment = new MallFragment();
-        ShoppingCarFragment carFragment = new ShoppingCarFragment();
+        mShoppingCarFragment = new ShoppingCarFragment();
         mMineFragment = new MineFragment();
         mFragments.add(mIndexFragment);
         mFragments.add(mMallFragment);
-        mFragments.add(carFragment);
+        mFragments.add(mShoppingCarFragment);
         mFragments.add(mMineFragment);
 
         mViewPagerMain.setOffscreenPageLimit(mFragments.size());
@@ -97,9 +98,9 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         mRbShoppingCar.setOnCheckedChangeListener(this);
         mRbMine.setOnCheckedChangeListener(this);
         mBadgeView = new BadgeView(this);
-        int simpleWidth=getResources().getDisplayMetrics().widthPixels/4;
+        int simpleWidth = getResources().getDisplayMetrics().widthPixels / 4;
         mBadgeView.setTargetView(mCarFlow);
-        mBadgeView.setBadgeMargin(0,3, (int) SizeUtil.px2dp(simpleWidth*1.0f*0.1f,getApplicationContext()),0);
+        mBadgeView.setBadgeMargin(0, 3, (int) SizeUtil.px2dp(simpleWidth * 1.0f * 0.1f, getApplicationContext()), 0);
     }
 
     @Override
@@ -120,6 +121,12 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         if (currentPage == 3) {
             if (mMineFragment.isShow()) {
                 mMineFragment.closePop();
+            } else {
+                exit();
+            }
+        } else if (currentPage == 2) {
+            if (mShoppingCarFragment.isShow()) {
+                mShoppingCarFragment.closePop();
             } else {
                 exit();
             }

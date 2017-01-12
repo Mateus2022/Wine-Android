@@ -74,7 +74,10 @@ public class OrderDetailActivity extends BaseActivity {
     void doClick(View v) {
         switch (v.getId()) {
             case R.id.orderdetail_gotopay:
-                if (mOrderStaus.equals("未付款") && !mOrderPayWay.equals("货到付款")) {
+                if (mOrderStaus.equals("派送中")) {
+                    //确认订单弹框
+                    showReceivedProduct();
+                } else if (mOrderStaus.equals("未付款") && !mOrderPayWay.equals("货到付款")) {
                     Intent payIntent = new Intent(this, PayActivity.class);
                     payIntent.putExtra("orderId", mOrderId);
                     payIntent.putExtra("orderPrice", mOrderPrice);
@@ -88,6 +91,13 @@ public class OrderDetailActivity extends BaseActivity {
                 startActivity(intent);
                 break;
         }
+    }
+
+    /**
+     * 确认订单
+     */
+    private void showReceivedProduct() {
+
     }
 
     @Override
@@ -171,6 +181,8 @@ public class OrderDetailActivity extends BaseActivity {
                             } else {
                                 if (mOrderStaus.equals("未付款")) {
                                     mPayButton.setText("去支付");
+                                } else if (mOrderStaus.equals("派送中")) {
+                                    mPayButton.setText("确认收货");
                                 } else {
                                     mPayButton.setText(mOrderStaus);
                                 }
