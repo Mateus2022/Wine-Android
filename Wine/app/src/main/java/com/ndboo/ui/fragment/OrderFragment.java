@@ -68,6 +68,8 @@ public class OrderFragment extends Fragment {
     //标记当前是刷新还是加载,默认刷新
     private int mLoadingType = TYPE_REFRESH;
 
+    private boolean mIsFirstIn = true;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -85,6 +87,14 @@ public class OrderFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && mFirstBeanList.size() == 0) {
             requestData();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!mIsFirstIn) {
+//            requestData();
         }
     }
 
@@ -210,6 +220,7 @@ public class OrderFragment extends Fragment {
                             if (length == 0) {
                                 ToastUtil.showToast(getActivity(), "暂无数据");
                             } else {
+                                mIsFirstIn = false;
                                 mAdapter.notifyDataSetChanged();
                                 mListView.setSelection(mFirstBeanList.size() - firstList.size());
                             }

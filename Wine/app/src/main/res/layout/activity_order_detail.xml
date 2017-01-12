@@ -47,9 +47,11 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_above="@id/orderdetail_footer"
-        android:layout_below="@id/orderdetail_header"
-        android:background="@color/LightGray">
+        android:layout_centerVertical="true"
+        android:background="#e2dbdb">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -107,12 +109,16 @@
                     android:textSize="14sp"/>
             </RelativeLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/orderdetail_recyclerview"
+            <LinearLayout
+                android:id="@+id/orderdetail_products_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@color/white"/>
+                android:background="@color/white"
+                android:divider="@drawable/shape_divider_horizontal"
+                android:showDividers="middle"
+                android:orientation="vertical">
+
+            </LinearLayout>
 
             <com.ndboo.widget.ImageTextTextView
                 android:id="@+id/orderdetail_consignee"

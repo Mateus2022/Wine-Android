@@ -3,7 +3,6 @@ package com.ndboo.ui.fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -111,7 +110,7 @@ public class ShoppingCarFragment extends BaseFragment {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String string) {
-                        Log.e("ndb", "result:" + string);
+//                        Log.e("ndb", "result:" + string);
                         try {
                             JSONObject jsonObject = new JSONObject(string);
                             String result = jsonObject.optString("result");
@@ -128,7 +127,7 @@ public class ShoppingCarFragment extends BaseFragment {
                     @Override
                     public void call(Throwable throwable) {
                         ToastUtil.showToast(getActivity(), "error:" + throwable.getMessage());
-                        Log.e("ndb", "error:" + throwable.getMessage());
+//                        Log.e("ndb", "error:" + throwable.getMessage());
                     }
                 });
         addSubscription(subscription);
@@ -164,7 +163,7 @@ public class ShoppingCarFragment extends BaseFragment {
                     @Override
                     public void call(String string) {
                         mIsFirstIn = false;
-                        Log.e("ndb", "result:" + string);
+//                        Log.e("ndb", "result:" + string);
                         try {
                             JSONObject jsonObject = new JSONObject(string);
                             //总价
@@ -196,7 +195,7 @@ public class ShoppingCarFragment extends BaseFragment {
                     @Override
                     public void call(Throwable throwable) {
                         ToastUtil.showToast(getActivity(), "error:" + throwable.getMessage());
-                        Log.e("ndb", "error:" + throwable.getMessage());
+//                        Log.e("ndb", "error:" + throwable.getMessage());
                     }
                 });
         addSubscription(subscription);
@@ -303,18 +302,18 @@ public class ShoppingCarFragment extends BaseFragment {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String string) {
-                        Log.e("ndb", "result:" + string);
+//                        Log.e("ndb", "result:" + string);
                         try {
                             JSONObject jsonObject = new JSONObject(string);
                             String result = jsonObject.optString("result");
                             if (result.equals("true")) {
-                                ToastUtil.showToast(getActivity(), "删除成功");
+                                ToastUtil.showToast(getActivity(), "已删除");
                                 mSelectedList.clear();
                                 mCartAdapter.setCheckedPositionList(mSelectedList);
                                 ((MainActivity) getActivity()).queryWineNum();
                                 requestData();
                             } else {
-                                ToastUtil.showToast(getActivity(), "删除失败");
+                                ToastUtil.showToast(getActivity(), "删除失败,请刷新重试");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -324,7 +323,7 @@ public class ShoppingCarFragment extends BaseFragment {
                     @Override
                     public void call(Throwable throwable) {
                         ToastUtil.showToast(getActivity(), "error:" + throwable.getMessage());
-                        Log.e("ndb", "error:" + throwable.getMessage());
+//                        Log.e("ndb", "error:" + throwable.getMessage());
                     }
                 });
         addSubscription(subscription);
