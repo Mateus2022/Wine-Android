@@ -281,7 +281,12 @@ public class MineFragment extends BaseFragment {
 //                startActivity(new Intent(getActivity(), SuggestionActivity.class));
 //                break;
             case R.id.mine_address:
-                startActivity(new Intent(getActivity(), AddressActivity.class));
+                if (!SharedPreferencesUtil.isUserLoginIn(getContext())) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                } else {
+                    startActivity(new Intent(getActivity(), AddressActivity.class));
+                }
+
                 break;
             case R.id.mine_setting:
                 startActivity(new Intent(getActivity(), SettingActivity.class));

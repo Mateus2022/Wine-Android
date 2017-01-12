@@ -2,25 +2,27 @@ package com.ndboo.ui.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jude.rollviewpager.RollPagerView;
-import com.jude.rollviewpager.adapter.LoopPagerAdapter;
+import com.ndboo.adapter.CarouselAdapter;
 import com.ndboo.base.BaseFragment;
+import com.ndboo.bean.CarouselBean;
+import com.ndboo.net.RetrofitHelper;
 import com.ndboo.wine.MainActivity;
 import com.ndboo.wine.R;
 
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Li on 2016/12/23.
@@ -33,6 +35,7 @@ public class IndexFragment extends BaseFragment {
     RollPagerView mRollPagerView;
 
     private getWinTypeId mGetWinTypeId;
+    private CarouselAdapter mCarouselAdapter;
 
     @Override
     protected int getLayoutId() {
@@ -42,42 +45,34 @@ public class IndexFragment extends BaseFragment {
     @Override
     public void showContent() {
         super.showContent();
-        getCarousel();
-    }
-
-    /**
-     * 获取轮播
-     */
-    public void getCarousel() {
-        List<Integer> imgRes = Arrays.asList(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3);
-        showCarousel(imgRes);
+        showCarousel();
     }
 
     /**
      * 显示轮播
-     *
-     * @param colors 轮播集合
      */
-    public void showCarousel(final List<Integer> imgRes) {
+    public void showCarousel() {
 
         mRollPagerView.setPlayDelay(4000);
         mRollPagerView.setAnimationDurtion(500);
-        mRollPagerView.setAdapter(new LoopPagerAdapter(mRollPagerView) {
-            @Override
-            public View getView(ViewGroup container, int position) {
-                ImageView imageView = new ImageView(getContext());
-                imageView.setImageResource(imgRes.get(position));
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                return imageView;
-            }
+        mCarouselAdapter = new CarouselAdapter(mRollPagerView, getActivity());
+        mRollPagerView.setAdapter(mCarouselAdapter);
+        Subscription subscription = RetrofitHelper.getApi()
+                .getCarousel()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<CarouselBean>>() {
+                    @Override
+                    public void call(List<CarouselBean> carouselBeen) {
+                        mCarouselAdapter.setCarouselBeanList(carouselBeen);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
 
-
-            @Override
-            public int getRealCount() {
-                return imgRes.size();
-
-            }
-        });
+                    }
+                });
+        addSubscription(subscription);
     }
 
 
@@ -97,11 +92,10 @@ public class IndexFragment extends BaseFragment {
     }
 
 
-
     @OnClick(R.id.iv_index_phone)
     public void onClick() {
-        Intent intent=new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:"+"051266155111"));
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + "051266155111"));
         startActivity(intent);
     }
 

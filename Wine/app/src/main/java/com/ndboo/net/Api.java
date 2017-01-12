@@ -1,6 +1,7 @@
 package com.ndboo.net;
 
 import com.ndboo.bean.AddressBean;
+import com.ndboo.bean.CarouselBean;
 import com.ndboo.bean.UserInfoBean;
 import com.ndboo.bean.WineBean;
 import com.ndboo.bean.WineDetailBean;
@@ -18,6 +19,14 @@ import rx.Observable;
  */
 
 public interface Api {
+
+
+    /**
+     * 获取轮播图
+     * @return  结果
+     */
+    @POST(Urls.URL_CAROUSEL)
+    Observable<List<CarouselBean>> getCarousel();
 
     /**
      * 通过密码登录

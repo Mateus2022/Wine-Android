@@ -9,6 +9,8 @@ public class Urls {
     public static final String URL_BASE = "http://www.ndboo.com/wine/";
 //    public static final String URL_BASE = "http://192.168.1.103:88/wine/";
 
+    //轮播图
+    public static final String URL_CAROUSEL="carouse/selectCarouselPicture";
     //通过密码登录
     public static final String URL_LOGIN_BY_PASSWORD = "member/loginByPassword";
     //注册
