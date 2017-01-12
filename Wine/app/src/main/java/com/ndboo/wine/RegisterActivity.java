@@ -269,7 +269,6 @@ private String mType="";
 
     }
 
-
     /**
      * 注册
      *
@@ -328,6 +327,7 @@ private String mType="";
                                 object = new JSONObject(s);
                                 String result = object.getString("returnStatus");
                                 if (result.equals("success")) {
+
                                     finish();
                                     ToastUtil.showToast(RegisterActivity.this, "注册成功");
                                 } else {
