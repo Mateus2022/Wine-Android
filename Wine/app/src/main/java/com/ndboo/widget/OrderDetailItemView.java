@@ -54,7 +54,7 @@ public class OrderDetailItemView extends LinearLayout {
         mPerPrice1TextView.setText("¥" + orderDetailBean.getPerPrice());
         mCountTextView.setText("x" + orderDetailBean.getCount());
         mTextRightTextView.setLabelText("已选" + orderDetailBean.getCount());
-        mTextRightTextView.setDataText("¥" + orderDetailBean.getCount());
+        mTextRightTextView.setDataText("¥" + orderDetailBean.getTotal());
         Glide.with(mContext).load(orderDetailBean.getImagePath()).into(mImageView);
     }
 }

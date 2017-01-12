@@ -47,6 +47,9 @@ public class OrderListActivity extends BaseActivity {
 
     private void initData() {
         for (int i = 0; i < mStatusArray.length; i++) {
+            if (i == 3) {
+                i = 4;
+            }
             OrderFragment fragment = newInstance(i);
             mFragmentList.add(fragment);
         }

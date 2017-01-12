@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@color/white"
         android:paddingBottom="8dp"
         android:paddingLeft="10dp"
         android:paddingRight="12dp"
@@ -50,6 +51,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_above="@id/orderdetail_footer"
+        android:layout_below="@id/orderdetail_header"
         android:layout_centerVertical="true"
         android:background="#e2dbdb">
 

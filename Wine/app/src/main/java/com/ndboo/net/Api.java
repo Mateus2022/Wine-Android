@@ -23,7 +23,8 @@ public interface Api {
 
     /**
      * 获取轮播图
-     * @return  结果
+     *
+     * @return 结果
      */
     @POST(Urls.URL_CAROUSEL)
     Observable<List<CarouselBean>> getCarousel();
@@ -52,13 +53,14 @@ public interface Api {
 
     /**
      * 重置密码
-     * @param userAccount   用户账号
-     * @param userPassword  用户密码
+     *
+     * @param userAccount  用户账号
+     * @param userPassword 用户密码
      * @return
      */
     @POST(Urls.URL_RESET_PASSWORD)
-    Observable<String> resetPassword(@Query("memberAccount")String userAccount,
-                                     @Query("memberPassword")String userPassword);
+    Observable<String> resetPassword(@Query("memberAccount") String userAccount,
+                                     @Query("memberPassword") String userPassword);
 
     /**
      * 获取用户信息
@@ -294,9 +296,23 @@ public interface Api {
 
     /**
      * 透过用户编号查询购物车商品数量
-     * @param memberId  用户编号
-     * @return  数量
+     *
+     * @param memberId 用户编号
+     * @return 数量
      */
     @POST(Urls.URL_QUERY_CAR_NUM)
-    Observable<String> queryCarNum(@Query("memberId")String memberId);
+    Observable<String> queryCarNum(@Query("memberId") String memberId);
+
+    /**
+     * 确认收货
+     *
+     * @param orderId     订单编号
+     * @param memberId    用户编号
+     * @param orderStatus 订单状态
+     * @return 确认结果
+     */
+    @POST(Urls.URL_CONFIRM_RECEIPT)
+    Observable<String> confirmReceipt(@Query("orderId") String orderId,
+                                      @Query("memberId") String memberId,
+                                      @Query("orderStatus") String orderStatus);
 }

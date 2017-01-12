@@ -3,6 +3,7 @@ package com.ndboo.wine;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -13,6 +14,7 @@ import com.ndboo.bean.OrderDetailBean;
 import com.ndboo.net.RetrofitHelper;
 import com.ndboo.utils.SharedPreferencesUtil;
 import com.ndboo.utils.ToastUtil;
+import com.ndboo.widget.DeletePopupWindow;
 import com.ndboo.widget.ImageTextTextView;
 import com.ndboo.widget.OrderDetailItemView;
 import com.ndboo.widget.TopBar;
@@ -32,6 +34,9 @@ import rx.schedulers.Schedulers;
  * 订单详情页面
  */
 public class OrderDetailActivity extends BaseActivity {
+    //确认收货
+    protected static final String STATUS_CONFIRM_RECEIPT = "4";
+
     @BindView(R.id.orderdetail_header)
     TopBar mTopBar;
     @BindView(R.id.orderdetail_products_layout)
@@ -69,6 +74,9 @@ public class OrderDetailActivity extends BaseActivity {
     Button mPayButton;
     private String mOrderPayWay;
 
+    //确认收货弹框
+    private DeletePopupWindow mConfirmPopupWindow;
+
     @OnClick({R.id.orderdetail_gotopay,
             R.id.orderdetail_service_phone})
     void doClick(View v) {
@@ -97,7 +105,50 @@ public class OrderDetailActivity extends BaseActivity {
      * 确认订单
      */
     private void showReceivedProduct() {
+        if (mConfirmPopupWindow == null) {
+            mConfirmPopupWindow = new DeletePopupWindow(this);
+            mConfirmPopupWindow.setMessageText("确认已收到商品吗？");
+            mConfirmPopupWindow.setOnPopupWindowClickListener(new DeletePopupWindow.OnPopupWindowClickListener() {
+                @Override
+                public void cancleClicked(View view) {
+                }
 
+                @Override
+                public void ensureClicked(View view) {
+                    Subscription subscription = RetrofitHelper.getApi()
+                            .confirmReceipt(mOrderId,
+                                    SharedPreferencesUtil.getUserId(OrderDetailActivity.this),
+                                    STATUS_CONFIRM_RECEIPT)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Action1<String>() {
+                                @Override
+                                public void call(String string) {
+                                    Log.e("tag", "result:" + string);
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(string);
+                                        String value = jsonObject.optString("result", "");
+                                        if (value.equals("success")) {
+                                            getOrderDetail();
+                                        } else {
+                                            ToastUtil.showToast(OrderDetailActivity.this, "确认收货失败，请刷新重试");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Action1<Throwable>() {
+                                @Override
+                                public void call(Throwable throwable) {
+                                    ToastUtil.showToast(OrderDetailActivity.this, "error:" + throwable.getMessage());
+                                    Log.e("ndb", "error:" + throwable.getMessage());
+                                }
+                            });
+                    addSubscription(subscription);
+                }
+            });
+        }
+        mConfirmPopupWindow.showAtLocation(mTopBar, Gravity.CENTER, 0, 0);
     }
 
     @Override
