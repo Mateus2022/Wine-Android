@@ -51,6 +51,16 @@ public interface Api {
                                 @Query("human_password") String userPassword);
 
     /**
+     * 重置密码
+     * @param userAccount   用户账号
+     * @param userPassword  用户密码
+     * @return
+     */
+    @POST(Urls.URL_RESET_PASSWORD)
+    Observable<String> resetPassword(@Query("memberAccount")String userAccount,
+                                     @Query("memberPassword")String userPassword);
+
+    /**
      * 获取用户信息
      *
      * @param userId 用户编号

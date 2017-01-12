@@ -35,6 +35,9 @@ import rx.schedulers.Schedulers;
  * 注册界面
  */
 public class RegisterActivity extends BaseActivity implements TextWatcher {
+
+    @BindView(R.id.tv_title)
+    TextView mTvTitle;
     //账号输入框
     @BindView(R.id.et_phone)
     EditText mEtPhone;
@@ -101,9 +104,17 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
     public int getLayoutId() {
         return R.layout.activity_register;
     }
-
+private String mType="";
     @Override
     public void init() {
+        if (getIntent().getExtras()!=null) {
+            mType=getIntent().getExtras().getString("type");
+        }
+        if (mType.equals("reset")) {
+            mTvTitle.setText("重置密码");
+        }else {
+            mTvTitle.setText("注册");
+        }
         VerificationUtil.editTextNoSpace(mEtPhone);
         VerificationUtil.editTextNoSpace(mEtCode);
         VerificationUtil.editTextNoSpace(mEtPwd);
@@ -268,39 +279,75 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
     private void register(String phone, String pwd) {
         mProgressDialog = new ProgressDialog(RegisterActivity.this);
         mProgressDialog.setCancelable(false);
-        mProgressDialog.setMessage("正在注册");
-        mProgressDialog.show();
-        Subscription subscription = RetrofitHelper.getApi()
-                .register(phone, pwd)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        mProgressDialog.cancel();
-                        JSONObject object;
-                        try {
-                            object = new JSONObject(s);
-                            String result = object.getString("returnStatus");
-                            if (result.equals("success")) {
-                                finish();
-                                ToastUtil.showToast(RegisterActivity.this, "注册成功");
-                            } else {
-                                ToastUtil.showToast(RegisterActivity.this, "用户已存在");
+        if (mType.equals("reset")) {
+            mProgressDialog.setMessage("重置密码");
+            mProgressDialog.show();
+            Subscription subscription=RetrofitHelper.getApi()
+                    .resetPassword(phone,pwd)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<String>() {
+                        @Override
+                        public void call(String s) {
+                            mProgressDialog.cancel();
+                            JSONObject object;
+                            try {
+                                object = new JSONObject(s);
+                                String result = object.getString("result");
+                                if (result.equals("success")) {
+                                    finish();
+                                    ToastUtil.showToast(RegisterActivity.this, "已重置密码");
+                                } else {
+                                    ToastUtil.showToast(RegisterActivity.this, "重置密码失败");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            mProgressDialog.cancel();
+                            ToastUtil.showToast(RegisterActivity.this, "注册失败,请检查网络连接");
+                        }
+                    });
+            addSubscription(subscription);
+        }else {
+            mProgressDialog.setMessage("正在注册");
+            mProgressDialog.show();
+            Subscription subscription = RetrofitHelper.getApi()
+                    .register(phone, pwd)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<String>() {
+                        @Override
+                        public void call(String s) {
+                            mProgressDialog.cancel();
+                            JSONObject object;
+                            try {
+                                object = new JSONObject(s);
+                                String result = object.getString("returnStatus");
+                                if (result.equals("success")) {
+                                    finish();
+                                    ToastUtil.showToast(RegisterActivity.this, "注册成功");
+                                } else {
+                                    ToastUtil.showToast(RegisterActivity.this, "用户已存在");
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
 
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        mProgressDialog.cancel();
-                        ToastUtil.showToast(RegisterActivity.this, "注册失败,请检查网络连接");
-                    }
-                });
-        addSubscription(subscription);
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            mProgressDialog.cancel();
+                            ToastUtil.showToast(RegisterActivity.this, "注册失败,请检查网络连接");
+                        }
+                    });
+            addSubscription(subscription);
+        }
+
     }
 
 

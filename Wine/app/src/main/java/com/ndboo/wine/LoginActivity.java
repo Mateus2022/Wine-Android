@@ -37,7 +37,7 @@ public class LoginActivity extends BaseActivity {
     TextView tvRegister;
     private ProgressDialog mProgressDialog;
 
-    @OnClick({R.id.iv_back, R.id.tv_login, R.id.tv_register})
+    @OnClick({R.id.iv_back, R.id.tv_login, R.id.tv_register,R.id.tv_reset_pwd})
     void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
@@ -48,6 +48,11 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.tv_register:
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                break;
+            case R.id.tv_reset_pwd:
+                Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
+                intent.putExtra("type","reset");
+                startActivity(intent);
                 break;
         }
 

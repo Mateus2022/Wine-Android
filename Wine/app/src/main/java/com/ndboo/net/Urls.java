@@ -15,6 +15,8 @@ public class Urls {
     public static final String URL_LOGIN_BY_PASSWORD = "member/loginByPassword";
     //注册
     public static final String URL_REGISTER = "member/register";
+    //重置密码
+    public static final String URL_RESET_PASSWORD="member/resetPassword";
     //获取个人信息
     public static final String URL_GET_USER_INFO = "member/getMemberInformationById";
     //修改个人信息
