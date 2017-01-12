@@ -30,7 +30,7 @@ public class OrderListActivity extends BaseActivity {
     ViewPager mViewPager;
 
     //订单的状态
-    private String[] mStatusArray = {"待付款", "待发货", "待收货", "已完成"};
+    private String[] mStatusArray = {"待付款", "已付款", "派送中", "已完成"};
 
     //ViewPager中的Fragment
     List<Fragment> mFragmentList = new ArrayList<>();

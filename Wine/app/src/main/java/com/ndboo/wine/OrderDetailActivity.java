@@ -1,32 +1,25 @@
 package com.ndboo.wine;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ndboo.adapter.OrderDetailAdapter;
 import com.ndboo.base.BaseActivity;
 import com.ndboo.bean.OrderDetailBean;
-import com.ndboo.extra.MyLinearLayoutManager;
 import com.ndboo.net.RetrofitHelper;
 import com.ndboo.utils.SharedPreferencesUtil;
 import com.ndboo.utils.ToastUtil;
 import com.ndboo.widget.ImageTextTextView;
-import com.ndboo.widget.ItemDecoration;
+import com.ndboo.widget.OrderDetailItemView;
 import com.ndboo.widget.TopBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -41,16 +34,12 @@ import rx.schedulers.Schedulers;
 public class OrderDetailActivity extends BaseActivity {
     @BindView(R.id.orderdetail_header)
     TopBar mTopBar;
-
-    @BindView(R.id.orderdetail_recyclerview)
-    RecyclerView mRecyclerView;
-    private OrderDetailAdapter mAdapter;
-    private List<OrderDetailBean> mList = new ArrayList<>();
+    @BindView(R.id.orderdetail_products_layout)
+    LinearLayout mLinearLayout;
 
     //订单id、状态、支付方式、价格
     private String mOrderId;
     private String mOrderStaus;
-    private String mPayment;
     private String mOrderPrice;
 
     //支付状态
@@ -90,7 +79,6 @@ public class OrderDetailActivity extends BaseActivity {
                     payIntent.putExtra("orderId", mOrderId);
                     payIntent.putExtra("orderPrice", mOrderPrice);
                     startActivity(payIntent);
-                    finish();
                 }
                 break;
             case R.id.orderdetail_service_phone:
@@ -117,14 +105,11 @@ public class OrderDetailActivity extends BaseActivity {
                 finish();
             }
         });
-
-        initRecyclerView();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         getOrderDetail();
     }
 
@@ -144,7 +129,7 @@ public class OrderDetailActivity extends BaseActivity {
                             JSONObject jsonObject = new JSONObject(string);
                             //总价
                             JSONArray jsonArray = jsonObject.optJSONArray("productInformation");
-                            mList.clear();
+                            mLinearLayout.removeAllViews();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject object = jsonArray.optJSONObject(i);
 
@@ -156,8 +141,11 @@ public class OrderDetailActivity extends BaseActivity {
 
                                 OrderDetailBean orderDetailBean = new OrderDetailBean(productPicture, productName,
                                         productCount, productPrice, productMoney);
-                                mList.add(orderDetailBean);
+                                OrderDetailItemView itemView = new OrderDetailItemView(OrderDetailActivity.this);
+                                itemView.setData(orderDetailBean);
+                                mLinearLayout.addView(itemView);
                             }
+
                             String orderTotal = jsonObject.optString("orderTotal", "");
                             String orderTime = jsonObject.optString("orderTime", "");
                             String orderNum = jsonObject.optString("orderNum", "");
@@ -167,7 +155,6 @@ public class OrderDetailActivity extends BaseActivity {
                             String addressDetail = jsonObject.optString("addressDetail", "");
                             String area = jsonObject.optString("area", "");
 
-                            mPayment = mOrderPayWay;
                             mOrderStaus = orderStatus;
                             mOrderPrice = orderTotal;
                             mPayentStatusTextView.setText(mOrderStaus);
@@ -178,7 +165,6 @@ public class OrderDetailActivity extends BaseActivity {
                             mPayentStatusTextView.setText(orderStatus);
                             mPlaceTimeView.setDataString(orderTime);
                             mPayWayView.setDataString(mOrderPayWay);
-                            mAdapter.notifyDataSetChanged();
 
                             if (mOrderPayWay.equals(CASH)) {
                                 mPayButton.setText(CASH);
@@ -202,17 +188,6 @@ public class OrderDetailActivity extends BaseActivity {
                     }
                 });
         addSubscription(subscription);
-    }
-
-    private void initRecyclerView() {
-        RecyclerView.ItemDecoration itemDecoration = new ItemDecoration(this,
-                LinearLayoutManager.VERTICAL,
-                1, Color.parseColor("#d3d3d3"));
-        mRecyclerView.addItemDecoration(itemDecoration);
-        MyLinearLayoutManager layoutManager = new MyLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mAdapter = new OrderDetailAdapter(this, mList);
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     private static final String CASH = "货到付款";
