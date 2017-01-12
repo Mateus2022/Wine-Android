@@ -164,6 +164,9 @@ public class UserInfoActivity extends BaseActivity {
                     public void call(UserInfoBean userInfoBean) {
                         mNickNameEditText.setText(userInfoBean.getMemberNickname());
                         mBirthdayTextView.setText(userInfoBean.getMemberBirthday());
+                        if (!userInfoBean.getMemberBirthday().equals("")&&userInfoBean.getMemberBirthday()!=null) {
+                            mBirthday=userInfoBean.getMemberBirthday();
+                        }
                         if (userInfoBean.getMemberSex().equals("男")) {
                             RadioButton radioButton = (RadioButton) mSexRadioGroup.getChildAt(0);
                             radioButton.setChecked(true);

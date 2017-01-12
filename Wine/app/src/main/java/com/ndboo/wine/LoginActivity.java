@@ -111,4 +111,5 @@ public class LoginActivity extends BaseActivity {
         mProgressDialog.setMessage("正在登陆...");
         mProgressDialog.setCancelable(false);
     }
+
 }
