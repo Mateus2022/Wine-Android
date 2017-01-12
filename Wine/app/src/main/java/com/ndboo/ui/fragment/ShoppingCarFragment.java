@@ -295,7 +295,7 @@ public class ShoppingCarFragment extends BaseFragment {
      *
      * @param ids 要删除的商品id
      */
-    private void deleteProduct(String ids) {
+    private void deleteProduct(final String ids) {
         Subscription subscription = RetrofitHelper.getApi()
                 .deleteFromCart(SharedPreferencesUtil.getUserId(getActivity()), ids)
                 .subscribeOn(Schedulers.io())
@@ -309,6 +309,8 @@ public class ShoppingCarFragment extends BaseFragment {
                             String result = jsonObject.optString("result");
                             if (result.equals("true")) {
                                 ToastUtil.showToast(getActivity(), "删除成功");
+                                mSelectedList.clear();
+                                mCartAdapter.setCheckedPositionList(mSelectedList);
                                 ((MainActivity) getActivity()).queryWineNum();
                                 requestData();
                             } else {

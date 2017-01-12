@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.ndboo.utils.ToastUtil;
-import com.ndboo.wine.R;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
 import com.tencent.mm.sdk.openapi.IWXAPI;
@@ -14,17 +13,16 @@ import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 /**
- * 支付完成回调界面
+ * 微信支付完成回调界面
  */
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
-    private static final String APPID = "";
+    private static final String APPID = "wx9d46d4b37cb95bdd";
 
     private IWXAPI api;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_goods_content);
         api = WXAPIFactory.createWXAPI(this, APPID);
         api.handleIntent(getIntent(), this);
     }
