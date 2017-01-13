@@ -21,21 +21,23 @@
         android:layout_height="wrap_content"
         android:background="@drawable/ic_pay_bg"
         android:gravity="center"
-        android:text="¥113.70元"
+        android:text="¥0.00元"
         android:textColor="@color/white"
-        android:textSize="17sp"/>
+        android:textSize="25sp"/>
 
     <ImageView
         android:id="@+id/pay_alipay"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="55dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop"
         android:src="@drawable/ic_pay_alipay"/>
 
     <!--<ImageView-->
-        <!--android:id="@+id/pay_wechat"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="30dp"-->
-        <!--android:src="@drawable/ic_pay_wechat"/>-->
+    <!--android:id="@+id/pay_wechat"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="30dp"-->
+    <!--android:src="@drawable/ic_pay_wechat"/>-->
 </LinearLayout>
