@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -56,15 +55,9 @@ public class CartAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        CarWineHolder carWineHolder = null;
-        if (convertView != null) {
-            carWineHolder = (CarWineHolder) convertView.getTag();
-        } else {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_shopping_car, null);
-            carWineHolder = new CarWineHolder(convertView);
-            convertView.setTag(carWineHolder);
-        }
+    public View getView(int position, View convertView, ViewGroup parent) {
+        convertView = LayoutInflater.from(mContext).inflate(R.layout.item_shopping_car, null);
+        CarWineHolder carWineHolder = new CarWineHolder(convertView, position);
         CartBean cartBean = mCartBeanList.get(position);
         Glide.with(mContext)
                 .load(cartBean.getProductPicture())
@@ -87,46 +80,6 @@ public class CartAdapter extends BaseAdapter {
         } else {
             carWineHolder.mCheckBoxSelect.setChecked(false);
         }
-        //复选框点击
-        final CarWineHolder finalCarWineHolder = carWineHolder;
-        carWineHolder.mCheckBoxSelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    if (!mCheckedPositionList.contains(finalCarWineHolder.mCheckBoxSelect.getTag())) {
-                        mCheckedPositionList.add("" + position);
-                    }
-                } else {
-                    if (mCheckedPositionList.contains(finalCarWineHolder.mCheckBoxSelect.getTag())) {
-                        mCheckedPositionList.remove("" + position);
-                    }
-                }
-            }
-        });
-        carWineHolder.mCheckBoxSelect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onCheckedChanged(position, (CompoundButton) v);
-            }
-        });/*
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.viewClick(position, v);
-            }
-        });*/
-        carWineHolder.mImageAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.numAdd(position, v);
-            }
-        });
-        carWineHolder.mImageDecrease.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.numReduce(position, v);
-            }
-        });
         return convertView;
     }
 
@@ -150,9 +103,50 @@ public class CartAdapter extends BaseAdapter {
         @BindView(R.id.item_cart_goods_acccunt_numprice)
         TextView mNumPriceTextView;
 
-        CarWineHolder(View view) {
+        int mPosition;
+
+        CarWineHolder(View view, int position) {
             ButterKnife.bind(this, view);
+            mPosition = position;
+
+            mCheckBoxSelect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    boolean isChecked = mCheckBoxSelect.isChecked();
+                    if (isChecked) {
+                        if (!mCheckedPositionList.contains(mCheckBoxSelect.getTag())) {
+                            mCheckedPositionList.add("" + mPosition);
+                        }
+                    } else {
+                        if (mCheckedPositionList.contains(mCheckBoxSelect.getTag())) {
+                            mCheckedPositionList.remove("" + mPosition);
+                        }
+                    }
+                    if (mCheckedPositionList.size() == mCartBeanList.size()) {
+                        //全选
+                        mListener.onAllChanged(true);
+                    } else {
+                        //全不选
+                        mListener.onAllChanged(false);
+                    }
+                }
+            });
+
+            mImageAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.numAdd(mPosition, v);
+                }
+            });
+
+            mImageDecrease.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mListener.numReduce(mPosition, v);
+                }
+            });
         }
+
     }
 
     public void setListener(ShoppingCarOnItemClickListener listener) {

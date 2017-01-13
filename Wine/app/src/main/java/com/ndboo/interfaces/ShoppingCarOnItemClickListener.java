@@ -1,7 +1,6 @@
 package com.ndboo.interfaces;
 
 import android.view.View;
-import android.widget.CompoundButton;
 
 /**
  * Created by Li on 2017/1/6.
@@ -16,5 +15,5 @@ public interface ShoppingCarOnItemClickListener {
 
     void viewClick(int position, View view);
 
-    void onCheckedChanged(int position,CompoundButton buttonView);
+    void onAllChanged(boolean isChanged);
 }

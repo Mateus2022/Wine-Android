@@ -6,7 +6,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -50,10 +49,6 @@ import rx.schedulers.Schedulers;
 public class ShoppingCarFragment extends BaseFragment {
     private static final boolean TYPE_EDIT = false;
     private static final boolean TYPE_COMPLETE = true;
-
-    private static final int TYPE_DELETE_SINGLE = 1;//删除单个商品
-    private static final int TYPE_DELETE_MULTIPLE = 1;//删除多个商品
-
 
     @BindView(R.id.list_view_car_wines)
     ListView mListViewCarWines;
@@ -243,10 +238,10 @@ public class ShoppingCarFragment extends BaseFragment {
                     ToastUtil.showToast(getActivity(), "请选择商品");
                     return;
                 }
+                mDeleteIds = "";
                 for (int i = 0; i < mSelectedList.size(); i++) {
                     String position = mSelectedList.get(i);
                     CartBean cartBean = mCartBeanList.get(Integer.parseInt(position));
-                    mDeleteIds = "";
                     mDeleteIds += cartBean.getProductId();
                     if (i != mSelectedList.size() - 1) {
                         mDeleteIds += ",";
@@ -364,15 +359,15 @@ public class ShoppingCarFragment extends BaseFragment {
         mEdit = getResources().getString(R.string.car_edit);
         mComplete = getResources().getString(R.string.car_complete);
 
-        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+            public void onClick(View view) {
+                boolean checked = mCheckBox.isChecked();
+                mSelectedList.clear();
                 if (checked) {
                     for (int i = 0; i < mCartBeanList.size(); i++) {
                         mSelectedList.add("" + i);
                     }
-                } else {
-                    mSelectedList.clear();
                 }
                 mCartAdapter.setCheckedPositionList(mSelectedList);
                 mCartAdapter.notifyDataSetChanged();
@@ -406,7 +401,11 @@ public class ShoppingCarFragment extends BaseFragment {
             }
 
             @Override
-            public void onCheckedChanged(int position, CompoundButton buttonView) {
+            public void onAllChanged(boolean isChecked) {
+                if (mCheckBox.isChecked() != isChecked) {
+                    mCheckBox.setChecked(isChecked);
+                    mCartAdapter.notifyDataSetChanged();
+                }
             }
         });
         mListViewCarWines.setAdapter(mCartAdapter);
