@@ -6,17 +6,20 @@ package com.ndboo.net;
  */
 
 public class Urls {
-    public static final String URL_BASE = "http://www.ndboo.com/wine/";
+    //Windows服务器
+//    public static final String URL_BASE = "http://www.ndboo.com/wine/";
 //    public static final String URL_BASE = "http://192.168.1.103:88/wine/";
+    //Linux服务器
+    public static final String URL_BASE = "http://114.215.124.160:8080/wine/";
 
     //轮播图
-    public static final String URL_CAROUSEL="carouse/selectCarouselPicture";
+    public static final String URL_CAROUSEL = "carouse/selectCarouselPicture";
     //通过密码登录
     public static final String URL_LOGIN_BY_PASSWORD = "member/loginByPassword";
     //注册
     public static final String URL_REGISTER = "member/register";
     //重置密码
-    public static final String URL_RESET_PASSWORD="member/resetPassword";
+    public static final String URL_RESET_PASSWORD = "member/resetPassword";
     //获取个人信息
     public static final String URL_GET_USER_INFO = "member/getMemberInformationById";
     //修改个人信息
@@ -59,7 +62,7 @@ public class Urls {
     //立即支付
     public static final String URL_PAY_RIGHTAWAY = "ws/addIndentFromProductDetail";
     //通过用户编号查询购物车数量
-    public static final String URL_QUERY_CAR_NUM="ws/selectProCountFromCart";
+    public static final String URL_QUERY_CAR_NUM = "ws/selectProCountFromCart";
     //确认收货
     public static final String URL_CONFIRM_RECEIPT = "ws/updateIndentStatus";
 

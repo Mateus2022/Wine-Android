@@ -43,6 +43,7 @@ import rx.schedulers.Schedulers;
 public class EditOrderActivity extends BaseActivity {
     private static final int PAYMENT_CASH = 0;//货到付款
     private static final int PAYMENT_ALYPAY = 1;//支付宝
+    private static final int PAYMENT_WECHAT = 2;//微信
     private static final String ERROR_ADDRESS_ID = "-20";
     private static final int REQUEST_ADDRESS_CODE = 1;
     //头部
@@ -73,7 +74,7 @@ public class EditOrderActivity extends BaseActivity {
     private String mAddressId = ERROR_ADDRESS_ID;
     //当前支付方式
     private int mCurrentPayment = PAYMENT_ALYPAY;
-    private String[] payWay = new String[]{"货到付款", "支付宝"};
+    private String[] payWay = new String[]{"货到付款", "支付宝", "微信"};
     private WineDetailBean mWineDetailBean;
 
     /**
@@ -112,6 +113,9 @@ public class EditOrderActivity extends BaseActivity {
                                         break;
                                     case 1:
                                         mCurrentPayment = PAYMENT_ALYPAY;
+                                        break;
+                                    case 2:
+                                        mCurrentPayment = PAYMENT_WECHAT;
                                         break;
                                 }
                             }
@@ -207,8 +211,8 @@ public class EditOrderActivity extends BaseActivity {
             builder.create().show();
             return;
         }
-        //从购物车支付
         if (mType == 1) {
+            //购物车方式
             Subscription subscription = RetrofitHelper.getApi()
                     .ensureOrder(SharedPreferencesUtil.getUserId(this),
                             mProductIds, mAddressId, "" + mCurrentPayment)
@@ -243,6 +247,7 @@ public class EditOrderActivity extends BaseActivity {
                     });
             addSubscription(subscription);
         } else if (mType == 2) {
+            //货到付款方式
             Subscription subscription2 = RetrofitHelper.getApi()
                     .submitOrderByCash(SharedPreferencesUtil.getUserId(this),
                             mProductIds, mAddressId, "" + mCurrentPayment, "1")
