@@ -27,7 +27,7 @@
                 android:layout_height="70dp"
                 android:layout_gravity="center_horizontal"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_tab_mine_on"
+                android:src="@drawable/ic_tab_mine_nm"
                 app:border_color="@color/white"
                 app:border_width="2dp"/>
 

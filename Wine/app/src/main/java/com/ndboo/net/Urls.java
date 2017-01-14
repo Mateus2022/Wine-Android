@@ -6,7 +6,7 @@ package com.ndboo.net;
  */
 
 public class Urls {
-    public static final String URL_BASE = "http://www.ndboo.com/wine/";
+    public static final String URL_BASE = "http://114.215.124.160:8080/wine/";
 //    public static final String URL_BASE = "http://192.168.1.103:88/wine/";
 
     //轮播图

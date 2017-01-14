@@ -235,6 +235,7 @@ public class MineFragment extends BaseFragment {
         if (SharedPreferencesUtil.isUserLoginIn(getContext())) {
             mLayoutUserExist.setVisibility(View.VISIBLE);
             mLayoutUserNotExist.setVisibility(View.GONE);
+            showUserInfo();
         } else {
             mLayoutUserExist.setVisibility(View.GONE);
             mLayoutUserNotExist.setVisibility(View.VISIBLE);
@@ -298,16 +299,16 @@ public class MineFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         showHeadByUserIsExist();
-        showUserInfo();
+//        showUserInfo();
     }
 
     /**
      * 显示用户信息
      */
     private void showUserInfo() {
-        if (!SharedPreferencesUtil.isUserLoginIn(getContext())) {
-            return;
-        }
+//        if (!SharedPreferencesUtil.isUserLoginIn(getContext())) {
+//            return;
+//        }
         String humanId = SharedPreferencesUtil.getUserId(getActivity());
         Subscription subscription = RetrofitHelper.getApi()
                 .getUserInfo(humanId)
@@ -316,7 +317,18 @@ public class MineFragment extends BaseFragment {
                 .subscribe(new Action1<UserInfoBean>() {
                     @Override
                     public void call(UserInfoBean userInfoBean) {
-                        Glide.with(getActivity()).load(userInfoBean.getShopLogo()).error(R.drawable.ic_tab_mine_on).into(mPortraitImageView);
+                        String memberAccount=userInfoBean.getMemberAccount();
+                        if (memberAccount.equals("null")||memberAccount.equals("")||memberAccount==null) {
+                            SharedPreferencesUtil.userLogout(getContext());
+                            showHeadByUserIsExist();
+                            return;
+                        }
+
+                        Glide.with(getActivity())
+                                .load(userInfoBean.getShopLogo())
+                                .error(R.drawable.ic_tab_mine_nm)
+                                .placeholder(R.drawable.ic_tab_mine_nm)
+                                .into(mPortraitImageView);
                         mNickNameTextView.setText(userInfoBean.getMemberNickname());
                     }
                 }, new Action1<Throwable>() {

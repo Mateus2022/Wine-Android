@@ -20,6 +20,7 @@ public class WelcomeActivity extends AppCompatActivity {
         countDown(2000);
     }
 
+
     /**
      * 定时跳转
      *
