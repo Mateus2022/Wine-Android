@@ -2,6 +2,9 @@ package com.ndboo.wine;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -9,8 +12,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alipay.sdk.app.PayTask;
 import com.ndboo.base.BaseActivity;
 import com.ndboo.bean.OrderDetailBean;
+import com.ndboo.extra.PayResult;
 import com.ndboo.net.RetrofitHelper;
 import com.ndboo.utils.SharedPreferencesUtil;
 import com.ndboo.utils.ToastUtil;
@@ -34,6 +39,16 @@ import rx.schedulers.Schedulers;
  * 订单详情页面
  */
 public class OrderDetailActivity extends BaseActivity {
+    //支付方式
+    private static final String PAYMENT_ALIPAY = "支付宝";
+    private static final String PAYMENT_WECHAT = "微信";
+    private static final String PAYMENT_CASH = "货到付款";
+    //订单状态
+    private static final String STATUS_WAIT_TO_PAY = "未付款";
+    private static final String STATUS_PAIED = "已付款";
+    private static final String STATUS_DELIVERYING = "派送中";
+    private static final String STATUS_fINISH = "已完成";
+
     //确认收货
     protected static final String STATUS_CONFIRM_RECEIPT = "4";
 
@@ -45,7 +60,6 @@ public class OrderDetailActivity extends BaseActivity {
     //订单id、状态、支付方式、价格
     private String mOrderId;
     private String mOrderStaus;
-    private String mOrderPrice;
 
     //支付状态
     @BindView(R.id.orderdetail_status)
@@ -82,14 +96,15 @@ public class OrderDetailActivity extends BaseActivity {
     void doClick(View v) {
         switch (v.getId()) {
             case R.id.orderdetail_gotopay:
-                if (mOrderStaus.equals("派送中")) {
+                if (mOrderStaus.equals(STATUS_DELIVERYING)) {
                     //确认订单弹框
                     showReceivedProduct();
-                } else if (mOrderStaus.equals("未付款") && !mOrderPayWay.equals("货到付款")) {
-                    Intent payIntent = new Intent(this, PayActivity.class);
-                    payIntent.putExtra("orderId", mOrderId);
-                    payIntent.putExtra("orderPrice", mOrderPrice);
-                    startActivity(payIntent);
+                } else if (mOrderStaus.equals(STATUS_WAIT_TO_PAY)) {
+                    if (mOrderPayWay.equals(PAYMENT_ALIPAY)) {
+                        doAlipay();
+                    } else if (mOrderPayWay.equals(PAYMENT_WECHAT)) {
+                        doWeChatPay();
+                    }
                 }
                 break;
             case R.id.orderdetail_service_phone:
@@ -99,6 +114,97 @@ public class OrderDetailActivity extends BaseActivity {
                 startActivity(intent);
                 break;
         }
+    }
+
+    /**
+     * 处理支付宝付款
+     */
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String message = (String) msg.obj;
+            if (TextUtils.equals(message, "9000")) {
+                //订单支付成功
+                ToastUtil.showToast(OrderDetailActivity.this, "支付成功");
+                finish();
+            } else if (TextUtils.equals(message, "8000")) {
+                // 正在处理中，支付结果未知（有可能已经支付成功），请查询商户订单列表中订单的支付状态
+                ToastUtil.showToast(OrderDetailActivity.this, "支付结果待确认,请稍后查询订单");
+                finish();
+            } else if (TextUtils.equals(message, "4000")) {
+                // 订单支付失败
+                ToastUtil.showToast(OrderDetailActivity.this, "支付失败");
+            } else if (TextUtils.equals(message, "5000")) {
+                //重复请求
+                ToastUtil.showToast(OrderDetailActivity.this, "请勿重复请求");
+            } else if (TextUtils.equals(message, "6001")) {
+                //用户中途取消
+                ToastUtil.showToast(OrderDetailActivity.this, "已取消支付");
+            } else if (TextUtils.equals(message, "6002")) {
+                //网络连接出错
+                ToastUtil.showToast(OrderDetailActivity.this, "网络连接出错");
+            } else if (TextUtils.equals(message, "6004")) {
+                //支付结果未知（有可能已经支付成功），请查询商户订单列表中订单的支付状态
+                ToastUtil.showToast(OrderDetailActivity.this, "支付结果待确认,请稍后查询订单");
+            } else {
+                //其他支付错误
+                ToastUtil.showToast(OrderDetailActivity.this, "支付错误");
+            }
+        }
+    };
+
+    /**
+     * 微信支付
+     */
+    private void doWeChatPay() {
+
+    }
+
+    /**
+     * 支付宝支付
+     */
+    private void doAlipay() {
+        Subscription subscription = RetrofitHelper.getApi()
+                .doAlipay(SharedPreferencesUtil.getUserId(this), mOrderId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String string) {
+                        Log.e("ndb", "result:" + string);
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            final String payURL = jsonObject.optString("payURL");
+                            //调起支付
+                            Runnable payRunnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    PayTask payTask = new PayTask(OrderDetailActivity.this);
+                                    String result = payTask.pay(payURL, true);
+                                    PayResult payResult = new PayResult(result);
+                                    //同步返回的结果必须放置到服务端进行验证
+                                    String resultStatus = payResult.getResultStatus();
+                                    Message message = new Message();
+                                    message.obj = resultStatus;
+                                    mHandler.sendMessage(message);
+                                }
+                            };
+                            // 必须异步调用
+                            Thread payThread = new Thread(payRunnable);
+                            payThread.start();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        ToastUtil.showToast(OrderDetailActivity.this, "error:" + throwable.getMessage());
+                        Log.e("ndb", "error:" + throwable.getMessage());
+                    }
+                });
+        addSubscription(subscription);
     }
 
     /**
@@ -217,7 +323,6 @@ public class OrderDetailActivity extends BaseActivity {
                             String area = jsonObject.optString("area", "");
 
                             mOrderStaus = orderStatus;
-                            mOrderPrice = orderTotal;
                             mPayentStatusTextView.setText(mOrderStaus);
                             mOrderMoneyTextView.setText("¥" + orderTotal);
                             mOrderNumberTextView.setText(orderNum);
@@ -227,12 +332,12 @@ public class OrderDetailActivity extends BaseActivity {
                             mPlaceTimeView.setDataString(orderTime);
                             mPayWayView.setDataString(mOrderPayWay);
 
-                            if (mOrderPayWay.equals(CASH)) {
-                                mPayButton.setText(CASH);
+                            if (mOrderPayWay.equals(PAYMENT_CASH)) {
+                                mPayButton.setText(PAYMENT_CASH);
                             } else {
-                                if (mOrderStaus.equals("未付款")) {
+                                if (mOrderStaus.equals(STATUS_WAIT_TO_PAY)) {
                                     mPayButton.setText("去支付");
-                                } else if (mOrderStaus.equals("派送中")) {
+                                } else if (mOrderStaus.equals(STATUS_DELIVERYING)) {
                                     mPayButton.setText("确认收货");
                                 } else {
                                     mPayButton.setText(mOrderStaus);
@@ -252,7 +357,4 @@ public class OrderDetailActivity extends BaseActivity {
                 });
         addSubscription(subscription);
     }
-
-    private static final String CASH = "货到付款";
-
 }

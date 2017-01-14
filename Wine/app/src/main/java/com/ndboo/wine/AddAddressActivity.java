@@ -53,7 +53,7 @@ public class AddAddressActivity extends BaseActivity {
             }
         });
         if (getIntent().getExtras() != null) {
-            Bundle bundle=getIntent().getExtras();
+            Bundle bundle = getIntent().getExtras();
 
             mAddressId = bundle.getString("addressId");
             mAddressName = bundle.getString("addressName");
@@ -72,10 +72,10 @@ public class AddAddressActivity extends BaseActivity {
     public void onClick() {
         if (checkInput()) {
             if (getIntent().getExtras() != null) {
-                Subscription subscription=RetrofitHelper.getApi()
-                        .updateAddress(mAddressId,mEditAddressName.getText().toString()
-                                ,mEditAddressPhone.getText().toString()
-                                ,mEditAddressDetail.getText().toString())
+                Subscription subscription = RetrofitHelper.getApi()
+                        .updateAddress(mAddressId, mEditAddressName.getText().toString()
+                                , mEditAddressPhone.getText().toString()
+                                , mEditAddressDetail.getText().toString())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Action1<String>() {
@@ -83,11 +83,11 @@ public class AddAddressActivity extends BaseActivity {
                             public void call(String s) {
 
                                 try {
-                                    JSONObject object=new JSONObject(s);
+                                    JSONObject object = new JSONObject(s);
                                     if (object.getString("result").equals("success")) {
                                         finish();
-                                    }else {
-                                        ToastUtil.showToast(AddAddressActivity.this,"修改失败");
+                                    } else {
+                                        ToastUtil.showToast(AddAddressActivity.this, "修改失败");
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -96,14 +96,15 @@ public class AddAddressActivity extends BaseActivity {
                         }, new Action1<Throwable>() {
                             @Override
                             public void call(Throwable throwable) {
-                                ToastUtil.showToast(AddAddressActivity.this,"网络连接错误");
+                                ToastUtil.showToast(AddAddressActivity.this, "网络连接错误");
                             }
                         });
                 addSubscription(subscription);
-            }else {
+            } else {
                 Subscription subscription = RetrofitHelper.getApi()
                         .addAddress(mUserId, mEditAddressName.getText().toString(),
-                                mEditAddressDetail.getText().toString(), mEditAddressPhone.getText().toString())
+                                mEditAddressDetail.getText().toString(),
+                                mEditAddressPhone.getText().toString())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Action1<String>() {

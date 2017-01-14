@@ -94,7 +94,7 @@ public class OrderFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (!mIsFirstIn) {
-//            requestData();
+            requestData();
         }
     }
 
