@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -60,17 +61,21 @@ public class WineDetailActivity extends BaseActivity {
     @BindView(R.id.layout_content)
     PullUpToLoadMore mLayoutContent;
     @BindView(R.id.layout_top)
-    LinearLayout mLayoutTop;
-    @BindView(R.id.tv_img_text)
-    TextView mTvImgText;
+    RelativeLayout mLayoutTop;
     @BindView(R.id.layout_image_text)
     LinearLayout mLayoutImageText;
+    @BindView(R.id.tv_product)
+    TextView mTvProduct;
+    @BindView(R.id.tv_detail)
+    TextView mTvDetail;
+
     private String productId;
     private int mLayoutTopHeight;
     private WineDetailBean mWineDetailBean;
 
     private double mPrice = 0;
     private String mProductCount;
+    private BadgeView mBadgeView;
 
     @Override
     public int getLayoutId() {
@@ -80,7 +85,7 @@ public class WineDetailActivity extends BaseActivity {
     @Override
     public void init() {
         productId = getIntent().getStringExtra("wineId");
-        mBadgeView=new BadgeView(WineDetailActivity.this);
+        mBadgeView = new BadgeView(WineDetailActivity.this);
         mBadgeView.setBadgeMargin(5);
         mBadgeView.setTargetView(mIvCar);
         Subscription subscription = RetrofitHelper.getApi()
@@ -145,21 +150,18 @@ public class WineDetailActivity extends BaseActivity {
                 });
         addSubscription(subscription);
         mLayoutTop.measure(0, 0);
+
         mLayoutTopHeight = mLayoutTop.getMeasuredHeight();
-        mLayoutImageText.setPadding(0, mLayoutTopHeight + 5, 0, 0);
+//        mLayoutImageText.setPadding(0, mLayoutTopHeight + 5, 0, 0);
         mLayoutContent.setiChanged(new PullUpToLoadMore.IChanged() {
             @Override
             public void changed(int t) {
                 if (t <= mLayoutTopHeight) {
-                    mTvImgText.setVisibility(View.INVISIBLE);
-                    mIvCar.setImageResource(R.drawable.ic_detail_car_no_bg);
-                    mIvBack.setImageResource(R.drawable.ic_detail_back_no_bg);
-                    mLayoutTop.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                    mTvProduct.setBackgroundResource(R.drawable.layer_list_wine_detail_select);
+                    mTvDetail.setBackgroundResource(R.color.themeColor);
                 } else {
-                    mTvImgText.setVisibility(View.VISIBLE);
-                    mIvCar.setImageResource(R.drawable.ic_detail_car_has_bg);
-                    mIvBack.setImageResource(R.drawable.ic_detail_back_has_bg);
-                    mLayoutTop.setBackgroundColor(getResources().getColor(R.color.themeColor));
+                    mTvDetail.setBackgroundResource(R.drawable.layer_list_wine_detail_select);
+                    mTvProduct.setBackgroundResource(R.color.themeColor);
                 }
             }
         });
@@ -259,7 +261,7 @@ public class WineDetailActivity extends BaseActivity {
             addSubscription(subscription);
         }
     }
-    private BadgeView mBadgeView;
+
     private void queryWineNum() {
         Subscription subscription = RetrofitHelper.getApi()
                 .queryCarNum(SharedPreferencesUtil.getUserId(getApplicationContext()))
@@ -288,5 +290,6 @@ public class WineDetailActivity extends BaseActivity {
 
         addSubscription(subscription);
     }
+
 
 }

@@ -208,7 +208,7 @@ public class PullUpToLoadMore extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int childCount = getChildCount();
-        int childTop = t;
+        int childTop = 0;
         for (int i = 0; i < childCount; i++) {
             View child = getChildAt(i);
             child.layout(l, childTop, r, childTop + child.getMeasuredHeight());
