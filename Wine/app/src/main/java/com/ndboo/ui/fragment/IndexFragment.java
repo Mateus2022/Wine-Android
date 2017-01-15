@@ -98,7 +98,6 @@ public class IndexFragment extends BaseFragment {
         intent.setData(Uri.parse("tel:" + "051266155111"));
         startActivity(intent);
     }
-
     public interface getWinTypeId {
         void showById(int id);
     }
