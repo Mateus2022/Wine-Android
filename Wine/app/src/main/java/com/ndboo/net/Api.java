@@ -220,6 +220,17 @@ public interface Api {
                                 @Query("orderId") String orderId);
 
     /**
+     * 微信支付
+     *
+     * @param memberId 用户id
+     * @param orderId  订单id
+     * @return 微信支付信息
+     */
+    @POST(Urls.URL_PAY_WECHAT)
+    Observable<String> doWeChatPay(@Query("memberId") String memberId,
+                                   @Query("orderId") String orderId);
+
+    /**
      * 查询收货地址
      *
      * @param userId 用户编号

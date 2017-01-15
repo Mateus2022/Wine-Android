@@ -47,6 +47,8 @@ public class Urls {
     public static final String URL_GET_ORDER_BY_STATUS = "ws/selectIndentByStatus";
     //支付宝支付
     public static final String URL_PAY_ALIPAY = "ws/doPayForCart";
+    //微信支付
+    public static final String URL_PAY_WECHAT = "";
     //购物车列表
     public static final String URL_CART_GET_PRODUCT_LIST = "ws/getProductsFromCart";
     //查询收货地址

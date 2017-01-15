@@ -20,11 +20,11 @@
         android:id="@+id/aboutus_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:background="@color/white"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -122,6 +122,7 @@
                 android:textSize="13sp"/>
         </RelativeLayout>
     </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -151,6 +152,16 @@
                 android:text="       江苏农店宝供应链科技股份有限公司是一家专注于中国农村互联网 + 的企业，立足于中国农村便利店，通过整合上游供应商，减少多层中间商加价环节，并在县级行政区域建立集中仓储物管中心，直接配送至农村便利店，以达到整体惠民的结果，并运用互联网思维结合农村便利店的独特优势，建立集农业大数据采集，实事文化输出、惠民信息、供需信息、招聘信息、农村电商等为一体的互联网 + 多媒体终端系统，开阔农村端口消费品采购，农产品输出的便利性、快捷性，全面推动减少农村、农业、农民开支，构建畅通快速物流体系，逐渐增加农民收入，推动互联互通三农大战略的持续发展。"
                 android:textColor="#656565"
                 android:textSize="13sp"/>
+
+            <!--<TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:gravity="center"
+                android:layout_marginTop="40dp"
+                android:text="江苏农店宝供应链科技股份有限公司 版权所有\nCopyright © 2016-2017 NDB\nAll Rights Reserved."
+                android:textColor="@color/black"
+                android:textSize="14sp"/>-->
         </LinearLayout>
     </ScrollView>
 
