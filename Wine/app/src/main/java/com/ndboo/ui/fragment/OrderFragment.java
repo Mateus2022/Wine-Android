@@ -219,6 +219,7 @@ public class OrderFragment extends Fragment {
 
                             if (length == 0) {
                                 ToastUtil.showToast(getActivity(), "暂无数据");
+                                mAdapter.notifyDataSetChanged();
                             } else {
                                 mIsFirstIn = false;
                                 mAdapter.notifyDataSetChanged();

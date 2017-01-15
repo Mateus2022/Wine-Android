@@ -74,7 +74,7 @@ public class EditOrderActivity extends BaseActivity {
     private String mAddressId = ERROR_ADDRESS_ID;
     //当前支付方式
     private int mCurrentPayment = PAYMENT_ALYPAY;
-    private String[] payWay = new String[]{"货到付款", "支付宝", "微信"};
+    private String[] payWay = new String[]{"货到付款", "支付宝"/*, "微信"*/};
     private WineDetailBean mWineDetailBean;
 
     /**
@@ -158,7 +158,6 @@ public class EditOrderActivity extends BaseActivity {
             getData();
         }
     }
-
 
     private void getData() {
         Subscription subscription = RetrofitHelper.getApi()

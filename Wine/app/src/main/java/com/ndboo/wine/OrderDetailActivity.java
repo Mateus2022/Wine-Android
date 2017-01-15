@@ -23,6 +23,9 @@ import com.ndboo.widget.DeletePopupWindow;
 import com.ndboo.widget.ImageTextTextView;
 import com.ndboo.widget.OrderDetailItemView;
 import com.ndboo.widget.TopBar;
+import com.tencent.mm.sdk.modelpay.PayReq;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -158,7 +161,40 @@ public class OrderDetailActivity extends BaseActivity {
      * 微信支付
      */
     private void doWeChatPay() {
-
+        Subscription subscription = RetrofitHelper.getApi()
+                .doWeChatPay(SharedPreferencesUtil.getUserId(this), mOrderId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String string) {
+                        Log.e("ndb", "result:" + string);
+                        try {
+                            JSONObject jsonObject = new JSONObject(string);
+                            //TODO 获取支付参数
+                            //启动微信支付
+                            IWXAPI iwxapi = WXAPIFactory.createWXAPI(OrderDetailActivity.this, "appid");
+                            PayReq payReq = new PayReq();
+                            payReq.appId = "";
+                            payReq.partnerId = "";
+                            payReq.prepayId = "";
+                            payReq.packageValue = "Sign=WXPay";
+                            payReq.nonceStr = "";
+                            payReq.timeStamp = "";
+                            payReq.sign = "";
+                            iwxapi.sendReq(payReq);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        ToastUtil.showToast(OrderDetailActivity.this, "error:" + throwable.getMessage());
+                        Log.e("ndb", "error:" + throwable.getMessage());
+                    }
+                });
+        addSubscription(subscription);
     }
 
     /**
