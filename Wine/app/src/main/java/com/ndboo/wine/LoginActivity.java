@@ -3,6 +3,8 @@ package com.ndboo.wine;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -35,9 +37,11 @@ public class LoginActivity extends BaseActivity {
     TextView mTvLogin;
     @BindView(R.id.tv_register)
     TextView tvRegister;
+    @BindView(R.id.ck_agreement)
+    CheckBox mCkAgreement;
     private ProgressDialog mProgressDialog;
 
-    @OnClick({R.id.iv_back, R.id.tv_login, R.id.tv_register,R.id.tv_reset_pwd})
+    @OnClick({R.id.iv_back, R.id.tv_login, R.id.tv_register, R.id.tv_reset_pwd, R.id.tv_agreement})
     void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
@@ -45,14 +49,18 @@ public class LoginActivity extends BaseActivity {
                 break;
             case R.id.tv_login:
                 login(mEtPhone.getText().toString(), mEtPwd.getText().toString());
+
                 break;
             case R.id.tv_register:
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
                 break;
             case R.id.tv_reset_pwd:
-                Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
-                intent.putExtra("type","reset");
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                intent.putExtra("type", "reset");
                 startActivity(intent);
+                break;
+            case R.id.tv_agreement:
+                startActivity(new Intent(LoginActivity.this, ProtocolActivity.class));
                 break;
         }
 
@@ -77,14 +85,14 @@ public class LoginActivity extends BaseActivity {
                     public void call(String s) {
                         mProgressDialog.cancel();
                         try {
-                            JSONObject jsonObject=new JSONObject(s);
-                            String memberId=jsonObject.getString("memberId");
-                            String status=jsonObject.getString("loginStatus");
+                            JSONObject jsonObject = new JSONObject(s);
+                            String memberId = jsonObject.getString("memberId");
+                            String status = jsonObject.getString("loginStatus");
                             if (status.equals("2")) {
-                                SharedPreferencesUtil.saveUserInfo(LoginActivity.this,memberId,phone);
+                                SharedPreferencesUtil.saveUserInfo(LoginActivity.this, memberId, phone);
                                 finish();
-                            }else {
-                                ToastUtil.showToast(LoginActivity.this,"用户名或密码不正确");
+                            } else {
+                                ToastUtil.showToast(LoginActivity.this, "用户名或密码不正确");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -94,7 +102,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void call(Throwable throwable) {
                         mProgressDialog.cancel();
-                        ToastUtil.showToast(LoginActivity.this,"网络连接错误");
+                        ToastUtil.showToast(LoginActivity.this, "网络连接错误");
                     }
                 });
         addSubscription(subscription);
@@ -107,9 +115,20 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void init() {
+        mCkAgreement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    mTvLogin.setEnabled(true);
+                } else {
+                    mTvLogin.setEnabled(false);
+                }
+            }
+        });
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("正在登陆...");
         mProgressDialog.setCancelable(false);
     }
+
 
 }

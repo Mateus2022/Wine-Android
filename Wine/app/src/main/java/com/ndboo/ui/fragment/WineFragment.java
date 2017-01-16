@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.ndboo.adapter.WineAdapter;
 import com.ndboo.base.BaseFragment;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -37,9 +39,12 @@ public class WineFragment extends BaseFragment {
     ListView mListViewWine;
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+    @BindView(R.id.tv_refresh)
+    TextView mTvRefresh;
 
     private WineAdapter mWineAdapter;
     private List<WineBean> mWineBeen;
+    private String mWineType;
 
     public static WineFragment newInstance(boolean isFirstFragment, String wineType) {
 
@@ -74,6 +79,27 @@ public class WineFragment extends BaseFragment {
 
     }
 
+    private void startLoading(){
+        if (mProgressBar != null) {
+            mProgressBar.setVisibility(View.VISIBLE);
+        }
+        if (mTvRefresh != null) {
+            mTvRefresh.setVisibility(View.GONE);
+
+        }
+    }
+
+    private void loadSuccess(){
+        mListViewWine.setVisibility(View.VISIBLE);
+        mProgressBar.setVisibility(View.GONE);
+        mTvRefresh.setVisibility(View.GONE);
+    }
+
+    private void loadFailure(){
+        mListViewWine.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
+        mTvRefresh.setVisibility(View.VISIBLE);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -90,17 +116,10 @@ public class WineFragment extends BaseFragment {
     }
 
     @Override
-    public void firstVisibleDeal() {
-        super.firstVisibleDeal();
-
-    }
-
-    @Override
     protected void visibleDeal() {
         super.visibleDeal();
-        String wineType = getArguments().getString(WINE_TYPE);
-        showWinesByType(wineType, SharedPreferencesUtil.getUserId(getContext()));
-
+        mWineType = getArguments().getString(WINE_TYPE);
+        showWinesByType(mWineType, SharedPreferencesUtil.getUserId(getContext()));
     }
 
     @Override
@@ -115,10 +134,7 @@ public class WineFragment extends BaseFragment {
 
     private void showWinesByType(String wineType, String userId) {
         unSubscribe();
-        if (mProgressBar != null) {
-            mProgressBar.setVisibility(View.VISIBLE);
-
-        }
+        startLoading();
         Subscription subscription = RetrofitHelper.getApi()
                 .showWinesByType(wineType, userId)
                 .subscribeOn(Schedulers.io())
@@ -126,14 +142,15 @@ public class WineFragment extends BaseFragment {
                 .subscribe(new Action1<List<WineBean>>() {
                     @Override
                     public void call(List<WineBean> wineBeen) {
+                        loadSuccess();
                         mWineBeen = wineBeen;
                         mWineAdapter.setWines(wineBeen);
-                        mProgressBar.setVisibility(View.GONE);
+
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        mProgressBar.setVisibility(View.GONE);
+                        loadFailure();
                     }
                 });
         addSubscription(subscription);
@@ -143,5 +160,10 @@ public class WineFragment extends BaseFragment {
     protected void inVisibleDeal() {
         super.inVisibleDeal();
         unSubscribe();
+    }
+
+    @OnClick(R.id.tv_refresh)
+    public void onClick() {
+        showWinesByType(mWineType, SharedPreferencesUtil.getUserId(getContext()));
     }
 }

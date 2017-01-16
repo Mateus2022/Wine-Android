@@ -163,7 +163,7 @@
             android:layout_marginTop="15dp"
             android:drawablePadding="5dp"
             android:gravity="center_vertical"
-            android:text="客官，你的购物车里没有酒~~"
+            android:text="客官，赶紧去选酒吧！"
             android:textSize="18sp"/>
     </LinearLayout>
 </RelativeLayout>

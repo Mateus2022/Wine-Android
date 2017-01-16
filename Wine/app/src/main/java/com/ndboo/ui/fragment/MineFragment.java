@@ -200,7 +200,7 @@ public class MineFragment extends BaseFragment {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String s) {
-                        showUserInfo();
+showUserInfo();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -235,7 +235,6 @@ public class MineFragment extends BaseFragment {
         if (SharedPreferencesUtil.isUserLoginIn(getContext())) {
             mLayoutUserExist.setVisibility(View.VISIBLE);
             mLayoutUserNotExist.setVisibility(View.GONE);
-            showUserInfo();
         } else {
             mLayoutUserExist.setVisibility(View.GONE);
             mLayoutUserNotExist.setVisibility(View.VISIBLE);
@@ -299,16 +298,19 @@ public class MineFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         showHeadByUserIsExist();
-//        showUserInfo();
+        showUserInfo();
     }
+
+
+
 
     /**
      * 显示用户信息
      */
     private void showUserInfo() {
-//        if (!SharedPreferencesUtil.isUserLoginIn(getContext())) {
-//            return;
-//        }
+        if (!SharedPreferencesUtil.isUserLoginIn(getContext())) {
+            return;
+        }
         String humanId = SharedPreferencesUtil.getUserId(getActivity());
         Subscription subscription = RetrofitHelper.getApi()
                 .getUserInfo(humanId)
@@ -340,9 +342,5 @@ public class MineFragment extends BaseFragment {
         addSubscription(subscription);
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        unSubscribe();
-    }
+
 }

@@ -15,56 +15,68 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_index_title"
-            android:scaleType="centerInside"/>
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_index_title"/>
+
         <ImageView
             android:id="@+id/iv_index_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_index_phone"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"/>
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ic_index_phone"/>
     </RelativeLayout>
 
-    <ScrollView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <com.jude.rollviewpager.RollPagerView
-                android:id="@+id/roll_view_pager"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.jude.rollviewpager.RollPagerView
+                    android:id="@+id/roll_view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"/>
 
 
-            <ImageView
-                android:id="@+id/iv_liquor"
-                style="@style/IndexBannerStyle"
-                android:src="@drawable/ic_banner_liquor"
-                android:tag="0"/>
+                <ImageView
+                    android:id="@+id/iv_liquor"
+                    style="@style/IndexBannerStyle"
+                    android:src="@drawable/ic_banner_liquor"
+                    android:tag="0"/>
 
-            <ImageView
-                android:id="@+id/iv_beer"
-                style="@style/IndexBannerStyle"
-                android:src="@drawable/ic_banner_beer"
-                android:tag="1"/>
+                <ImageView
+                    android:id="@+id/iv_beer"
+                    style="@style/IndexBannerStyle"
+                    android:src="@drawable/ic_banner_beer"
+                    android:tag="1"/>
 
-            <ImageView
-                android:id="@+id/iv_red_wine"
-                style="@style/IndexBannerStyle"
-                android:src="@drawable/ic_banner_red_wine"
-                android:tag="2"/>
+                <ImageView
+                    android:id="@+id/iv_red_wine"
+                    style="@style/IndexBannerStyle"
+                    android:src="@drawable/ic_banner_red_wine"
+                    android:tag="2"/>
 
-            <ImageView
-                android:id="@+id/iv_rice_wine"
-                style="@style/IndexBannerStyle"
-                android:src="@drawable/ic_banner_rice_wine"
-                android:tag="3"/>
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_rice_wine"
+                    style="@style/IndexBannerStyle"
+                    android:src="@drawable/ic_banner_rice_wine"
+                    android:tag="3"/>
+            </LinearLayout>
 
-    </ScrollView>
+        </ScrollView>
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 </LinearLayout>
+
+
