@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.ndboo.wine"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.ndboo.wine">
 
     <!-- &lt;!&ndash;用于进行网络定位&ndash;&gt; -->
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> -->
@@ -19,6 +19,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <!-- &lt;!&ndash;用于写入缓存数据到扩展存储卡&ndash;&gt; -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <!-- &lt;!&ndash;用于申请调用A-GPS模块&ndash;&gt; -->
     <!-- <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/> -->
     <!-- &lt;!&ndash;用于申请获取蓝牙信息进行室内定位&ndash;&gt; -->
@@ -137,11 +138,16 @@
             android:name=".Login2Activity"
             android:windowSoftInputMode="adjustPan">
         </activity>
-        <!--微信支付回调-->
+        <!-- 微信支付回调 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:exported="true"
             android:launchMode="singleTop">
+        </activity>
+        <activity
+            android:name=".ProtocolActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

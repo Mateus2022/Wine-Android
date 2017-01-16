@@ -66,7 +66,7 @@ public class MineFragment extends BaseFragment {
     ImgTextView mServiceImgTextView;//联系客服
     @BindView(R.id.mine_aboutus)
     ImgTextView mAboutUsImgTextView;//关于我们
-//    @BindView(R.id.mine_suggestion)
+    //    @BindView(R.id.mine_suggestion)
 //    ImgTextView mSuggestionImgTextView;//意见反馈
     @BindView(R.id.mine_setting)
     ImgTextView mSettingImgTextView;//设置
@@ -200,7 +200,7 @@ public class MineFragment extends BaseFragment {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String s) {
-                        showUserInfo();
+showUserInfo();
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -235,7 +235,6 @@ public class MineFragment extends BaseFragment {
         if (SharedPreferencesUtil.isUserLoginIn(getContext())) {
             mLayoutUserExist.setVisibility(View.VISIBLE);
             mLayoutUserNotExist.setVisibility(View.GONE);
-            showUserInfo();
         } else {
             mLayoutUserExist.setVisibility(View.GONE);
             mLayoutUserNotExist.setVisibility(View.VISIBLE);
@@ -245,7 +244,7 @@ public class MineFragment extends BaseFragment {
 
     @OnClick({R.id.btn_login, R.id.btn_register, R.id.mine_portrait, R.id.mine_nickname, R.id.mine_order,
             R.id.mine_service, R.id.mine_aboutus, R.id.mine_setting,
-    R.id.mine_address})
+            R.id.mine_address})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
@@ -299,16 +298,19 @@ public class MineFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         showHeadByUserIsExist();
-//        showUserInfo();
+        showUserInfo();
     }
+
+
+
 
     /**
      * 显示用户信息
      */
     private void showUserInfo() {
-//        if (!SharedPreferencesUtil.isUserLoginIn(getContext())) {
-//            return;
-//        }
+        if (!SharedPreferencesUtil.isUserLoginIn(getContext())) {
+            return;
+        }
         String humanId = SharedPreferencesUtil.getUserId(getActivity());
         Subscription subscription = RetrofitHelper.getApi()
                 .getUserInfo(humanId)
@@ -317,8 +319,8 @@ public class MineFragment extends BaseFragment {
                 .subscribe(new Action1<UserInfoBean>() {
                     @Override
                     public void call(UserInfoBean userInfoBean) {
-                        String memberAccount=userInfoBean.getMemberAccount();
-                        if (memberAccount.equals("null")||memberAccount.equals("")||memberAccount==null) {
+                        String memberAccount = userInfoBean.getMemberAccount();
+                        if (memberAccount.equals("null") || memberAccount.equals("") || memberAccount == null) {
                             SharedPreferencesUtil.userLogout(getContext());
                             showHeadByUserIsExist();
                             return;
@@ -327,7 +329,6 @@ public class MineFragment extends BaseFragment {
                         Glide.with(getActivity())
                                 .load(userInfoBean.getShopLogo())
                                 .error(R.drawable.ic_tab_mine_nm)
-                                .placeholder(R.drawable.ic_tab_mine_nm)
                                 .into(mPortraitImageView);
                         mNickNameTextView.setText(userInfoBean.getMemberNickname());
                     }
@@ -340,9 +341,5 @@ public class MineFragment extends BaseFragment {
         addSubscription(subscription);
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        unSubscribe();
-    }
+
 }

@@ -200,12 +200,42 @@
                     android:textSize="14sp"/>
 
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_agreement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_confirm_pwd"
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="5dp">
+
+
+                <CheckBox
+                    android:id="@+id/ck_agreement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="我已阅读并同意"
+                    android:checked="true"
+                    android:textColor="#333333"
+                    android:textSize="14sp"/>
+                <TextView
+                    android:id="@+id/tv_agreement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="《用户协议》"
+                    android:textSize="14sp"
+                    android:textColor="#196ac6"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+
 
             <TextView
                 android:id="@+id/tv_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/layout_confirm_pwd"
+                android:layout_below="@id/layout_agreement"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="40dp"

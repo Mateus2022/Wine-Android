@@ -1,6 +1,7 @@
 package com.ndboo.wine;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
@@ -9,7 +10,10 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -65,6 +69,12 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
     //第二步布局
     @BindView(R.id.layout_step_2)
     RelativeLayout mLayoutStep2;
+    @BindView(R.id.ck_agreement)
+    CheckBox mCkAgreement;
+    @BindView(R.id.tv_agreement)
+    TextView mTvAgreement;
+    @BindView(R.id.layout_agreement)
+    LinearLayout mLayoutAgreement;
 
     private String smsKey;
     private String smsSecret;
@@ -73,8 +83,9 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
     private EventHandler eh;
     private RelativeLayout mCurrentLayout;
     private ProgressDialog mProgressDialog;
+    private String mType = "";
 
-    @OnClick({R.id.iv_back, R.id.tv_get_code, R.id.tv_next_step, R.id.tv_register})
+    @OnClick({R.id.iv_back, R.id.tv_get_code, R.id.tv_next_step, R.id.tv_register, R.id.tv_agreement})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
@@ -97,6 +108,9 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
                     showErrorDialog("请确保两次输入内容一样，并且长度在6-15个字符之内");
                 }
                 break;
+            case R.id.tv_agreement:
+                startActivity(new Intent(this, ProtocolActivity.class));
+                break;
         }
     }
 
@@ -104,16 +118,31 @@ public class RegisterActivity extends BaseActivity implements TextWatcher {
     public int getLayoutId() {
         return R.layout.activity_register;
     }
-private String mType="";
+
     @Override
     public void init() {
-        if (getIntent().getExtras()!=null) {
-            mType=getIntent().getExtras().getString("type");
+        mCkAgreement.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (!mType.equals("reset")) {
+                    if (isChecked) {
+                        mTvRegister.setEnabled(true);
+                    } else {
+                        mTvRegister.setEnabled(false);
+                    }
+                }
+
+            }
+        });
+        if (getIntent().getExtras() != null) {
+            mType = getIntent().getExtras().getString("type");
         }
         if (mType.equals("reset")) {
             mTvTitle.setText("重置密码");
-        }else {
+            mLayoutAgreement.setVisibility(View.GONE);
+        } else {
             mTvTitle.setText("注册");
+            mLayoutAgreement.setVisibility(View.VISIBLE);
         }
         VerificationUtil.editTextNoSpace(mEtPhone);
         VerificationUtil.editTextNoSpace(mEtCode);
@@ -281,8 +310,8 @@ private String mType="";
         if (mType.equals("reset")) {
             mProgressDialog.setMessage("重置密码");
             mProgressDialog.show();
-            Subscription subscription=RetrofitHelper.getApi()
-                    .resetPassword(phone,pwd)
+            Subscription subscription = RetrofitHelper.getApi()
+                    .resetPassword(phone, pwd)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Action1<String>() {
@@ -311,7 +340,7 @@ private String mType="";
                         }
                     });
             addSubscription(subscription);
-        }else {
+        } else {
             mProgressDialog.setMessage("正在注册");
             mProgressDialog.show();
             Subscription subscription = RetrofitHelper.getApi()

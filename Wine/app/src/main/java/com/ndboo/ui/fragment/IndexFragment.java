@@ -2,6 +2,7 @@ package com.ndboo.ui.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +34,8 @@ public class IndexFragment extends BaseFragment {
 
     @BindView(R.id.roll_view_pager)
     RollPagerView mRollPagerView;
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout mSwipeRefresh;
 
     private getWinTypeId mGetWinTypeId;
     private CarouselAdapter mCarouselAdapter;
@@ -45,6 +48,12 @@ public class IndexFragment extends BaseFragment {
     @Override
     public void showContent() {
         super.showContent();
+        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                showCarousel();
+            }
+        });
         showCarousel();
     }
 
@@ -52,7 +61,6 @@ public class IndexFragment extends BaseFragment {
      * 显示轮播
      */
     public void showCarousel() {
-
         mRollPagerView.setPlayDelay(4000);
         mRollPagerView.setAnimationDurtion(500);
         mCarouselAdapter = new CarouselAdapter(mRollPagerView, getActivity());
@@ -64,12 +72,13 @@ public class IndexFragment extends BaseFragment {
                 .subscribe(new Action1<List<CarouselBean>>() {
                     @Override
                     public void call(List<CarouselBean> carouselBeen) {
+                        mSwipeRefresh.setRefreshing(false);
                         mCarouselAdapter.setCarouselBeanList(carouselBeen);
                     }
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-
+                        mSwipeRefresh.setRefreshing(false);
                     }
                 });
         addSubscription(subscription);
@@ -98,6 +107,9 @@ public class IndexFragment extends BaseFragment {
         intent.setData(Uri.parse("tel:" + "051266155111"));
         startActivity(intent);
     }
+
+
+
     public interface getWinTypeId {
         void showById(int id);
     }
