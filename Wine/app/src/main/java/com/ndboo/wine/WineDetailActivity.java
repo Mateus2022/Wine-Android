@@ -102,10 +102,12 @@ public class WineDetailActivity extends BaseActivity {
                             @Override
                             public View getView(ViewGroup container, int position) {
                                 queryWineNum();
-                                ImageView imageView = new ImageView(getApplicationContext());
+                                ImageView imageView = new ImageView(WineDetailActivity.this);
                                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                                Glide.with(getApplicationContext())
+                                Glide.with(WineDetailActivity.this)
                                         .load(wineImages[position])
+//                                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                                        .placeholder(R.drawable.water_large)
                                         .into(imageView);
                                 return imageView;
                             }
@@ -123,8 +125,9 @@ public class WineDetailActivity extends BaseActivity {
                         String[] imgTexts = wineDetailBean.getImageText().split(",");
                         for (final String imgText : imgTexts) {
                             final ImageView imageView = new ImageView(getApplicationContext());
+
                             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                            Glide.with(getApplicationContext())
+                            Glide.with(WineDetailActivity.this)
                                     .load(imgText)
                                     .asBitmap()
                                     .into(new SimpleTarget<Bitmap>() {
@@ -136,7 +139,10 @@ public class WineDetailActivity extends BaseActivity {
                                             ViewGroup.LayoutParams para = imageView.getLayoutParams();
                                             para.height = height;
                                             imageView.setLayoutParams(para);
-                                            Glide.with(getApplicationContext()).load(imgText).asBitmap().into(imageView);
+                                            Glide.with(WineDetailActivity.this)
+                                                    .load(imgText)
+                                                    .placeholder(R.drawable.water_large)
+                                                    .into(imageView);
                                         }
                                     });
                             mLayoutImageText.addView(imageView);
