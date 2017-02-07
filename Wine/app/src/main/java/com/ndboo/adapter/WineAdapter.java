@@ -86,7 +86,11 @@ public class WineAdapter extends BaseAdapter {
         } else {
             wineViewHolder = (WineViewHolder) convertView.getTag();
         }
-        Glide.with(mContext).load(wine.getPicPath()).into(wineViewHolder.mIv);
+
+        Glide.with(mContext)
+                .load(wine.getPicPath())
+                .placeholder(R.drawable.water_m)
+                .into(wineViewHolder.mIv);
         wineViewHolder.mTvWineName.setText(wine.getProductName());
         wineViewHolder.mTvPrice.setText("¥" + wine.getProductPrice());
         wineViewHolder.mViewNumOperation.setNumber(wine.getCartProductCount());

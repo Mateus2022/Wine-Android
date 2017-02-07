@@ -48,6 +48,10 @@ public class IndexFragment extends BaseFragment {
     @Override
     public void showContent() {
         super.showContent();
+        mRollPagerView.setPlayDelay(4000);
+        mRollPagerView.setAnimationDurtion(500);
+        mCarouselAdapter = new CarouselAdapter(mRollPagerView, getActivity());
+        mRollPagerView.setAdapter(mCarouselAdapter);
         mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -61,10 +65,7 @@ public class IndexFragment extends BaseFragment {
      * 显示轮播
      */
     public void showCarousel() {
-        mRollPagerView.setPlayDelay(4000);
-        mRollPagerView.setAnimationDurtion(500);
-        mCarouselAdapter = new CarouselAdapter(mRollPagerView, getActivity());
-        mRollPagerView.setAdapter(mCarouselAdapter);
+
         Subscription subscription = RetrofitHelper.getApi()
                 .getCarousel()
                 .subscribeOn(Schedulers.io())

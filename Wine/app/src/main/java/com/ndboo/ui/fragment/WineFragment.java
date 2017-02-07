@@ -65,7 +65,7 @@ public class WineFragment extends BaseFragment {
     public void showContent() {
         super.showContent();
         mWineBeen = new ArrayList<>();
-        mWineAdapter = new WineAdapter(getContext(), this);
+        mWineAdapter = new WineAdapter(getActivity(), this);
         mListViewWine.setAdapter(mWineAdapter);
         mListViewWine.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

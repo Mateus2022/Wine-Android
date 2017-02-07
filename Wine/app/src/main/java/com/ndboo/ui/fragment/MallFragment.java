@@ -88,7 +88,7 @@ public class MallFragment extends BaseFragment{
         //酒的种类，目前有四种：红酒、黄酒、白酒、啤酒
         mMWineTypes = Arrays.asList(getResources().getStringArray(R.array.wine_type));
         mFragments=new ArrayList<>();
-        mViewPagerWine.setOffscreenPageLimit(mMWineTypes.size());
+//        mViewPagerWine.setOffscreenPageLimit(mMWineTypes.size());
         mTabLayoutType.setupWithViewPager(mViewPagerWine);
         addOnTabSelectedListener();
         for (int i = 0; i < mMWineTypes.size(); i++) {

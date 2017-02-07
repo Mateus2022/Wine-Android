@@ -14,7 +14,8 @@
         android:layout_height="70dp"
         android:layout_marginLeft="3dp"
         android:layout_marginRight="3dp"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitXY"
+        android:src="@drawable/water"/>
 
     <!--中间 包含商品名称  商品评价 价格 门市价-->
     <RelativeLayout
