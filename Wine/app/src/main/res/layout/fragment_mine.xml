@@ -169,7 +169,7 @@
                 <!--app:itv_left_image="@drawable/ic_mine_suggestion"-->
                 <!--app:itv_right_image="@mipmap/ic_arrow_right"-->
                 <!--app:itv_text_color="@color/themeColor"-->
-                <!--app:itv_text_content="意见反馈"-->
+                <!--app:itv_text_content="ic_mine_suggestion"-->
                 <!--app:itv_text_size="14sp"/>-->
 
             <com.ndboo.widget.ImgTextView

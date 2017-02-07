@@ -59,17 +59,17 @@ public class MineFragment extends BaseFragment {
     TextView mNickNameTextView;//昵称
 
     @BindView(R.id.mine_order)
-    ImgTextView mOrderImgTextView;//我的订单
+    ImgTextView mOrderImgTextView;//ic_mine_order
     @BindView(R.id.mine_address)
     ImgTextView mMineAddress;//收货地址
     @BindView(R.id.mine_service)
     ImgTextView mServiceImgTextView;//联系客服
     @BindView(R.id.mine_aboutus)
-    ImgTextView mAboutUsImgTextView;//关于我们
+    ImgTextView mAboutUsImgTextView;//ic_mine_aboutus
     //    @BindView(R.id.mine_suggestion)
-//    ImgTextView mSuggestionImgTextView;//意见反馈
+//    ImgTextView mSuggestionImgTextView;//ic_mine_suggestion
     @BindView(R.id.mine_setting)
-    ImgTextView mSettingImgTextView;//设置
+    ImgTextView mSettingImgTextView;//ic_mine_setting
     @BindView(R.id.layout_user_not_exist)
     LinearLayout mLayoutUserNotExist;
     @BindView(R.id.layout_user_exist)
