@@ -1,7 +1,6 @@
 package com.ndboo.ui.fragment;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -112,7 +111,7 @@ public class ShoppingCarFragment extends BaseFragment {
     /**
      * 修改商品数量
      */
-    private void updateProductCount(final String productId, final int productCount, final int position) {
+    private void updateProductCount(String productId, int productCount) {
         Subscription subscription = RetrofitHelper.getApi()
                 .modifyProductNum(SharedPreferencesUtil.getUserId(getActivity()), productId, "" + productCount)
                 .subscribeOn(Schedulers.io())
@@ -136,8 +135,7 @@ public class ShoppingCarFragment extends BaseFragment {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        ToastUtil.showToast(getActivity(), "error:" + throwable.getMessage());
-//                        Log.e("ndb", "error:" + throwable.getMessage());
+                        ToastUtil.showToast(getActivity(), "网络异常，请检查网络状况");
                     }
                 });
         addSubscription(subscription);
@@ -204,8 +202,7 @@ public class ShoppingCarFragment extends BaseFragment {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        ToastUtil.showToast(getActivity(), "error:" + throwable.getMessage());
-//                        Log.e("ndb", "error:" + throwable.getMessage());
+                        ToastUtil.showToast(getActivity(), "网络异常，请检查网络状况");
                     }
                 });
         addSubscription(subscription);
@@ -312,7 +309,7 @@ public class ShoppingCarFragment extends BaseFragment {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String string) {
-                        Log.e("ndb", "result:" + string);
+//                        Log.e("ndb", "result:" + string);
                         try {
                             JSONObject jsonObject = new JSONObject(string);
                             String result = jsonObject.optString("result");
@@ -332,8 +329,7 @@ public class ShoppingCarFragment extends BaseFragment {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-                        ToastUtil.showToast(getActivity(), "error:" + throwable.getMessage());
-//                        Log.e("ndb", "error:" + throwable.getMessage());
+                        ToastUtil.showToast(getActivity(), "网络异常，请检查网络状况");
                     }
                 });
         addSubscription(subscription);
@@ -381,7 +377,7 @@ public class ShoppingCarFragment extends BaseFragment {
             public void numAdd(int position, View view) {
                 CartBean cartBean = mCartBeanList.get(position);
                 int productCount = Integer.parseInt(cartBean.getProductCount());
-                updateProductCount(cartBean.getProductId(), ++productCount, position);
+                updateProductCount(cartBean.getProductId(), ++productCount);
             }
 
             @Override
@@ -392,7 +388,7 @@ public class ShoppingCarFragment extends BaseFragment {
                     mDeleteIds = cartBean.getProductId();
                     deleteDialog();
                 } else {
-                    updateProductCount(cartBean.getProductId(), --productCount, position);
+                    updateProductCount(cartBean.getProductId(), --productCount);
                 }
             }
 

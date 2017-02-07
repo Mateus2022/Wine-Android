@@ -328,6 +328,7 @@ showUserInfo();
 
                         Glide.with(getActivity())
                                 .load(userInfoBean.getShopLogo())
+//                                .placeholder(R.drawable.ic_tab_mine_nm)
                                 .error(R.drawable.ic_tab_mine_nm)
                                 .into(mPortraitImageView);
                         mNickNameTextView.setText(userInfoBean.getMemberNickname());
