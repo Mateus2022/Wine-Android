@@ -43,6 +43,7 @@ public class AddressActivity extends BaseActivity {
     ListView mLvAddress;
 
     private String mUserId;
+    private boolean mIsClickable=true;
     private AddressAdapter mAddressAdapter;
 
     @Override
@@ -52,6 +53,9 @@ public class AddressActivity extends BaseActivity {
 
     @Override
     public void init() {
+        if (getIntent().getExtras() != null) {
+            mIsClickable=getIntent().getExtras().getBoolean("isClickable");
+        }
         mUserId = SharedPreferencesUtil.getUserId(getApplicationContext());
         mTopBar.setOnTopBarClickListener(new TopBar.OnTopBarClickListener() {
             @Override
@@ -73,16 +77,18 @@ public class AddressActivity extends BaseActivity {
         super.onResume();
         mAddressAdapter = new AddressAdapter();
         mLvAddress.setAdapter(mAddressAdapter);
-        mLvAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AddressBean addressBean = (AddressBean) parent.getItemAtPosition(position);
-                Intent intent = new Intent();
-                intent.putExtra("addressId", addressBean.getAddressId());
-                setResult(14, intent);
-                finish();
-            }
-        });
+        if (mIsClickable) {
+            mLvAddress.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    AddressBean addressBean = (AddressBean) parent.getItemAtPosition(position);
+                    Intent intent = new Intent();
+                    intent.putExtra("addressId", addressBean.getAddressId());
+                    setResult(14, intent);
+                    finish();
+                }
+            });
+        }
         getAddressList();
 
     }

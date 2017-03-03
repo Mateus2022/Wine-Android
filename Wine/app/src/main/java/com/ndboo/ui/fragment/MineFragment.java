@@ -284,7 +284,9 @@ showUserInfo();
                 if (!SharedPreferencesUtil.isUserLoginIn(getContext())) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                 } else {
-                    startActivity(new Intent(getActivity(), AddressActivity.class));
+                    Intent m=new Intent(getActivity(),AddressActivity.class);
+                    m.putExtra("isClickable",false);
+                    startActivity(m);
                 }
 
                 break;

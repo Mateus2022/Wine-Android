@@ -88,6 +88,7 @@ public class WineDetailActivity extends BaseActivity {
         mBadgeView = new BadgeView(WineDetailActivity.this);
         mBadgeView.setBadgeMargin(5);
         mBadgeView.setTargetView(mIvCar);
+        //查询商品信息
         Subscription subscription = RetrofitHelper.getApi()
                 .showWineDetail(productId)
                 .subscribeOn(Schedulers.io())
@@ -125,7 +126,6 @@ public class WineDetailActivity extends BaseActivity {
                         String[] imgTexts = wineDetailBean.getImageText().split(",");
                         for (final String imgText : imgTexts) {
                             final ImageView imageView = new ImageView(getApplicationContext());
-
                             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                             Glide.with(WineDetailActivity.this)
                                     .load(imgText)
@@ -230,6 +230,9 @@ public class WineDetailActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 添加商品至购物车
+     */
     private void addToCar() {
         if (!SharedPreferencesUtil.isUserLoginIn(getApplicationContext())) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -268,6 +271,9 @@ public class WineDetailActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 查询购物车商品数量
+     */
     private void queryWineNum() {
         Subscription subscription = RetrofitHelper.getApi()
                 .queryCarNum(SharedPreferencesUtil.getUserId(getApplicationContext()))
