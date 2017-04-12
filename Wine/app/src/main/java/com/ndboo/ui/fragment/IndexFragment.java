@@ -12,6 +12,7 @@ import com.ndboo.adapter.CarouselAdapter;
 import com.ndboo.base.BaseFragment;
 import com.ndboo.bean.CarouselBean;
 import com.ndboo.net.RetrofitHelper;
+import com.ndboo.widget.MySwipeRefreshLayout;
 import com.ndboo.wine.MainActivity;
 import com.ndboo.wine.R;
 
@@ -35,7 +36,7 @@ public class IndexFragment extends BaseFragment {
     @BindView(R.id.roll_view_pager)
     RollPagerView mRollPagerView;
     @BindView(R.id.swipe_refresh)
-    SwipeRefreshLayout mSwipeRefresh;
+    MySwipeRefreshLayout mSwipeRefresh;
 
     private getWinTypeId mGetWinTypeId;
     private CarouselAdapter mCarouselAdapter;

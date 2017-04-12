@@ -27,7 +27,7 @@
             android:src="@drawable/ic_index_phone"/>
     </RelativeLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <com.ndboo.widget.MySwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -75,7 +75,7 @@
         </ScrollView>
 
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </com.ndboo.widget.MySwipeRefreshLayout>
 
 </LinearLayout>
 
